@@ -1,9 +1,9 @@
 {
   "wwwBase": "https://www.rockthetreatment.com",
   "mBase": "https://m.rockthetreatment.com",
-  "imageBase": "https://www.rockthetreatment.com/wp-content/uploads",
-  "logo": "https://www.rockthetreatment.com/wp-content/uploads/2023/01/RTT.S1.tm_.new-logo.png",
-  "bellImg": "https://www.rockthetreatment.com/wp-content/uploads/2023/06/bell.png",
+  "imageBase": "/assets/uploads",
+  "logo": "/assets/uploads/2023/01/RTT.S1.tm_.new-logo.png",
+  "bellImg": "/assets/uploads/2023/06/bell.png",
   "itemImages": {
     "Lindi Skin Face Serum": "/2019/05/lindi-face-serum.jpg",
     "Lindi Skin Body Lotion": "/2019/05/lindi-body-lotion.jpg",

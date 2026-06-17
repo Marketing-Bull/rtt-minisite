@@ -40,16 +40,18 @@ public/              # ← Cloudflare Pages output directory (built + committed)
   index.html         #   mobile hub linking to the 5 product pages
   *-basket.html      #   the 5 product pages
   _headers           #   caching + security headers
+  assets/uploads/    #   self-hosted product images (downloaded by tools/fetch-images.js)
 design/              # reference design mockups (v4 full, v5 production) — not deployed
-tools/               # reference scrapers (extract.js, scrape-product.js) — not run in build
+tools/               # fetch-images.js (downloads images) + reference scrapers
 wordpress/           # reference WordPress child-theme implementation of the same design
 ```
 
 ### Notable behavior baked into the generator
 
-- **Images** load from the canonical store path
-  `https://www.rockthetreatment.com/wp-content/uploads/...` (the previous NitroPack CDN
-  URLs had a rotating revision hash and now 404).
+- **Images are self-hosted** under `public/assets/uploads/...`. Run
+  `node tools/fetch-images.js` to (re)download them from the store. This avoids the main
+  site's hotlink/referer protection, which returns **403** for cross-origin image requests
+  from `*.pages.dev` and any non-`rockthetreatment.com` referer.
 - **SEO:** each page sets `<link rel="canonical">` to its `www` product page and, by
   default, `<meta name="robots" content="noindex, follow">` so the mobile mirror doesn't
   compete with the main store in organic search. Flip `ALLOW_INDEXING = true` at the top
@@ -104,6 +106,9 @@ Open a product page in a mobile viewport and check:
 
 ## Roadmap
 
-- **v2 — self-host images:** download the ~30 referenced images into `public/assets/img/`,
-  convert to WebP/AVIF, and serve them from the minisite for best LCP and true
-  independence from the main store. (Deferred; v1 uses canonical external images.)
+- ✅ **Self-hosted images** — 53 images (~12 MB) under `public/assets/uploads/`, fetched via
+  `node tools/fetch-images.js`. Removes the hotlink dependency on the main store.
+- **Optimize images** — convert to WebP/AVIF and shrink the ~7 MB animated Warmies upsell GIF
+  (`assets/uploads/2025/04/Rock-the-Treatment-Warmies-...gif`) to cut the mobile payload.
+- 5 source images are missing upstream (redirect to the homepage); 4 are unused and one is the
+  "Large Men's" related card, which now self-hides via an `onerror` fallback.

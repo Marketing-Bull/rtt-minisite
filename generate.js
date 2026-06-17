@@ -63,7 +63,7 @@ function generatePage(product) {
 <link rel="canonical" href="${wwwBase}/${product.slug}/">
 <meta property="og:title" content="${escHtml(product.metaTitle)} | Rock The Treatment">
 <meta property="og:description" content="${escHtml(product.shortDesc)}">
-<meta property="og:image" content="${heroUrl}">
+<meta property="og:image" content="${mBase}${heroUrl}">
 <meta property="og:url" content="${mBase}/${product.slug}">
 <meta property="og:type" content="product">
 <meta property="product:price:amount" content="${product.price.replace('$','')}">
@@ -298,7 +298,7 @@ ${product.relatedProducts.map(rp => {
   const rpMatch = products.find(p => p.slug === rpSlug);
   const rpHref = rpMatch ? `./${rpSlug}.html` : `https://www.rockthetreatment.com${rp.url}`;
   return `      <a href="${rpHref}" class="related-card">
-        <img src="${img(rp.image)}" alt="${escHtml(rp.name)}" loading="lazy" decoding="async">
+        <img src="${img(rp.image)}" alt="${escHtml(rp.name)}" loading="lazy" decoding="async" onerror="this.closest('.related-card,.upsell-card')?.remove()">
         <div class="info">
           <div class="name">${escHtml(rp.name)}</div>
           <div class="price">${rp.price}</div>
@@ -363,7 +363,7 @@ ${faqList.map((q, i) => {
     <div class="section-title" style="font-family:var(--serif);font-size:20px;margin-bottom:14px;">Add even more support</div>
     <div class="upsell-grid">
 ${upsellProducts.map(up => `      <a href="https://www.rockthetreatment.com${up.url}" class="upsell-card">
-        <img src="${img(up.image)}" alt="${escHtml(up.name)}" loading="lazy" decoding="async">
+        <img src="${img(up.image)}" alt="${escHtml(up.name)}" loading="lazy" decoding="async" onerror="this.closest('.related-card,.upsell-card')?.remove()">
         <div class="uname">${escHtml(up.name)}</div>
       </a>`).join('\n')}
     </div>
