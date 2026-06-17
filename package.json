@@ -1,0 +1,9 @@
+{
+  "name": "rtt-minisite",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Standalone mobile-optimized product minisite for m.rockthetreatment.com (Cloudflare Pages).",
+  "scripts": {
+    "build": "node generate.js"
+  }
+}

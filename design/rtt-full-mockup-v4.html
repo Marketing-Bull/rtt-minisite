@@ -1,0 +1,737 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>RTT Full Product Page — CRO Optimized Mockup v4</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --green: #5ba346;
+    --green-dark: #4a8a38;
+    --orange: #ff6319;
+    --orange-dark: #e55a15;
+    --text: #1a1a1a;
+    --text-light: #555;
+    --text-muted: #888;
+    --bg: #ffffff;
+    --bg-alt: #fafafa;
+    --bg-warm: #fff8f0;
+    --border: #eee;
+    --serif: 'DM Serif Display', Georgia, serif;
+    --sans: 'Inter', system-ui, sans-serif;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: var(--sans); background: #e8e8e8; color: var(--text); }
+  
+  /* Page wrapper — phone frame */
+  .page-wrapper {
+    max-width: 375px; margin: 0 auto; background: white;
+    box-shadow: 0 0 60px rgba(0,0,0,0.15);
+    position: relative;
+  }
+  .mockup-label {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    background: var(--orange); color: white; text-align: center;
+    padding: 6px 12px; font-family: var(--sans); font-size: 11px;
+    font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase;
+  }
+  .mockup-label span { font-weight: 400; opacity: 0.8; }
+  
+  /* ===== HEADER ===== */
+  .topbar {
+    background: var(--green); padding: 8px 16px;
+    display: flex; justify-content: space-between; align-items: center;
+    color: white; font-size: 14px; margin-top: 28px;
+  }
+  .topbar .icons { display: flex; gap: 16px; }
+  
+  .header { text-align: center; padding: 12px 16px; border-bottom: 1px solid var(--border); }
+  .header img { height: 36px; }
+  
+  .nav {
+    display: flex; justify-content: center; gap: 18px; padding: 10px 16px;
+    border-bottom: 1px solid var(--border); font-size: 13px; font-weight: 500; color: #333;
+  }
+  
+  /* ===== SOCIAL PROOF BANNER (CRO) ===== */
+  .social-proof-banner {
+    background: var(--bg-warm); padding: 10px 16px;
+    text-align: center; font-size: 12px; font-weight: 500; color: var(--text-light);
+    border-bottom: 1px solid #ffe0b2;
+  }
+  .social-proof-banner strong { color: var(--text); }
+  
+  /* ===== PRODUCT GALLERY ===== */
+  .gallery-main { width: 100%; display: block; }
+  .gallery-thumbs {
+    display: flex; gap: 6px; padding: 8px 12px; overflow-x: auto;
+  }
+  .gallery-thumbs img {
+    width: 60px; height: 60px; object-fit: cover; border-radius: 6px;
+    border: 2px solid transparent; cursor: pointer; flex-shrink: 0;
+  }
+  .gallery-thumbs img:first-child { border-color: var(--green); }
+  
+  /* ===== PRODUCT INFO ===== */
+  .product-info { padding: 16px 20px; }
+  .product-title {
+    font-family: var(--serif); font-size: 28px; font-weight: 400;
+    line-height: 1.2; color: var(--text);
+  }
+  .product-price {
+    font-size: 26px; font-weight: 700; color: var(--text);
+    font-variant-numeric: tabular-nums; margin-top: 8px;
+  }
+  
+  .qty-row { display: flex; align-items: center; gap: 8px; margin-top: 12px; }
+  .qty-btn {
+    width: 36px; height: 36px; border: 1px solid #ddd; background: white;
+    border-radius: 6px; font-size: 18px; cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .qty-input {
+    width: 44px; height: 36px; border: 1px solid #ddd;
+    text-align: center; font-size: 15px; border-radius: 6px; font-family: var(--sans);
+  }
+  
+  .btn-cart {
+    display: block; width: 100%; padding: 16px; border: none; border-radius: 8px;
+    font-family: var(--sans); font-weight: 700; font-size: 16px;
+    background: var(--orange); color: white; cursor: pointer; margin-top: 14px;
+    text-transform: uppercase; letter-spacing: 0.03em;
+    box-shadow: 0 4px 14px rgba(255,99,25,0.35);
+  }
+  
+  .urgency { font-size: 12px; font-weight: 500; color: var(--green); text-align: center; margin-top: 8px; }
+  .urgency::before { content: '🔥 '; }
+  
+  .shipping-note { font-size: 11px; color: var(--text-muted); margin-top: 6px; text-align: center; }
+  .shipping-note::before { content: '📦 '; }
+  
+  /* Trust badges */
+  .trust-badges {
+    display: flex; justify-content: center; gap: 14px;
+    padding: 14px 0; margin-top: 12px; border-top: 1px solid #f0f0f0;
+  }
+  .trust-badge {
+    font-size: 10px; font-weight: 600; color: #666;
+    text-align: center; display: flex; flex-direction: column;
+    align-items: center; gap: 3px;
+  }
+  .trust-badge .icon { font-size: 20px; }
+  
+  /* Free gift callout */
+  .free-gift-callout {
+    background: var(--bg-warm); border: 1px solid #ffe0b2; border-radius: 8px;
+    padding: 12px 14px; margin-top: 14px;
+    display: flex; align-items: center; gap: 12px;
+  }
+  .free-gift-callout img { width: 50px; height: 50px; border-radius: 6px; object-fit: cover; }
+  .free-gift-callout .text { font-size: 12px; line-height: 1.4; color: #333; }
+  .free-gift-callout .text strong { color: var(--orange); }
+  
+  /* Product description */
+  .product-desc {
+    font-size: 14px; line-height: 1.65; color: var(--text-light);
+    margin-top: 14px; padding-top: 14px; border-top: 1px solid var(--border);
+  }
+  .product-desc strong { color: var(--text); }
+  
+  /* Gift note */
+  .gift-note {
+    margin-top: 14px; padding: 12px; background: var(--bg-alt);
+    border-radius: 8px; border: 1px solid var(--border);
+  }
+  .gift-note label { font-size: 13px; font-weight: 600; display: block; margin-bottom: 6px; }
+  .gift-note textarea {
+    width: 100%; height: 60px; border: 1px solid #ddd; border-radius: 6px;
+    padding: 8px; font-family: var(--sans); font-size: 13px; resize: none;
+  }
+  
+  /* ===== RELATED PRODUCTS ===== */
+  .related-section { padding: 20px 16px; border-top: 4px solid var(--border); }
+  .section-title {
+    font-family: var(--serif); font-size: 20px; margin-bottom: 14px;
+  }
+  .related-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+  .related-card { border: 1px solid var(--border); border-radius: 10px; overflow: hidden; }
+  .related-card img { width: 100%; aspect-ratio: 1/1; object-fit: cover; }
+  .related-card .info { padding: 10px; }
+  .related-card .name { font-size: 13px; font-weight: 500; line-height: 1.3; margin-bottom: 6px; }
+  .related-card .price { font-size: 15px; font-weight: 700; }
+  
+  /* ===== VALUE PROPS ===== */
+  .value-props {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 0;
+    border-top: 4px solid var(--border);
+  }
+  .value-prop {
+    padding: 20px 14px; text-align: center;
+    border-bottom: 1px solid var(--border);
+    border-right: 1px solid var(--border);
+  }
+  .value-prop:nth-child(2n) { border-right: none; }
+  .value-prop .vp-icon { font-size: 28px; margin-bottom: 6px; }
+  .value-prop .vp-title { font-family: var(--serif); font-size: 14px; margin-bottom: 4px; }
+  .value-prop .vp-desc { font-size: 11px; color: var(--text-muted); line-height: 1.4; }
+  
+  /* ===== GREEN BANNER ===== */
+  .green-banner {
+    background: var(--green); padding: 28px 20px; text-align: center; color: white;
+  }
+  .green-banner h3 {
+    font-family: var(--serif); font-size: 22px; font-weight: 400; line-height: 1.2;
+  }
+  .green-banner p { font-size: 14px; opacity: 0.9; margin-top: 8px; }
+  
+  /* ===== PRODUCT BREAKDOWN ===== */
+  .breakdown-section { padding: 0; }
+  .category-header {
+    background: var(--bg-alt); padding: 16px 20px;
+    border-top: 3px solid var(--green); border-bottom: 1px solid var(--border);
+  }
+  .category-header h3 {
+    font-family: var(--serif); font-size: 18px; color: var(--text);
+  }
+  
+  .item-card {
+    display: flex; gap: 12px; padding: 14px 16px;
+    border-bottom: 1px solid #f5f5f5;
+  }
+  .item-card img {
+    width: 70px; height: 70px; object-fit: cover; border-radius: 8px; flex-shrink: 0;
+  }
+  .item-card .item-info { flex: 1; }
+  .item-card .item-name {
+    font-size: 14px; font-weight: 600; margin-bottom: 4px; color: var(--text);
+  }
+  .item-card .item-desc {
+    font-size: 12px; line-height: 1.5; color: var(--text-light);
+    display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden;
+  }
+  
+  /* ===== FAQS ===== */
+  .faq-section { padding: 20px 16px; border-top: 4px solid var(--border); }
+  .faq-item {
+    border-bottom: 1px solid var(--border); padding: 14px 0;
+    display: flex; justify-content: space-between; align-items: center;
+  }
+  .faq-item .q { font-size: 14px; font-weight: 600; flex: 1; padding-right: 12px; }
+  .faq-item .chev { color: var(--text-muted); font-size: 12px; }
+  
+  /* ===== UPSELL GRID ===== */
+  .upsell-section { padding: 20px 16px; border-top: 4px solid var(--border); background: var(--bg-alt); }
+  .upsell-grid {
+    display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px;
+  }
+  .upsell-card {
+    background: white; border-radius: 8px; overflow: hidden;
+    border: 1px solid var(--border); text-align: center;
+  }
+  .upsell-card img { width: 100%; aspect-ratio: 1/1; object-fit: cover; }
+  .upsell-card .uname { font-size: 11px; font-weight: 500; padding: 6px 6px 8px; line-height: 1.3; }
+  
+  /* ===== REVIEWS ===== */
+  .reviews-section { padding: 20px 16px; border-top: 4px solid var(--border); }
+  .review-summary {
+    text-align: center; margin-bottom: 16px;
+  }
+  .review-summary .big-rating { font-size: 48px; font-weight: 700; }
+  .review-summary .stars-big { font-size: 20px; color: #f59e0b; }
+  .review-summary .count { font-size: 13px; color: var(--text-muted); margin-top: 4px; }
+  
+  .star-bars { margin: 12px 0 16px; }
+  .star-bar {
+    display: flex; align-items: center; gap: 8px; margin-bottom: 4px;
+    font-size: 12px; color: var(--text-muted);
+  }
+  .star-bar .bar { flex: 1; height: 6px; background: #eee; border-radius: 3px; overflow: hidden; }
+  .star-bar .bar-fill { height: 100%; background: #f59e0b; border-radius: 3px; }
+  
+  .review-tabs {
+    display: flex; gap: 0; margin-bottom: 12px;
+  }
+  .review-tab {
+    flex: 1; padding: 10px; text-align: center; font-size: 13px; font-weight: 600;
+    border-bottom: 2px solid var(--border); color: var(--text-muted); cursor: pointer;
+  }
+  .review-tab.active { border-bottom-color: var(--orange); color: var(--text); }
+  
+  .review-card {
+    background: var(--bg-alt); border-radius: 8px; padding: 14px; margin-bottom: 10px;
+  }
+  .review-card .stars { color: #f59e0b; font-size: 13px; margin-bottom: 4px; }
+  .review-card .r-title { font-size: 14px; font-weight: 600; margin-bottom: 4px; }
+  .review-card .r-text { font-size: 13px; line-height: 1.5; color: var(--text-light); }
+  .review-card .r-author { font-size: 12px; font-weight: 600; color: var(--text-muted); margin-top: 6px; }
+  .review-card .r-date { font-size: 11px; color: #bbb; }
+  
+  .review-reply {
+    background: white; border-left: 3px solid var(--green);
+    padding: 10px 12px; margin: 8px 0 0 12px; border-radius: 0 6px 6px 0;
+    font-size: 12px; line-height: 1.5; color: var(--text-light);
+  }
+  .review-reply strong { color: var(--green); font-size: 11px; }
+  
+  /* ===== FOOTER ===== */
+  .footer {
+    background: #222; padding: 24px 20px; color: #aaa;
+  }
+  .footer-brand { font-family: var(--serif); font-size: 18px; color: white; margin-bottom: 8px; }
+  .footer-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-top: 14px; }
+  .footer-col h4 { font-size: 12px; font-weight: 700; color: white; text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 8px; }
+  .footer-col a { display: block; font-size: 12px; color: #888; text-decoration: none; margin-bottom: 4px; }
+  .footer-subscribe { margin-top: 16px; padding-top: 16px; border-top: 1px solid #333; }
+  .footer-subscribe h4 { font-size: 12px; font-weight: 700; color: white; margin-bottom: 8px; }
+  .footer-subscribe .sub-row { display: flex; gap: 6px; }
+  .footer-subscribe input {
+    flex: 1; padding: 8px 10px; border: 1px solid #444; background: #333;
+    color: white; border-radius: 4px; font-size: 12px; font-family: var(--sans);
+  }
+  .footer-subscribe button {
+    padding: 8px 14px; background: var(--orange); color: white; border: none;
+    border-radius: 4px; font-size: 12px; font-weight: 600; cursor: pointer;
+  }
+  .footer-bottom {
+    margin-top: 16px; padding-top: 12px; border-top: 1px solid #333;
+    font-size: 11px; color: #666; text-align: center;
+  }
+  .footer-socials {
+    display: flex; justify-content: center; gap: 14px; margin: 10px 0;
+    font-size: 16px;
+  }
+</style>
+</head>
+<body>
+
+<div class="mockup-label">CRO Optimized Mockup — DM Serif Display + Inter <span>· v4 Full Page</span></div>
+
+<div class="page-wrapper">
+
+  <!-- HEADER -->
+  <div class="topbar">
+    <span style="font-size:18px;">☰</span>
+    <div class="icons"><span>🔍</span><span>👤</span><span>🛒</span></div>
+  </div>
+  <div class="header">
+    <img src="https://cdn-aidbo.nitrocdn.com/DPyFKgPXzaaaSqAmCcbtAPNJPtyXQoqz/assets/images/optimized/rev-8d96e32/www.rockthetreatment.com/wp-content/uploads/2023/01/RTT.S1.tm_.new-logo.png" alt="Rock The Treatment">
+  </div>
+  <div class="nav"><span>Shop</span><span>About</span><span>Info</span><span>Blog</span><span>Contact</span></div>
+
+  <!-- SOCIAL PROOF BANNER -->
+  <div class="social-proof-banner">
+    ★★★★★ <strong>254 families</strong> have sent love with this package
+  </div>
+
+  <!-- PRODUCT GALLERY -->
+  <img class="gallery-main" src="https://cdn-aidbo.nitrocdn.com/DPyFKgPXzaaaSqAmCcbtAPNJPtyXQoqz/assets/images/optimized/rev-8d96e32/www.rockthetreatment.com/wp-content/uploads/2018/04/Women-Large-Chemo-Basket-Main.jpg" alt="Large Women's Chemo Care Package">
+  <div class="gallery-thumbs">
+    <img src="https://cdn-aidbo.nitrocdn.com/DPyFKgPXzaaaSqAmCcbtAPNJPtyXQoqz/assets/images/optimized/rev-8d96e32/www.rockthetreatment.com/wp-content/uploads/2018/04/Women-Large-Chemo-Basket-Main.jpg" alt="Main">
+    <img src="https://cdn-aidbo.nitrocdn.com/DPyFKgPXzaaaSqAmCcbtAPNJPtyXQoqz/assets/images/optimized/rev-8d96e32/www.rockthetreatment.com/wp-content/uploads/2018/04/Womens_Chemo_Product-Tiles_dry-mouth.jpg" alt="Dry Mouth">
+    <img src="https://cdn-aidbo.nitrocdn.com/DPyFKgPXzaaaSqAmCcbtAPNJPtyXQoqz/assets/images/optimized/rev-8d96e32/www.rockthetreatment.com/wp-content/uploads/2018/04/Womens_Chemo_Product-Tiles_nausea.jpg" alt="Nausea">
+    <img src="https://cdn-aidbo.nitrocdn.com/DPyFKgPXzaaaSqAmCcbtAPNJPtyXQoqz/assets/images/optimized/rev-8d96e32/www.rockthetreatment.com/wp-content/uploads/2018/04/Womens_Chemo_Product-Tiles_engaging-mind.jpg" alt="Mind">
+  </div>
+
+  <!-- PRODUCT INFO -->
+  <div class="product-info">
+    <h1 class="product-title">Large Women's Chemo Care Package</h1>
+    <div class="product-price">$159.99</div>
+    <div class="qty-row">
+      <button class="qty-btn">−</button>
+      <input class="qty-input" value="1" readonly>
+      <button class="qty-btn">+</button>
+    </div>
+    <button class="btn-cart">Add to Cart</button>
+    <div class="urgency">Orders placed before 2pm ship same day</div>
+    <div class="shipping-note">Free shipping on orders over $100</div>
+    
+    <!-- TRUST BADGES -->
+    <div class="trust-badges">
+      <div class="trust-badge"><span class="icon">🔒</span>Secure<br>Checkout</div>
+      <div class="trust-badge"><span class="icon">📦</span>Ships in<br>1-2 Days</div>
+      <div class="trust-badge"><span class="icon">🎁</span>20+ Items<br>Included</div>
+      <div class="trust-badge"><span class="icon">💝</span>Free Gift<br>Included</div>
+    </div>
+    
+    <!-- FREE GIFT CALLOUT -->
+    <div class="free-gift-callout">
+      <img src="https://cdn-aidbo.nitrocdn.com/DPyFKgPXzaaaSqAmCcbtAPNJPtyXQoqz/assets/images/optimized/rev-8d96e32/www.rockthetreatment.com/wp-content/uploads/2023/06/bell.png" alt="Celebration Bell">
+      <div class="text">
+        <strong>FREE bonus!</strong> Every purchase includes an End of Treatment Celebration Gift — order separately at no charge.
+      </div>
+    </div>
+    
+    <!-- DESCRIPTION -->
+    <div class="product-desc">
+      Lovingly packed with <strong>over 20 high quality products</strong> for comfort, relief, and relaxation. From soothing skin care to engaging puzzles — everything she needs to look and feel her best during chemo.
+    </div>
+    
+    <!-- GIFT NOTE -->
+    <div class="gift-note">
+      <label>🖊 Add a gift note:</label>
+      <textarea placeholder="Write a personal message for the recipient..."></textarea>
+    </div>
+  </div>
+
+  <!-- RELATED PRODUCTS -->
+  <div class="related-section">
+    <div class="section-title">You may also like…</div>
+    <div class="related-grid">
+      <div class="related-card">
+        <img src="https://cdn-aidbo.nitrocdn.com/DPyFKgPXzaaaSqAmCcbtAPNJPtyXQoqz/assets/images/optimized/rev-8d96e32/www.rockthetreatment.com/wp-content/uploads/2019/05/Womens-Chemo-Small-Care-Package-Main-100x100.jpg" alt="Small">
+        <div class="info">
+          <div class="name">Small Women's Chemo Care Package</div>
+          <div class="price">$69.99</div>
+        </div>
+      </div>
+      <div class="related-card">
+        <img src="https://cdn-aidbo.nitrocdn.com/DPyFKgPXzaaaSqAmCcbtAPNJPtyXQoqz/assets/images/optimized/rev-8d96e32/www.rockthetreatment.com/wp-content/uploads/2018/04/Women-Medium-Chemo-Basket-Main-100x100.jpg" alt="Medium">
+        <div class="info">
+          <div class="name">Medium Women's Chemo Care Package</div>
+          <div class="price">$119.99</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- VALUE PROPS -->
+  <div class="value-props">
+    <div class="value-prop">
+      <div class="vp-icon">💜</div>
+      <div class="vp-title">Thoughtfully Curated</div>
+      <div class="vp-desc">Every item hand-picked for comfort during treatment</div>
+    </div>
+    <div class="value-prop">
+      <div class="vp-icon">📦</div>
+      <div class="vp-title">Convenient & Discreet</div>
+      <div class="vp-desc">Ready to gift — beautifully packed and shipped fast</div>
+    </div>
+    <div class="value-prop">
+      <div class="vp-icon">⭐</div>
+      <div class="vp-title">Unmatched Service</div>
+      <div class="vp-desc">Personal attention to every order and customer</div>
+    </div>
+    <div class="value-prop">
+      <div class="vp-icon">🤝</div>
+      <div class="vp-title">Caring Contributions</div>
+      <div class="vp-desc">A portion of proceeds supports cancer patients in need</div>
+    </div>
+  </div>
+
+  <!-- GREEN BANNER -->
+  <div class="green-banner">
+    <h3>Nurturing Strength.<br>Uplifting Spirits.</h3>
+    <p>Nourish the Body. Focus the Mind.</p>
+  </div>
+
+  <!-- ===== PRODUCT BREAKDOWN ===== -->
+  
+  <!-- DRY MOUTH SECTION -->
+  <div class="category-header"><h3>For Dry Mouth, Lips & Skin</h3></div>
+  <div class="item-card">
+    <img src="https://cdn-aidbo.nitrocdn.com/DPyFKgPXzaaaSqAmCcbtAPNJPtyXQoqz/assets/images/optimized/rev-8d96e32/www.rockthetreatment.com/wp-content/uploads/2019/05/lindi-face-serum.jpg" alt="Face Serum">
+    <div class="item-info">
+      <div class="item-name">Lindi Skin Face Serum</div>
+      <div class="item-desc">Renew and replenish skin with this light, non-greasy serum aimed at reducing redness, irritation, itching and rash. (travel size)</div>
+    </div>
+  </div>
+  <div class="item-card">
+    <img src="https://cdn-aidbo.nitrocdn.com/DPyFKgPXzaaaSqAmCcbtAPNJPtyXQoqz/assets/images/optimized/rev-8d96e32/www.rockthetreatment.com/wp-content/uploads/2019/05/lindi-body-lotion.jpg" alt="Body Lotion">
+    <div class="item-info">
+      <div class="item-name">Lindi Skin Body Lotion</div>
+      <div class="item-desc">Nourish your skin with this light, clean body lotion containing Vitamins C & E, chamomile and cucumber for maximum comfort. (travel size)</div>
+    </div>
+  </div>
+  <div class="item-card">
+    <img src="https://cdn-aidbo.nitrocdn.com/DPyFKgPXzaaaSqAmCcbtAPNJPtyXQoqz/assets/images/optimized/rev-8d96e32/www.rockthetreatment.com/wp-content/uploads/2019/07/lip-care.jpg" alt="Lip Balm">
+    <div class="item-info">
+      <div class="item-name">Dionis Goat Milk Lip Balm</div>
+      <div class="item-desc">Repair chapped lips with paraben free beeswax lip balms infused with goat milk, shea butter and coconut oil. Twice the standard size.</div>
+    </div>
+  </div>
+  <div class="item-card">
+    <img src="https://cdn-aidbo.nitrocdn.com/DPyFKgPXzaaaSqAmCcbtAPNJPtyXQoqz/assets/images/optimized/rev-8d96e32/www.rockthetreatment.com/wp-content/uploads/2019/05/dionis-hand-cream-.png" alt="Skin Cream">
+    <div class="item-info">
+      <div class="item-name">Dionis Goat Milk Skin Cream</div>
+      <div class="item-desc">Rich, creamy unscented goat milk cream. Goat milk has a pH similar to human skin — naturally chock full of vitamins. (3.3 oz)</div>
+    </div>
+  </div>
+  <div class="item-card">
+    <img src="https://cdn-aidbo.nitrocdn.com/DPyFKgPXzaaaSqAmCcbtAPNJPtyXQoqz/assets/images/optimized/rev-8d96e32/www.rockthetreatment.com/wp-content/uploads/2019/05/10-dry-mouth-lozenges.jpg" alt="Lozenges">
+    <div class="item-info">
+      <div class="item-name">Dry Mouth Lozenges</div>
+      <div class="item-desc">All-natural, sugar free lozenges to relieve dry mouth — #1 Doctor recommended. Dairy free, Gluten free, Nut free, Kosher.</div>
+    </div>
+  </div>
+  <div class="item-card">
+    <img src="https://cdn-aidbo.nitrocdn.com/DPyFKgPXzaaaSqAmCcbtAPNJPtyXQoqz/assets/images/optimized/rev-8d96e32/www.rockthetreatment.com/wp-content/uploads/2019/05/peppermint-candy-crop.jpg" alt="Peppermint">
+    <div class="item-info">
+      <div class="item-name">Peppermint Drops</div>
+      <div class="item-desc">Ease nausea, headaches and dry mouth with real peppermint oil mints. Individually wrapped. Dairy free, Gluten free, Kosher.</div>
+    </div>
+  </div>
+  <div class="item-card">
+    <img src="https://cdn-aidbo.nitrocdn.com/DPyFKgPXzaaaSqAmCcbtAPNJPtyXQoqz/assets/images/optimized/rev-8d96e32/www.rockthetreatment.com/wp-content/uploads/2019/05/peppermint-tea.jpeg" alt="Tea">
+    <div class="item-info">
+      <div class="item-name">Herbal Tea (peppermint/green)</div>
+      <div class="item-desc">Rich in polyphenols — natural compounds that reduce inflammation and help fight cancer. Peppermint eases headaches and digestive issues.</div>
+    </div>
+  </div>
+
+  <!-- NAUSEA SECTION -->
+  <div class="category-header"><h3>For Nausea, Comfort & Energy</h3></div>
+  <div class="item-card">
+    <img src="https://cdn-aidbo.nitrocdn.com/DPyFKgPXzaaaSqAmCcbtAPNJPtyXQoqz/assets/images/optimized/rev-8d96e32/www.rockthetreatment.com/wp-content/uploads/2019/07/eye-pillow.jpg" alt="Eye Pillow">
+    <div class="item-info">
+      <div class="item-name">Hot & Cold Eye Pillow</div>
+      <div class="item-desc">Silky aromatherapy pillow — microwavable for heat, freezable for cold. Peppermint and eucalyptus scent eases nausea and headaches.</div>
+    </div>
+  </div>
+  <div class="item-card">
+    <img src="https://cdn-aidbo.nitrocdn.com/DPyFKgPXzaaaSqAmCcbtAPNJPtyXQoqz/assets/images/optimized/rev-8d96e32/www.rockthetreatment.com/wp-content/uploads/2018/04/fuzzy-socks.jpg" alt="Socks">
+    <div class="item-info">
+      <div class="item-name">Soft & Cozy Socks</div>
+      <div class="item-desc">Warm up during chemotherapy since centers are often chilly. Soft and cozy socks — like a hug for your feet. (styles vary)</div>
+    </div>
+  </div>
+  <div class="item-card">
+    <img src="https://cdn-aidbo.nitrocdn.com/DPyFKgPXzaaaSqAmCcbtAPNJPtyXQoqz/assets/images/optimized/rev-8d96e32/www.rockthetreatment.com/wp-content/uploads/2019/07/knit-cap.jpg" alt="Beanie">
+    <div class="item-info">
+      <div class="item-name">RTT Chemo Beanie</div>
+      <div class="item-desc">Soft knit beanie embroidered with #RockTheTreatment. Cotton/poly blend for breathable lasting comfort. (colors vary)</div>
+    </div>
+  </div>
+  <div class="item-card">
+    <img src="https://cdn-aidbo.nitrocdn.com/DPyFKgPXzaaaSqAmCcbtAPNJPtyXQoqz/assets/images/optimized/rev-8d96e32/www.rockthetreatment.com/wp-content/uploads/2019/05/queasy-pops.jpg" alt="Queasy Pops">
+    <div class="item-info">
+      <div class="item-name">Queasy Pops</div>
+      <div class="item-desc">Drug-free drops made from all-natural herbs and essential oils. Developed with oncology dietitians. Doctor recommended.</div>
+    </div>
+  </div>
+  <div class="item-card">
+    <img src="https://cdn-aidbo.nitrocdn.com/DPyFKgPXzaaaSqAmCcbtAPNJPtyXQoqz/assets/images/optimized/rev-8d96e32/www.rockthetreatment.com/wp-content/uploads/2019/07/nuts.jpg" alt="Nuts">
+    <div class="item-info">
+      <div class="item-name">Nut & Dried Fruit Mix</div>
+      <div class="item-desc">Heart healthy, nutritious snack. Packed with fiber, potassium, antioxidants and proteins. Dairy free, Gluten free, Kosher.</div>
+    </div>
+  </div>
+  <div class="item-card">
+    <img src="https://cdn-aidbo.nitrocdn.com/DPyFKgPXzaaaSqAmCcbtAPNJPtyXQoqz/assets/images/optimized/rev-8d96e32/www.rockthetreatment.com/wp-content/uploads/2023/04/Copy-of-Drk-Choc-and-Berries.jpeg" alt="Chocolate">
+    <div class="item-info">
+      <div class="item-name">Dark Chocolate Covered Berries</div>
+      <div class="item-desc">Pomegranate, blueberries and acai with powerful antioxidants. Gluten free. Kosher. 2 snack packs.</div>
+    </div>
+  </div>
+  <div class="item-card">
+    <img src="https://cdn-aidbo.nitrocdn.com/DPyFKgPXzaaaSqAmCcbtAPNJPtyXQoqz/assets/images/optimized/rev-8d96e32/www.rockthetreatment.com/wp-content/uploads/2019/05/peanut-butter-crackers-crop.jpg" alt="Crackers">
+    <div class="item-info">
+      <div class="item-name">Peanut Butter Sandwich Crackers</div>
+      <div class="item-desc">Take medicine on an empty stomach? This protein-filled snack decreases nausea and increases energy. Kosher.</div>
+    </div>
+  </div>
+
+  <!-- ENGAGING MIND SECTION -->
+  <div class="category-header"><h3>For Engaging the Mind</h3></div>
+  <div class="item-card">
+    <img src="https://cdn-aidbo.nitrocdn.com/DPyFKgPXzaaaSqAmCcbtAPNJPtyXQoqz/assets/images/optimized/rev-8d96e32/www.rockthetreatment.com/wp-content/uploads/2018/04/Copy-of-distractivities.jpg" alt="Coloring">
+    <div class="item-info">
+      <div class="item-name">Adult Coloring Book Set</div>
+      <div class="item-desc">Calm your brain and help your body relax. Improves sleep, decreases depression and fatigue. Includes colored pencils and sharpener.</div>
+    </div>
+  </div>
+  <div class="item-card">
+    <img src="https://cdn-aidbo.nitrocdn.com/DPyFKgPXzaaaSqAmCcbtAPNJPtyXQoqz/assets/images/optimized/rev-8d96e32/www.rockthetreatment.com/wp-content/uploads/2020/07/Copy-of-note-cards-w-env.jpg" alt="Note Cards">
+    <div class="item-info">
+      <div class="item-name">Custom Designed Note Cards</div>
+      <div class="item-desc">Write notes to loved ones. Bring them to treatment to use the time productively.</div>
+    </div>
+  </div>
+  <div class="item-card">
+    <img src="https://cdn-aidbo.nitrocdn.com/DPyFKgPXzaaaSqAmCcbtAPNJPtyXQoqz/assets/images/optimized/rev-8d96e32/www.rockthetreatment.com/wp-content/uploads/2021/07/Cancer-Organizer-Card-with-QRcardwhite.jpg" alt="Organizer">
+    <div class="item-info">
+      <div class="item-name">Cancer Health Organizer (PDF)</div>
+      <div class="item-desc">Record and track vital health information — medical history, medicines, appointments, tests, checklists, and reminders.</div>
+    </div>
+  </div>
+
+  <!-- JUST FOR FUN -->
+  <div class="category-header"><h3>Just For Fun</h3></div>
+  <div class="item-card">
+    <img style="background:#f5f0eb; width:70px; height:70px; border-radius:8px;" src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNzAiIGhlaWdodD0iNzAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PHJlY3Qgd2lkdGg9IjcwIiBoZWlnaHQ9IjcwIiBmaWxsPSIjZjVmMGViIi8+PHRleHQgeD0iMzUiIHk9IjQwIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmb250LXNpemU9IjI4Ij7wn42sPC90ZXh0Pjwvc3ZnPg==" alt="Jelly Belly">
+    <div class="item-info">
+      <div class="item-name">Jelly Belly Cocktails</div>
+      <div class="item-desc">Piña Colada, Strawberry Daiquiri, Pomegranate Cosmo and more — the fun without the hangover. Dairy Free, Gluten Free, Kosher.</div>
+    </div>
+  </div>
+
+  <!-- FAQs -->
+  <div class="faq-section">
+    <div class="section-title" style="margin-bottom:8px;">FAQs</div>
+    <div class="faq-item"><span class="q">What gifts to avoid?</span><span class="chev">▾</span></div>
+    <div class="faq-item"><span class="q">What are the most common side effects of chemo?</span><span class="chev">▾</span></div>
+    <div class="faq-item"><span class="q">What items help with the side effects of chemo?</span><span class="chev">▾</span></div>
+    <div class="faq-item"><span class="q">Are there any restrictions on gifts chemo patients can receive?</span><span class="chev">▾</span></div>
+    <div class="faq-item"><span class="q">What about dietary restriction substitutions?</span><span class="chev">▾</span></div>
+    <div style="text-align:center; margin-top:10px;">
+      <a style="font-size:13px; color:var(--green); font-weight:600; text-decoration:none;">Browse more FAQs →</a>
+    </div>
+  </div>
+
+  <!-- UPSELL GRID -->
+  <div class="upsell-section">
+    <div class="section-title" style="font-family:var(--serif); font-size:20px; margin-bottom:14px;">Add even more support</div>
+    <div class="upsell-grid">
+      <div class="upsell-card">
+        <img src="https://cdn-aidbo.nitrocdn.com/DPyFKgPXzaaaSqAmCcbtAPNJPtyXQoqz/assets/images/optimized/rev-8d96e32/www.rockthetreatment.com/wp-content/uploads/2025/04/YOU-ROCK-Worry-Stone-Package.png" alt="Worry Stone">
+        <div class="uname">YOU ROCK! Worry Stone</div>
+      </div>
+      <div class="upsell-card">
+        <img src="https://cdn-aidbo.nitrocdn.com/DPyFKgPXzaaaSqAmCcbtAPNJPtyXQoqz/assets/images/optimized/rev-8d96e32/www.rockthetreatment.com/wp-content/uploads/2020/02/rock_the_treatment_cozycompanion_plush_2-in-1-blanketpillow_white-bg_thumbnail.webp" alt="Blanket">
+        <div class="uname">Cozy Companion™ Blanket</div>
+      </div>
+      <div class="upsell-card">
+        <img src="https://cdn-aidbo.nitrocdn.com/DPyFKgPXzaaaSqAmCcbtAPNJPtyXQoqz/assets/images/optimized/rev-8d96e32/www.rockthetreatment.com/wp-content/uploads/2024/01/belt-and-shower.jpg" alt="Belt">
+        <div class="uname">Post Surgical Drain Belt</div>
+      </div>
+      <div class="upsell-card">
+        <img src="https://cdn-aidbo.nitrocdn.com/DPyFKgPXzaaaSqAmCcbtAPNJPtyXQoqz/assets/images/optimized/rev-8d96e32/www.rockthetreatment.com/wp-content/uploads/2024/01/mast-pill-fronticepacks-1.jpg" alt="Pillow">
+        <div class="uname">Mastectomy Pillow</div>
+      </div>
+      <div class="upsell-card">
+        <img src="https://cdn-aidbo.nitrocdn.com/DPyFKgPXzaaaSqAmCcbtAPNJPtyXQoqz/assets/images/optimized/rev-8d96e32/www.rockthetreatment.com/wp-content/uploads/2020/07/Copy-of-tote-standing-1.jpg" alt="Tote">
+        <div class="uname">Reusable Folding Tote</div>
+      </div>
+      <div class="upsell-card">
+        <img src="https://cdn-aidbo.nitrocdn.com/DPyFKgPXzaaaSqAmCcbtAPNJPtyXQoqz/assets/images/optimized/rev-8d96e32/www.rockthetreatment.com/wp-content/uploads/2018/04/beanie-1000-copy.jpg" alt="Beanie">
+        <div class="uname">Knit Beanie</div>
+      </div>
+      <div class="upsell-card">
+        <img src="https://cdn-aidbo.nitrocdn.com/DPyFKgPXzaaaSqAmCcbtAPNJPtyXQoqz/assets/images/optimized/rev-8d96e32/www.rockthetreatment.com/wp-content/uploads/2023/08/nausea-wrist-1.jpg" alt="Wristband">
+        <div class="uname">Anti-Nausea Wristband</div>
+      </div>
+      <div class="upsell-card">
+        <img src="https://cdn-aidbo.nitrocdn.com/DPyFKgPXzaaaSqAmCcbtAPNJPtyXQoqz/assets/images/optimized/rev-8d96e32/www.rockthetreatment.com/wp-content/uploads/2020/07/Copy-of-bracelets.jpg" alt="Bracelets">
+        <div class="uname">#ROCKtheTREATMENT Wristband</div>
+      </div>
+      <div class="upsell-card">
+        <img src="https://cdn-aidbo.nitrocdn.com/DPyFKgPXzaaaSqAmCcbtAPNJPtyXQoqz/assets/images/optimized/rev-8d96e32/www.rockthetreatment.com/wp-content/uploads/2023/07/Copy-of-Bell-w-Big-Champ-no-box-transformed.jpg" alt="Bell Deluxe">
+        <div class="uname">Deluxe Celebration Gift</div>
+      </div>
+      <div class="upsell-card">
+        <img src="https://cdn-aidbo.nitrocdn.com/DPyFKgPXzaaaSqAmCcbtAPNJPtyXQoqz/assets/images/optimized/rev-8d96e32/www.rockthetreatment.com/wp-content/uploads/2023/06/Copy-of-free-bell-w-box-1-1.jpg" alt="Bell">
+        <div class="uname">Celebration Gift (Free)</div>
+      </div>
+      <div class="upsell-card">
+        <img src="https://cdn-aidbo.nitrocdn.com/DPyFKgPXzaaaSqAmCcbtAPNJPtyXQoqz/assets/images/optimized/rev-8d96e32/www.rockthetreatment.com/wp-content/uploads/2025/04/Rock-the-Treatment-Warmies-Soft-Plush-Stuffed-Animals-1.gif" alt="Warmies">
+        <div class="uname">Warmies® Plush Animal</div>
+      </div>
+      <div class="upsell-card">
+        <img src="https://cdn-aidbo.nitrocdn.com/DPyFKgPXzaaaSqAmCcbtAPNJPtyXQoqz/assets/images/optimized/rev-8d96e32/www.rockthetreatment.com/wp-content/uploads/2020/07/Copy-of-RTT-can-no-filter-green_2.jpg" alt="Empower">
+        <div class="uname">Empower Kit</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- REVIEWS -->
+  <div class="reviews-section">
+    <div class="section-title">Our Fan Club</div>
+    <div class="review-summary">
+      <div class="big-rating">5.0</div>
+      <div class="stars-big">★★★★★</div>
+      <div class="count">Based on 254 Reviews</div>
+    </div>
+    <div class="star-bars">
+      <div class="star-bar"><span>5 ★</span><div class="bar"><div class="bar-fill" style="width:98%"></div></div><span>249</span></div>
+      <div class="star-bar"><span>4 ★</span><div class="bar"><div class="bar-fill" style="width:1.2%"></div></div><span>3</span></div>
+      <div class="star-bar"><span>3 ★</span><div class="bar"><div class="bar-fill" style="width:0.4%"></div></div><span>1</span></div>
+      <div class="star-bar"><span>2 ★</span><div class="bar"><div class="bar-fill" style="width:0.4%"></div></div><span>1</span></div>
+      <div class="star-bar"><span>1 ★</span><div class="bar"><div class="bar-fill" style="width:0%"></div></div><span>0</span></div>
+    </div>
+    <div class="review-tabs">
+      <div class="review-tab active">Reviews (254)</div>
+      <div class="review-tab">Questions (4)</div>
+    </div>
+    
+    <div class="review-card">
+      <div class="r-date">02/15/2026</div>
+      <div class="stars">★★★★★</div>
+      <div class="r-title">Stacey is an angel.</div>
+      <div class="r-text">Stacey helped to expedite the Large Women's Chemo Care Package to my daughter to be ontime for her treatment. My daughter was overwhelmed by the obvious care and personal touches in the package.</div>
+      <div class="r-author">— Gary W. · Verified Buyer</div>
+      <div class="review-reply">
+        <strong>Rock The Treatment</strong><br>
+        Gary, You are so kind. We're honored we could help get the package there in time. Wishing her continued strength and healing.
+      </div>
+    </div>
+    
+    <div class="review-card">
+      <div class="r-date">02/13/2026</div>
+      <div class="stars">★★★★★</div>
+      <div class="r-title">Such a thoughtful company and gift</div>
+      <div class="r-text">Amazing! I was blessed to stumble upon this site as I was searching for the "perfect something" to get for a family member going through a horrific time. Amazing customer service. Amazing shipping.</div>
+      <div class="r-author">— Brooke S. · Verified Buyer</div>
+      <div class="review-reply">
+        <strong>Rock The Treatment</strong><br>
+        Thank you so much for your incredibly kind words. We're deeply honored to support your family during such a difficult time.
+      </div>
+    </div>
+    
+    <div class="review-card">
+      <div class="r-date">12/11/2025</div>
+      <div class="stars">★★★★★</div>
+      <div class="r-title">Rock the Treatment</div>
+      <div class="r-text">I couldn't be happier with my purchase. She was absolutely blown away and thrilled. Said she felt so taken care of. This is by far the best gift basket for Chemo patients I've come across.</div>
+      <div class="r-author">— Kerry M. · Verified Buyer</div>
+    </div>
+    
+    <div style="text-align:center; padding:12px;">
+      <a style="font-size:13px; color:var(--orange); font-weight:600; text-decoration:none; cursor:pointer;">Load more reviews ↓</a>
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <div class="footer">
+    <div class="footer-brand">Rock The Treatment</div>
+    <div style="font-size:12px;">516-690-7009 · info@rockthetreatment.com</div>
+    <div style="font-size:11px; margin-top:4px;">325 Marcus Blvd Suite A, Deer Park, NY 11729</div>
+    <div class="footer-socials">
+      <span>📘</span><span>📷</span><span>🐦</span><span>🎵</span><span>📌</span><span>▶️</span>
+    </div>
+    <div class="footer-grid">
+      <div class="footer-col">
+        <h4>Support</h4>
+        <a>Shipping & Returns</a>
+        <a>FAQs</a>
+        <a>Gift Card Suggestions</a>
+        <a>Contact Us</a>
+        <a>Find us on Google</a>
+      </div>
+      <div class="footer-col">
+        <h4>Shop</h4>
+        <a>Care Packages</a>
+        <a>About</a>
+        <a>Blog</a>
+        <a>Donate</a>
+      </div>
+    </div>
+    <div class="footer-subscribe">
+      <h4>Subscribe</h4>
+      <div class="sub-row">
+        <input placeholder="Your email">
+        <button>Send</button>
+      </div>
+      <div style="font-size:10px; color:#666; margin-top:6px;">Don't worry, we don't like spam either</div>
+    </div>
+    <div class="footer-bottom">
+      <div>Terms · Privacy Policy · Sitemap</div>
+      <div style="margin-top:4px;">Copyright 2025 © ROCK the TREATMENT™</div>
+    </div>
+  </div>
+
+</div>
+
+</body>
+</html>
