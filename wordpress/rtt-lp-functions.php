@@ -148,7 +148,7 @@ function rtt_lp_save_product_id( $post_id ) {
  * ────────────────────────────────────────────── */
 add_filter( 'woocommerce_add_to_cart_fragments', 'rtt_lp_cart_count_fragment' );
 function rtt_lp_cart_count_fragment( $fragments ) {
-    $count = WC()->cart->get_cart_contents_count();
+    $count = ( WC()->cart ) ? WC()->cart->get_cart_contents_count() : 0;
     $fragments['.rtt-cart-count'] = '<span class="rtt-cart-count">' . esc_html( $count ) . '</span>';
     return $fragments;
 }

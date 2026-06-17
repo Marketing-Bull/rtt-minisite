@@ -478,7 +478,7 @@ a{text-decoration:none;color:inherit}
 
 <script>
 (function($){
-  if (typeof $ === 'undefined') return;
+  if (typeof $ !== 'function') return;
 
   // Sync quantity input with the data-quantity attribute
   var qtyInput = document.getElementById('rttQty');
@@ -516,7 +516,7 @@ a{text-decoration:none;color:inherit}
     $(this).addClass('loading');
   });
 
-})(jQuery);
+})(window.jQuery);
 </script>
 
 <!-- Gallery Swipe + FAQ Accordion -->
