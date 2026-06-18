@@ -30,6 +30,64 @@ function escHtml(s) {
   return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
 }
 
+// ---- Responsive image helpers (AVIF/WebP via <picture>) -------------------
+// Variants are produced offline by tools/optimize-images.js. generate.js only
+// references variant files that actually exist on disk, so a missing source
+// (or a not-yet-optimized asset) degrades gracefully to a plain <img>.
+const LOCAL_PREFIX = '/assets/uploads/';
+
+function diskPath(url) {
+  return path.join(outDir, url.replace(/^\//, ''));
+}
+
+// For a local asset URL, return {ext, avif, webp, fallback}; null for non-local
+// srcs (data: URIs, external URLs). Only includes variant URLs whose files exist.
+function variants(url) {
+  if (!url || !url.startsWith(LOCAL_PREFIX)) return null;
+  const ext = path.extname(url).toLowerCase();
+  const base = url.slice(0, -ext.length);
+  const avifU = base + '.avif';
+  const webpU = base + '.webp';
+  // The animated GIF is converted to an animated .webp + a still .jpg fallback.
+  const fallbackU = ext === '.gif' ? base + '-still.jpg' : url;
+  const has = u => fs.existsSync(diskPath(u));
+  return {
+    ext,
+    avif: has(avifU) ? avifU : '',
+    // Don't duplicate a webp <source> when the fallback itself is a .webp.
+    webp: (ext !== '.webp' && has(webpU)) ? webpU : '',
+    fallback: has(fallbackU) ? fallbackU : url,
+  };
+}
+
+function imgTag(src, o = {}) {
+  const a = [];
+  if (o.id) a.push(`id="${o.id}"`);
+  if (o.cls) a.push(`class="${o.cls}"`);
+  a.push(`src="${src}"`);
+  a.push(`alt="${escHtml(o.alt || '')}"`);
+  if (o.width) a.push(`width="${o.width}"`);
+  if (o.height) a.push(`height="${o.height}"`);
+  if (o.priority) a.push('fetchpriority="high"');
+  if (o.lazy !== false) a.push('loading="lazy"');
+  a.push('decoding="async"');
+  if (o.onerror) a.push(`onerror="${o.onerror}"`);
+  if (o.extra) a.push(o.extra);
+  return `<img ${a.join(' ')}>`;
+}
+
+// <picture> with AVIF/WebP sources + original (or GIF still) <img> fallback.
+// Pass avifId/webpId to tag the <source>s so JS can swap them (swipe gallery).
+function picture(url, o = {}) {
+  const v = variants(url);
+  if (!v) return imgTag(url, o);
+  const sources = [];
+  if (v.avif) sources.push(`<source ${o.avifId ? `id="${o.avifId}" ` : ''}type="image/avif" srcset="${v.avif}">`);
+  if (v.webp) sources.push(`<source ${o.webpId ? `id="${o.webpId}" ` : ''}type="image/webp" srcset="${v.webp}">`);
+  if (!sources.length) return imgTag(v.fallback, o);
+  return `<picture>${sources.join('')}${imgTag(v.fallback, o)}</picture>`;
+}
+
 function slugToFile(url) {
   // convert /womens-large-chemo-basket/ -> womens-large-chemo-basket
   const s = url.replace(/^\//, '').replace(/\/$/, '');
@@ -50,6 +108,16 @@ function generatePage(product) {
   const cartUrl = `${wwwBase}/?add-to-cart=${product.id}`;
   const freeShipping = parseFloat(product.price.replace('$','')) >= 100;
   const heroUrl = img(product.heroImage);
+  // Preload the smallest hero variant the browser can use (AVIF if present).
+  const heroV = variants(heroUrl);
+  const heroPreloadHref = heroV && heroV.avif ? heroV.avif : heroUrl;
+  const heroPreloadType = heroV && heroV.avif ? ' type="image/avif"' : '';
+  // Per-gallery-image variant URLs, consumed by the swipe-gallery JS below.
+  const galleryVariants = product.galleryImages.map(gi => {
+    const u = img(gi);
+    const v = variants(u);
+    return { a: v ? v.avif : '', w: v ? v.webp : '', f: v ? v.fallback : u };
+  });
 
   return `<!DOCTYPE html>
 <html lang="en">
@@ -70,13 +138,14 @@ function generatePage(product) {
 <meta property="product:price:currency" content="USD">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="preload" as="image" href="${heroUrl}" fetchpriority="high">
+<link rel="preload" as="image" href="${heroPreloadHref}"${heroPreloadType} fetchpriority="high">
 <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
 :root{--green:#5ba346;--green-dark:#4a8a38;--orange:#ff6319;--orange-dark:#e55a15;--text:#1a1a1a;--text-light:#555;--text-muted:#888;--bg:#fff;--bg-alt:#fafafa;--bg-warm:#fff8f0;--border:#eee;--serif:'DM Serif Display',Georgia,serif;--sans:'Inter',system-ui,sans-serif}
 *{margin:0;padding:0;box-sizing:border-box}
 body{font-family:var(--sans);background:#fff;color:var(--text)}
 a{text-decoration:none;color:inherit}
+picture{display:contents}
 
 .page-wrapper{max-width:480px;margin:0 auto;background:#fff}
 @media(min-width:481px){.page-wrapper{box-shadow:0 0 40px rgba(0,0,0,.08)}}
@@ -224,7 +293,7 @@ a{text-decoration:none;color:inherit}
     </div>
   </div>
   <div class="header">
-    <a href="https://www.rockthetreatment.com"><img src="${logo}" alt="Rock The Treatment"></a>
+    <a href="https://www.rockthetreatment.com">${picture(logo, { alt: 'Rock The Treatment', lazy: false })}</a>
   </div>
   <div class="nav">
     <a href="https://www.rockthetreatment.com/shop/">Shop</a>
@@ -241,11 +310,11 @@ a{text-decoration:none;color:inherit}
 
   <!-- PRODUCT GALLERY (swipeable) -->
   <div class="gallery-wrap" id="galleryWrap">
-    <img class="gallery-main" id="mainImg" src="${heroUrl}" alt="${escHtml(product.title)}" fetchpriority="high">
+    ${picture(heroUrl, { id: 'mainImg', cls: 'gallery-main', alt: product.title, priority: true, lazy: false, avifId: 'mainSrcAvif', webpId: 'mainSrcWebp' })}
     <span class="gallery-swipe-hint" id="swipeHint">← swipe →</span>
   </div>
   <div class="gallery-thumbs" id="galleryThumbs">
-${product.galleryImages.map((gi, i) => `    <img src="${img(gi)}" alt="${escHtml(product.title)}" class="${i === 0 ? 'active' : ''}" data-index="${i}">`).join('\n')}
+${product.galleryImages.map((gi, i) => '    ' + picture(img(gi), { alt: product.title, cls: i === 0 ? 'active' : '', lazy: false, extra: `data-index="${i}"` })).join('\n')}
   </div>
 
   <!-- PRODUCT INFO -->
@@ -271,7 +340,7 @@ ${product.galleryImages.map((gi, i) => `    <img src="${img(gi)}" alt="${escHtml
 
     <!-- FREE GIFT CALLOUT -->
     <div class="free-gift-callout">
-      <img src="${bellImg}" alt="Celebration Bell" loading="lazy" decoding="async" width="50" height="50">
+      ${picture(bellImg, { alt: 'Celebration Bell', width: 50, height: 50 })}
       <div class="text">
         <strong>FREE bonus!</strong> Every purchase includes an End of Treatment Celebration Gift — order separately at no charge.
       </div>
@@ -298,7 +367,7 @@ ${product.relatedProducts.map(rp => {
   const rpMatch = products.find(p => p.slug === rpSlug);
   const rpHref = rpMatch ? `./${rpSlug}.html` : `https://www.rockthetreatment.com${rp.url}`;
   return `      <a href="${rpHref}" class="related-card">
-        <img src="${img(rp.image)}" alt="${escHtml(rp.name)}" loading="lazy" decoding="async" onerror="this.closest('.related-card,.upsell-card')?.remove()">
+        ${picture(img(rp.image), { alt: rp.name, onerror: "this.closest('.related-card,.upsell-card')?.remove()" })}
         <div class="info">
           <div class="name">${escHtml(rp.name)}</div>
           <div class="price">${rp.price}</div>
@@ -325,7 +394,7 @@ ${product.relatedProducts.map(rp => {
   <!-- PRODUCT BREAKDOWN -->
 ${product.categories.map(cat => `  <div class="category-header"><h3>${escHtml(cat.name)}</h3></div>
 ${cat.items.map(item => `  <div class="item-card">
-    <img src="${itemImg(item.name)}" alt="${escHtml(item.name)}" loading="lazy" decoding="async" width="70" height="70">
+    ${picture(itemImg(item.name), { alt: item.name, width: 70, height: 70 })}
     <div class="item-info">
       <div class="item-name">${escHtml(item.name)}</div>
       <div class="item-desc">${escHtml(item.desc)}</div>
@@ -363,7 +432,7 @@ ${faqList.map((q, i) => {
     <div class="section-title" style="font-family:var(--serif);font-size:20px;margin-bottom:14px;">Add even more support</div>
     <div class="upsell-grid">
 ${upsellProducts.map(up => `      <a href="https://www.rockthetreatment.com${up.url}" class="upsell-card">
-        <img src="${img(up.image)}" alt="${escHtml(up.name)}" loading="lazy" decoding="async" onerror="this.closest('.related-card,.upsell-card')?.remove()">
+        ${picture(img(up.image), { alt: up.name, onerror: "this.closest('.related-card,.upsell-card')?.remove()" })}
         <div class="uname">${escHtml(up.name)}</div>
       </a>`).join('\n')}
     </div>
@@ -450,18 +519,24 @@ ${r.reply ? `      <div class="review-reply"><strong>Rock The Treatment</strong>
   // Gallery swipe + thumb click
   var wrap = document.getElementById('galleryWrap');
   var mainImg = document.getElementById('mainImg');
+  var mainAvif = document.getElementById('mainSrcAvif');
+  var mainWebp = document.getElementById('mainSrcWebp');
   var thumbs = document.querySelectorAll('#galleryThumbs img');
   var hint = document.getElementById('swipeHint');
-  var imgs = [];
-  thumbs.forEach(function(t){ imgs.push(t.src); });
+  // Per-image AVIF/WebP/fallback URLs so format negotiation survives src swaps.
+  var GALLERY = ${JSON.stringify(galleryVariants)};
   var currentIdx = 0;
   var startX = 0, diffX = 0, swiping = false;
 
   function showImg(idx) {
-    if (idx < 0) idx = imgs.length - 1;
-    if (idx >= imgs.length) idx = 0;
+    if (idx < 0) idx = GALLERY.length - 1;
+    if (idx >= GALLERY.length) idx = 0;
     currentIdx = idx;
-    mainImg.src = imgs[idx];
+    var g = GALLERY[idx] || {};
+    // Update the <source> srcsets AND the <img> src so the <picture> re-selects.
+    if (mainAvif) mainAvif.srcset = g.a || '';
+    if (mainWebp) mainWebp.srcset = g.w || '';
+    mainImg.src = g.f || mainImg.src;
     thumbs.forEach(function(t,i){ t.classList.toggle('active', i === idx); });
     if (hint) { hint.style.opacity = '0'; setTimeout(function(){ if(hint.parentNode) hint.parentNode.removeChild(hint); }, 500); }
   }
@@ -540,7 +615,7 @@ ${r.reply ? `      <div class="review-reply"><strong>Rock The Treatment</strong>
 
 function generateIndex() {
   const cards = products.map(p => `    <a class="card" href="./${p.slug}.html">
-      <img src="${img(p.heroImage)}" alt="${escHtml(p.title)}" loading="lazy" decoding="async">
+      ${picture(img(p.heroImage), { alt: p.title })}
       <div class="info"><div class="name">${escHtml(p.title)}</div><div class="price">${p.price}</div></div>
     </a>`).join('\n');
   return `<!DOCTYPE html>
@@ -561,6 +636,7 @@ function generateIndex() {
 *{margin:0;padding:0;box-sizing:border-box}
 body{font-family:var(--sans);background:#fff;color:var(--text)}
 a{text-decoration:none;color:inherit}
+picture{display:contents}
 .wrap{max-width:480px;margin:0 auto}
 .header{text-align:center;padding:16px;border-bottom:1px solid var(--border)}
 .header img{height:38px}
@@ -579,7 +655,7 @@ a{text-decoration:none;color:inherit}
 </head>
 <body>
 <div class="wrap">
-  <div class="header"><a href="${wwwBase}"><img src="${logo}" alt="Rock The Treatment" fetchpriority="high"></a></div>
+  <div class="header"><a href="${wwwBase}">${picture(logo, { alt: 'Rock The Treatment', priority: true, lazy: false })}</a></div>
   <div class="intro">
     <h1>Care Packages</h1>
     <p>Thoughtfully curated comfort for chemo &amp; radiation</p>

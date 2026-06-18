@@ -42,7 +42,7 @@ public/              # ← Cloudflare Pages output directory (built + committed)
   _headers           #   caching + security headers
   assets/uploads/    #   self-hosted product images (downloaded by tools/fetch-images.js)
 design/              # reference design mockups (v4 full, v5 production) — not deployed
-tools/               # fetch-images.js (downloads images) + reference scrapers
+tools/               # fetch-images.js (downloads images), optimize-images.js (AVIF/WebP) + reference scrapers
 wordpress/           # reference WordPress child-theme implementation of the same design
 ```
 
@@ -56,8 +56,12 @@ wordpress/           # reference WordPress child-theme implementation of the sam
   default, `<meta name="robots" content="noindex, follow">` so the mobile mirror doesn't
   compete with the main store in organic search. Flip `ALLOW_INDEXING = true` at the top
   of `generate.js` to make the pages indexable.
-- **Mobile performance:** hero image is preloaded with `fetchpriority="high"`;
-  below-the-fold images use `loading="lazy"` + `decoding="async"`; fonts are preconnected.
+- **Mobile performance:** every image is served as **AVIF/WebP via `<picture>`** with the
+  original as a fallback (generated offline by `npm run optimize`). The hero is preloaded as
+  AVIF with `fetchpriority="high"`; below-the-fold images use `loading="lazy"` +
+  `decoding="async"`; fonts are preconnected. The Warmies upsell GIF is converted to a small
+  animated WebP (~7.2 MB → ~0.57 MB). `generate.js` only references variant files that exist
+  on disk, so any un-optimized or missing image degrades gracefully to a plain `<img>`.
 - **Add-to-cart** links to `https://www.rockthetreatment.com/?add-to-cart=<id>&quantity=<n>`.
 
 ## Deploy to Cloudflare Pages
@@ -98,17 +102,32 @@ npx serve public         # or: python3 -m http.server 8000 --directory public
 Open a product page in a mobile viewport and check:
 
 - All 5 pages + the hub render; layout is mobile-first (≤480px).
-- Images load (Network tab: canonical `www` URLs return 200; logo + bell load).
-- Gallery thumb-click / swipe / arrow keys change the main image; FAQ accordion toggles;
+- Images load from `/assets/uploads/...` (Network tab: AVIF/WebP served, 200; logo + bell load;
+  no `.gif` request). Missing "Large Men's" related card self-hides.
+- Gallery thumb-click / swipe / arrow keys change the main image (format negotiation preserved);
+  FAQ accordion toggles;
   quantity stepper updates and appends `&quantity=` to the Add-to-Cart link.
 - View source: `rel=canonical` → `www/<slug>/`, `robots noindex,follow`, theme-color,
   hero `rel=preload`, below-the-fold `loading="lazy"`.
 
+## Regenerating images
+
+```
+node tools/fetch-images.js     # (re)download originals from the store (no/empty referer)
+npm run optimize               # generate AVIF + WebP variants; convert the Warmies GIF
+node generate.js               # rebuild the HTML to reference the new variants
+```
+
+`npm run optimize` (which uses `sharp`, a **dev**-only dependency — the runtime build stays
+dependency-free) is idempotent: it skips up-to-date variants and re-converts the GIF only if
+the original is present.
+
 ## Roadmap
 
-- ✅ **Self-hosted images** — 53 images (~12 MB) under `public/assets/uploads/`, fetched via
+- ✅ **Self-hosted images** — originals under `public/assets/uploads/`, fetched via
   `node tools/fetch-images.js`. Removes the hotlink dependency on the main store.
-- **Optimize images** — convert to WebP/AVIF and shrink the ~7 MB animated Warmies upsell GIF
-  (`assets/uploads/2025/04/Rock-the-Treatment-Warmies-...gif`) to cut the mobile payload.
+- ✅ **Optimize images** — AVIF + WebP variants for every image, served via `<picture>` with
+  the original as fallback; the ~7.2 MB animated Warmies upsell GIF is converted to a ~0.57 MB
+  animated WebP (+ still-JPG fallback) and the original removed. Run with `npm run optimize`.
 - 5 source images are missing upstream (redirect to the homepage); 4 are unused and one is the
-  "Large Men's" related card, which now self-hides via an `onerror` fallback.
+  "Large Men's" related card, which self-hides via an `onerror` fallback.
