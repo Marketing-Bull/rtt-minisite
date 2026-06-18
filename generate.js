@@ -143,12 +143,12 @@ function generatePage(product) {
 <style>
 :root{--green:#5ba346;--green-dark:#4a8a38;--orange:#ff6319;--orange-dark:#e55a15;--text:#1a1a1a;--text-light:#555;--text-muted:#888;--bg:#fff;--bg-alt:#fafafa;--bg-warm:#fff8f0;--border:#eee;--serif:'DM Serif Display',Georgia,serif;--sans:'Inter',system-ui,sans-serif}
 *{margin:0;padding:0;box-sizing:border-box}
-body{font-family:var(--sans);background:#fff;color:var(--text)}
+body{font-family:var(--sans);background:#f4f4f4;color:var(--text)}
 a{text-decoration:none;color:inherit}
 picture{display:contents}
 
 .page-wrapper{max-width:480px;margin:0 auto;background:#fff}
-@media(min-width:481px){.page-wrapper{box-shadow:0 0 40px rgba(0,0,0,.08)}}
+@media(min-width:481px){.page-wrapper{box-shadow:0 4px 24px rgba(0,0,0,.12)}}
 
 .topbar{background:var(--green);padding:8px 16px;display:flex;justify-content:space-between;align-items:center;color:#fff;font-size:14px}
 .topbar .icons{display:flex;gap:16px}
@@ -649,10 +649,10 @@ function generateIndex() {
 <style>
 :root{--green:#5ba346;--orange:#ff6319;--text:#1a1a1a;--border:#eee;--serif:'DM Serif Display',Georgia,serif;--sans:'Inter',system-ui,sans-serif}
 *{margin:0;padding:0;box-sizing:border-box}
-body{font-family:var(--sans);background:#fff;color:var(--text)}
+body{font-family:var(--sans);background:#f4f4f4;color:var(--text)}
 a{text-decoration:none;color:inherit}
 picture{display:contents}
-.wrap{max-width:480px;margin:0 auto}
+.wrap{max-width:480px;margin:0 auto;background:#fff}
 .header{text-align:center;padding:16px;border-bottom:1px solid var(--border)}
 .header img{height:38px}
 .intro{padding:20px 16px 8px;text-align:center}
