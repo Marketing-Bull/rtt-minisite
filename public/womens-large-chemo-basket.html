@@ -31,10 +31,13 @@ picture{display:contents}
 
 .topbar{background:var(--green);padding:8px 16px;display:flex;justify-content:space-between;align-items:center;color:#fff;font-size:14px}
 .topbar .icons{display:flex;gap:16px}
+.topbar .menu-btn{background:none;border:none;color:#fff;font-size:20px;cursor:pointer;padding:0;line-height:1;display:flex;align-items:center}
+.ham-menu{display:none;background:var(--green);flex-direction:column;border-top:1px solid rgba(255,255,255,.2)}
+.ham-menu.open{display:flex}
+.ham-menu a{color:#fff;text-decoration:none;padding:14px 20px;font-size:15px;font-weight:500;border-bottom:1px solid rgba(255,255,255,.15)}
+.ham-menu a:last-child{border-bottom:none}
 .header{text-align:center;padding:12px 16px;border-bottom:1px solid var(--border)}
 .header img{height:36px}
-.nav{display:flex;justify-content:center;gap:18px;padding:10px 16px;border-bottom:1px solid var(--border);font-size:13px;font-weight:500;color:#333}
-.nav a{color:#333}
 
 .social-proof-banner{background:var(--bg-warm);padding:10px 16px;text-align:center;font-size:12px;font-weight:500;color:var(--text-light);border-bottom:1px solid #ffe0b2}
 .social-proof-banner strong{color:var(--text)}
@@ -164,22 +167,20 @@ picture{display:contents}
 
   <!-- HEADER -->
   <div class="topbar">
-    <a href="https://www.rockthetreatment.com" style="font-size:18px;color:#fff;">☰</a>
+    <button class="menu-btn" id="menuBtn" aria-label="Menu" aria-expanded="false" aria-controls="hamMenu">☰</button>
     <div class="icons">
-      <a href="https://www.rockthetreatment.com" style="color:#fff;">🔍</a>
-      <a href="https://www.rockthetreatment.com/my-account/" style="color:#fff;">👤</a>
       <a href="https://www.rockthetreatment.com/cart/" style="color:#fff;">🛒</a>
     </div>
   </div>
-  <div class="header">
-    <a href="https://www.rockthetreatment.com"><picture><source type="image/avif" srcset="/assets/uploads/2023/01/RTT.S1.tm_.new-logo.avif"><source type="image/webp" srcset="/assets/uploads/2023/01/RTT.S1.tm_.new-logo.webp"><img src="/assets/uploads/2023/01/RTT.S1.tm_.new-logo.png" alt="Rock The Treatment" decoding="async"></picture></a>
-  </div>
-  <div class="nav">
+  <div class="ham-menu" id="hamMenu" role="navigation" aria-label="Site navigation">
     <a href="https://www.rockthetreatment.com/shop/">Shop</a>
     <a href="https://www.rockthetreatment.com/about/">About</a>
     <a href="https://www.rockthetreatment.com/info/">Info</a>
     <a href="https://www.rockthetreatment.com/blog/">Blog</a>
     <a href="https://www.rockthetreatment.com/contact/">Contact</a>
+  </div>
+  <div class="header">
+    <a href="https://www.rockthetreatment.com"><picture><source type="image/avif" srcset="/assets/uploads/2023/01/RTT.S1.tm_.new-logo.avif"><source type="image/webp" srcset="/assets/uploads/2023/01/RTT.S1.tm_.new-logo.webp"><img src="/assets/uploads/2023/01/RTT.S1.tm_.new-logo.png" alt="Rock The Treatment" decoding="async"></picture></a>
   </div>
 
   <!-- SOCIAL PROOF BANNER -->
@@ -667,6 +668,20 @@ picture{display:contents}
     if (e.key === 'ArrowLeft') showImg(currentIdx - 1);
     if (e.key === 'ArrowRight') showImg(currentIdx + 1);
   });
+
+  // Hamburger menu toggle
+  var menuBtn = document.getElementById('menuBtn');
+  var hamMenu = document.getElementById('hamMenu');
+  if (menuBtn && hamMenu) {
+    menuBtn.addEventListener('click', function(){
+      var open = hamMenu.classList.toggle('open');
+      menuBtn.setAttribute('aria-expanded', open ? 'true' : 'false');
+    });
+    // Close when a nav link is tapped
+    hamMenu.querySelectorAll('a').forEach(function(a){
+      a.addEventListener('click', function(){ hamMenu.classList.remove('open'); menuBtn.setAttribute('aria-expanded','false'); });
+    });
+  }
 
   // Quantity sync with cart URL
   var qtyInput = document.getElementById('qty');
