@@ -19,13 +19,13 @@
     "Nut & Dried Fruit Mix": "/2019/07/nuts.jpg",
     "Dark Chocolate Covered Berries": "/2023/04/Copy-of-Drk-Choc-and-Berries.jpeg",
     "Peanut Butter Sandwich Crackers": "/2019/05/peanut-butter-crackers-crop.jpg",
-    "Adult Coloring Book Set": "/2018/04/Copy-of-distractivities.jpg",
-    "Custom Designed Note Cards": "/2020/07/Copy-of-note-cards-w-env.jpg",
-    "Cancer Health Organizer": "/2021/07/Cancer-Organizer-Card-with-QRcardwhite.jpg",
+    "Adult Coloring Book Set": "/2018/04/coloring-books-sharpener.jpg",
+    "Custom Designed Note Cards": "/2019/07/note-cards.jpg",
+    "Cancer Health Organizer": "/2023/03/Cancer-Organizer-Card-with-QR.jpg",
     "Jelly Belly Cocktails": "/2019/05/jelly-belly-cocktail-crop.jpg",
     "Puzzle Book": "/2023/04/Puzzle-Book.jpg",
     "Brain Teaser Puzzle": "/2023/04/Puzzle-Book.jpg",
-    "Puzzles & Brain Teasers": "/2023/04/Puzzle-Book.jpg",
+    "Puzzles & Brain Teasers": "/2019/05/puzzles-crop.jpg",
     "Mio Water Enhancer": "/2019/07/Mio.jpg",
     "Aloe Vera Skin Gel": "/2019/05/aloe-gel.jpg",
     "Calendula Cream": "/2019/05/calendula-cream.jpg",
@@ -65,55 +65,92 @@
       "slug": "womens-large-chemo-basket",
       "title": "Large Women's Chemo Care Package",
       "metaTitle": "Chemo Care Package for Women | Large",
-      "price": "$159.99",
+      "price": "$169.99",
       "totalSales": 9178,
-      "reviewCount": 254,
+      "reviewCount": 259,
+      "rating": 5,
+      "companyPackagesSent": 45000,
       "heroImage": "/2018/04/Women-Large-Chemo-Basket-Main.jpg",
+      "mobileUi": {
+        "croMaster": true,
+        "announcement": "FREE SHIPPING ON ORDERS OVER $200",
+        "darkHeader": true,
+        "galleryImages": [
+          "/2018/04/Women-Large-Chemo-Basket-Main.jpg",
+          "/2018/04/Womens-Chemo-Large-Animation-Opt.gif",
+          "/2018/04/Womens_Chemo_Product-Tiles_dry-mouth.jpg",
+          "/2018/04/Womens_Chemo_Product-Tiles_nausea.jpg",
+          "/2018/04/Womens_Chemo_Product-Tiles_engaging-mind.jpg"
+        ],
+        "celebrationImage": "/2023/06/Copy-of-free-bell-w-box-1-1.jpg",
+        "eyebrow": "Thoughtfully chosen. Ready to send.",
+        "supportingHeadline": "Give her comfort she can use—and support she can feel.",
+        "brandStoryTitle": "Thoughtful support, without the guesswork",
+        "brandStoryCopy": "Rock The Treatment was created to make it easier to help someone through treatment. This package brings useful essentials and uplifting comforts together in one bright, gift-ready box.",
+        "finalHeadline": "Send something thoughtful, useful, and ready to give.",
+        "featuredItems": [
+          { "name": "Lindi Skin Face Serum", "desc": "A light, non-greasy travel-size serum for a simple skin-care routine." },
+          { "name": "Hot & Cold Eye Pillow", "desc": "A silky, scented pillow that can be warmed or chilled for personal comfort." },
+          { "name": "Soft & Cozy Socks", "desc": "A soft layer of warmth for long days and cool rooms. Styles vary." },
+          { "name": "RTT Chemo Beanie", "desc": "A soft cotton-blend knit cap embroidered with #RockTheTreatment." },
+          { "name": "Cancer Health Organizer", "desc": "One place to record appointments, medicines, questions, and reminders." },
+          { "name": "Adult Coloring Book Set", "desc": "A coloring activity with pencils and a sharpener for quiet, screen-free time." }
+        ],
+        "benefitGroups": [
+          { "label": "Everyday comfort", "title": "Soft, useful essentials", "desc": "Warm socks, a knit beanie, and a hot-and-cold eye pillow bring familiar comfort to demanding days." },
+          { "label": "Personal care", "title": "A gentler routine", "desc": "Travel-size skin care, lip balm, lozenges, tea, and mints make small comforts easy to keep nearby." },
+          { "label": "Quiet moments", "title": "Ways to pass the time", "desc": "Coloring, puzzles, note cards, and brain teasers offer simple, screen-free activities." },
+          { "label": "Staying organized", "title": "Practical support, too", "desc": "A health organizer helps keep appointments, medicines, questions, and reminders together." }
+        ],
+        "featuredReviewIndex": 2,
+        "celebrationLabel": "Looking for an end-of-treatment gift? Explore the Celebration Bell.",
+        "celebrationUrl": "https://www.rockthetreatment.com/bell/"
+      },
       "galleryImages": [
         "/2018/04/Women-Large-Chemo-Basket-Main.jpg",
         "/2018/04/Womens_Chemo_Product-Tiles_dry-mouth.jpg",
         "/2018/04/Womens_Chemo_Product-Tiles_nausea.jpg",
         "/2018/04/Womens_Chemo_Product-Tiles_engaging-mind.jpg"
       ],
-      "description": "Lovingly packed with <strong>over 20 high quality products</strong> for comfort, relief, and relaxation. From soothing skin care to engaging puzzles — everything she needs to look and feel her best during chemo.",
-      "shortDesc": "The large chemo care package for women is lovingly packed with over 20 high quality useful products to enhance physical and mental well-being during treatment.",
+      "description": "Lovingly packed with personal care, cozy essentials, familiar snacks, and quiet activities chosen to offer everyday comfort. It arrives ready to give, with a free personal gift note available at checkout.",
+      "shortDesc": "A thoughtfully packed collection of personal care, cozy essentials, snacks, and quiet activities for someone going through chemotherapy.",
       "itemCount": "20+",
       "categories": [
         {
-          "name": "For Dry Mouth, Lips & Skin",
+          "name": "Skin, Lips & Sips",
           "items": [
-            { "name": "Lindi Skin Face Serum", "desc": "Renew and replenish skin with this light, non-greasy serum aimed at reducing redness, irritation, itching and rash. (travel size)" },
-            { "name": "Lindi Skin Body Lotion", "desc": "Nourish your skin with this light, clean body lotion containing Vitamins C & E, chamomile and cucumber for maximum comfort. (travel size)" },
-            { "name": "Dionis Goat Milk Lip Balm", "desc": "Repair chapped lips with paraben free beeswax lip balms infused with goat milk, shea butter and coconut oil. Twice the standard size." },
-            { "name": "Dionis Goat Milk Skin Cream", "desc": "Rich, creamy unscented goat milk cream. pH similar to human skin — naturally full of vitamins. (3.3 oz)" },
-            { "name": "Dry Mouth Lozenges", "desc": "All-natural, sugar free lozenges — #1 Doctor recommended for dry mouth. Dairy free, Gluten free, Nut free, Kosher." },
-            { "name": "Peppermint Drops", "desc": "Ease nausea, headaches and dry mouth with real peppermint oil mints. Individually wrapped. Dairy free, Gluten free, Kosher." },
-            { "name": "Herbal Tea", "desc": "Rich in polyphenols — natural compounds that reduce inflammation and help fight cancer. Peppermint eases headaches and digestive issues." }
+            { "name": "Lindi Skin Face Serum", "desc": "Light, non-greasy face serum in a convenient travel size." },
+            { "name": "Lindi Skin Body Lotion", "desc": "Light body lotion with Vitamins C and E, chamomile, and cucumber. Travel size." },
+            { "name": "Dionis Goat Milk Lip Balm", "desc": "Beeswax lip balm with goat milk, shea butter, and coconut oil." },
+            { "name": "Dionis Goat Milk Skin Cream", "desc": "Rich, unscented goat milk skin cream in a 3.3 oz tube." },
+            { "name": "Dry Mouth Lozenges", "desc": "Sugar-free lozenges. Dairy free, gluten free, nut free, and kosher." },
+            { "name": "Peppermint Drops", "desc": "Individually wrapped mints made with real peppermint oil. Dairy free, gluten free, and kosher." },
+            { "name": "Herbal Tea", "desc": "A comforting cup of herbal tea for a quiet break." }
           ]
         },
         {
-          "name": "For Nausea, Comfort & Energy",
+          "name": "Warmth, Snacks & Comfort",
           "items": [
-            { "name": "Hot & Cold Eye Pillow", "desc": "Silky aromatherapy pillow — microwavable for heat, freezable for cold. Peppermint and eucalyptus scent eases nausea and headaches." },
-            { "name": "Soft & Cozy Socks", "desc": "Warm up during chemotherapy since centers are often chilly. Like a hug for your feet. (styles vary)" },
-            { "name": "RTT Chemo Beanie", "desc": "Soft knit beanie embroidered with #RockTheTreatment. Cotton/poly blend for breathable comfort. (colors vary)" },
-            { "name": "Queasy Pops", "desc": "Drug-free drops from all-natural herbs and essential oils. Developed with oncology dietitians. Doctor recommended." },
-            { "name": "Nut & Dried Fruit Mix", "desc": "Heart healthy snack packed with fiber, potassium, antioxidants and proteins. Dairy free, Gluten free, Kosher." },
-            { "name": "Dark Chocolate Covered Berries", "desc": "Pomegranate, blueberries and acai with powerful antioxidants. Gluten free. Kosher. 2 snack packs." },
-            { "name": "Peanut Butter Sandwich Crackers", "desc": "Protein-filled snack that decreases nausea and increases energy. Kosher." }
+            { "name": "Hot & Cold Eye Pillow", "desc": "Silky, peppermint-and-eucalyptus-scented eye pillow that can be warmed or chilled." },
+            { "name": "Soft & Cozy Socks", "desc": "Soft socks for an extra layer of warmth. Styles vary." },
+            { "name": "RTT Chemo Beanie", "desc": "Soft cotton-blend knit beanie embroidered with #RockTheTreatment. Colors vary." },
+            { "name": "Queasy Pops", "desc": "Individually wrapped flavored drops made with herbs and essential oils." },
+            { "name": "Nut & Dried Fruit Mix", "desc": "A convenient mix of nuts and dried fruit. Dairy free, gluten free, and kosher." },
+            { "name": "Dark Chocolate Covered Berries", "desc": "Two snack packs of chocolate-covered pomegranate, blueberries, and acai. Gluten free and kosher." },
+            { "name": "Peanut Butter Sandwich Crackers", "desc": "A familiar peanut-butter cracker snack. Kosher." }
           ]
         },
         {
-          "name": "For Engaging the Mind",
+          "name": "Quiet Activities & Organization",
           "items": [
-            { "name": "Adult Coloring Book Set", "desc": "Calm your brain and help your body relax. Improves sleep, decreases depression and fatigue. Includes colored pencils and sharpener." },
-            { "name": "Puzzles & Brain Teasers", "desc": "Stimulate your brain with crosswords, sudoku or word search. 40-50 puzzles per book. (types vary)" },
-            { "name": "Custom Designed Note Cards", "desc": "Write notes to loved ones. Bring to treatment to use the time productively." },
-            { "name": "Cancer Health Organizer", "desc": "Record and track vital health info — medical history, medicines, appointments, tests, checklists, and reminders." }
+            { "name": "Adult Coloring Book Set", "desc": "A screen-free activity with colored pencils and a sharpener." },
+            { "name": "Puzzles & Brain Teasers", "desc": "A crossword, sudoku, or word-search book with 40–50 puzzles. Types vary." },
+            { "name": "Custom Designed Note Cards", "desc": "A set of note cards for writing to friends and family." },
+            { "name": "Cancer Health Organizer", "desc": "Space to record medical history, medicines, appointments, tests, checklists, and reminders." }
           ]
         },
         {
-          "name": "Just For Fun",
+          "name": "Something Cheerful",
           "items": [
             { "name": "Jelly Belly Cocktails", "desc": "Piña Colada, Strawberry Daiquiri, Cosmo and more — fun without the hangover. Dairy Free, Gluten Free, Kosher." }
           ]

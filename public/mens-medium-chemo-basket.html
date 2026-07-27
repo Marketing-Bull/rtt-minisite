@@ -20,94 +20,129 @@
 <link rel="preload" as="image" href="/assets/uploads/2018/04/Medium-Mens-Chemo-Care-Package-Main.avif" type="image/avif" fetchpriority="high">
 <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
-:root{--green:#5ba346;--green-dark:#4a8a38;--orange:#ff6319;--orange-dark:#e55a15;--text:#1a1a1a;--text-light:#555;--text-muted:#888;--bg:#fff;--bg-alt:#fafafa;--bg-warm:#fff8f0;--border:#eee;--serif:'DM Serif Display',Georgia,serif;--sans:'Inter',system-ui,sans-serif}
+:root{--green:#5ba346;--green-dark:#417c31;--orange:#ff6319;--orange-dark:#de5310;--text:#1f1a17;--text-light:#60564f;--text-muted:#8d8279;--bg:#fffdf9;--bg-alt:#f8f2eb;--bg-soft:#f4ece3;--bg-warm:#fff5e7;--border:#eadfce;--shadow:0 18px 40px rgba(67,39,18,.12);--serif:'DM Serif Display',Georgia,serif;--sans:'Inter',system-ui,sans-serif}
 *{margin:0;padding:0;box-sizing:border-box}
-body{font-family:var(--sans);background:#f4f4f4;color:var(--text)}
+html{scroll-behavior:smooth}
+body{font-family:var(--sans);background:linear-gradient(180deg,#f7efe6 0%,#f3f0eb 18%,#efe8de 100%);color:var(--text);padding:0 0 92px}
 a{text-decoration:none;color:inherit}
 picture{display:contents}
 
-.page-wrapper{max-width:480px;margin:0 auto;background:#fff}
-@media(min-width:481px){.page-wrapper{box-shadow:0 4px 24px rgba(0,0,0,.12)}}
+.page-wrapper{max-width:480px;margin:0 auto;background:var(--bg);min-height:100vh}
+@media(min-width:481px){.page-wrapper{margin:18px auto 110px;border-radius:28px;overflow:hidden;box-shadow:var(--shadow)}}
 
-.topbar{background:var(--green);padding:8px 16px;display:flex;justify-content:space-between;align-items:center;color:#fff;font-size:14px}
+.topbar{background:linear-gradient(135deg,var(--green-dark),var(--green));padding:10px 16px;display:flex;justify-content:space-between;align-items:center;color:#fff;font-size:13px;letter-spacing:.02em}
+.topbar.announcement-bar{justify-content:center;padding:9px 16px;background:linear-gradient(135deg,#ff7a1a,#ff5a14);font-size:12px;font-weight:800;letter-spacing:.06em;text-transform:uppercase}
 .topbar .icons{display:flex;gap:16px}
 .topbar .menu-btn{background:none;border:none;color:#fff;font-size:20px;cursor:pointer;padding:0;line-height:1;display:flex;align-items:center}
 .ham-menu{display:none;background:var(--green);flex-direction:column;border-top:1px solid rgba(255,255,255,.2)}
 .ham-menu.open{display:flex}
 .ham-menu a{color:#fff;text-decoration:none;padding:14px 20px;font-size:15px;font-weight:500;border-bottom:1px solid rgba(255,255,255,.15)}
 .ham-menu a:last-child{border-bottom:none}
-.header{text-align:center;padding:12px 16px;border-bottom:1px solid var(--border)}
-.header img{height:36px}
+.header{text-align:center;padding:16px 16px 14px;border-bottom:1px solid rgba(234,223,206,.7);background:rgba(255,253,249,.92);backdrop-filter:blur(8px)}
+.header img{height:34px}
+.header.header-dark{background:linear-gradient(180deg,#545861,#2e3138);border-bottom:none;padding:16px 16px 14px}
+.header.header-dark img{height:52px;filter:drop-shadow(0 8px 20px rgba(0,0,0,.28))}
 
-.social-proof-banner{background:var(--bg-warm);padding:10px 16px;text-align:center;font-size:12px;font-weight:500;color:var(--text-light);border-bottom:1px solid #ffe0b2}
+.social-proof-banner{background:var(--bg-warm);padding:11px 16px;text-align:center;font-size:12px;font-weight:600;color:var(--text-light);border-bottom:1px solid #f1d9b5}
 .social-proof-banner strong{color:var(--text)}
 
 .gallery-main{width:100%;display:block}
-.gallery-thumbs{display:flex;gap:6px;padding:8px 12px;overflow-x:auto}
-.gallery-thumbs img{width:60px;height:60px;object-fit:cover;border-radius:6px;border:2px solid transparent;cursor:pointer;flex-shrink:0}
+.gallery-thumbs{display:flex;gap:8px;padding:10px 14px 0;overflow-x:auto;background:linear-gradient(180deg,var(--bg-soft),transparent)}
+.gallery-thumbs img{width:64px;height:64px;object-fit:cover;border-radius:16px;border:2px solid transparent;cursor:pointer;flex-shrink:0;box-shadow:0 10px 18px rgba(80,57,37,.1)}
 .gallery-thumbs img.active{border-color:var(--green)}
+.gallery-review-row{display:flex;align-items:center;gap:8px;padding:12px 16px 0;background:linear-gradient(180deg,var(--bg-soft),transparent)}
+.gallery-review-stars{font-size:14px;color:#f59e0b;letter-spacing:.08em}
+.gallery-review-copy{font-size:14px;font-weight:600;color:var(--text)}
 
-.product-info{padding:16px 20px}
-.product-title{font-family:var(--serif);font-size:28px;font-weight:400;line-height:1.2;color:var(--text)}
-.product-price{font-size:26px;font-weight:700;color:var(--text);font-variant-numeric:tabular-nums;margin-top:8px}
-.qty-row{display:flex;align-items:center;gap:8px;margin-top:12px}
-.qty-btn{width:36px;height:36px;border:1px solid #ddd;background:#fff;border-radius:6px;font-size:18px;cursor:pointer;display:flex;align-items:center;justify-content:center}
-.qty-input{width:44px;height:36px;border:1px solid #ddd;text-align:center;font-size:15px;border-radius:6px;font-family:var(--sans)}
+.product-info{padding:18px 20px 22px}
+.eyebrow{display:inline-flex;align-items:center;gap:6px;padding:7px 12px;border-radius:999px;background:var(--bg-soft);color:var(--green-dark);font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase}
+.eyebrow::before{content:'';width:7px;height:7px;border-radius:50%;background:var(--orange)}
+.product-title{font-family:var(--serif);font-size:34px;font-weight:400;line-height:1.05;color:var(--text);margin-top:14px;letter-spacing:-.02em}
+.product-subtitle{font-size:14px;line-height:1.65;color:var(--text-light);margin-top:12px;max-width:34ch}
+.hero-highlights{display:flex;flex-wrap:wrap;gap:8px;margin-top:16px}
+.hero-highlights span{padding:8px 11px;border-radius:999px;background:#fff;border:1px solid var(--border);font-size:11px;font-weight:600;color:var(--text-light)}
+.price-row{display:flex;justify-content:space-between;align-items:flex-end;gap:16px;margin-top:18px}
+.product-price{font-size:30px;font-weight:700;color:var(--text);font-variant-numeric:tabular-nums}
+.price-note{font-size:12px;color:var(--text-muted);text-align:right;line-height:1.4}
+.qty-row{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-top:18px;padding:12px 14px;border:1px solid var(--border);background:#fff;border-radius:18px}
+.qty-label{font-size:12px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--text-muted)}
+.qty-controls{display:flex;align-items:center;gap:8px}
+.qty-btn{width:40px;height:40px;border:1px solid var(--border);background:var(--bg-alt);border-radius:12px;font-size:20px;cursor:pointer;display:flex;align-items:center;justify-content:center;color:var(--text)}
+.qty-input{width:46px;height:40px;border:1px solid var(--border);text-align:center;font-size:15px;border-radius:12px;font-family:var(--sans);background:#fff}
+.cta-stack{margin-top:14px;display:grid;gap:10px}
 
-.btn-cart{display:block;width:100%;padding:16px;border:none;border-radius:8px;font-family:var(--sans);font-weight:700;font-size:16px;background:var(--orange);color:#fff;cursor:pointer;margin-top:14px;text-transform:uppercase;letter-spacing:.03em;box-shadow:0 4px 14px rgba(255,99,25,.35);text-align:center}
+.btn-cart,.sticky-btn{display:flex;align-items:center;justify-content:center;width:100%;padding:16px;border:none;border-radius:16px;font-family:var(--sans);font-weight:800;font-size:15px;background:linear-gradient(135deg,var(--orange),#ff7f3a);color:#fff;cursor:pointer;text-transform:uppercase;letter-spacing:.08em;box-shadow:0 14px 28px rgba(255,99,25,.24);text-align:center}
 .btn-cart:hover{background:var(--orange-dark)}
+.btn-secondary{display:flex;align-items:center;justify-content:center;width:100%;padding:14px 16px;border-radius:16px;border:1px solid var(--border);background:#fff;color:var(--text);font-size:13px;font-weight:700;letter-spacing:.04em;text-transform:uppercase}
 
-.urgency{font-size:12px;font-weight:500;color:var(--green);text-align:center;margin-top:8px}
-.urgency::before{content:'🔥 '}
-.shipping-note{font-size:11px;color:var(--text-muted);margin-top:6px;text-align:center}
-.shipping-note::before{content:'📦 '}
+.urgency{font-size:12px;font-weight:700;color:var(--green-dark);text-align:center;margin-top:2px}
+.shipping-note{font-size:11px;color:var(--text-muted);margin-top:2px;text-align:center}
+.reassurance-row{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:14px}
+.reassurance-card{padding:10px 8px;border-radius:14px;background:var(--bg-alt);border:1px solid var(--border);text-align:center}
+.reassurance-card strong{display:block;font-size:11px;color:var(--text);margin-bottom:3px}
+.reassurance-card span{display:block;font-size:11px;line-height:1.35;color:var(--text-muted)}
 
-.trust-badges{display:flex;justify-content:center;gap:14px;padding:14px 0;margin-top:12px;border-top:1px solid #f0f0f0}
-.trust-badge{font-size:10px;font-weight:600;color:#666;text-align:center;display:flex;flex-direction:column;align-items:center;gap:3px}
-.trust-badge .icon{font-size:20px}
+.trust-badges{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;padding:16px 0 0;margin-top:16px;border-top:1px solid rgba(234,223,206,.85)}
+.trust-badge{font-size:12px;font-weight:600;color:var(--text-light);text-align:left;padding:12px;border-radius:16px;background:#fff;border:1px solid var(--border)}
+.trust-badge .icon{display:block;font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--green-dark);margin-bottom:5px}
 
-.free-gift-callout{background:var(--bg-warm);border:1px solid #ffe0b2;border-radius:8px;padding:12px 14px;margin-top:14px;display:flex;align-items:center;gap:12px}
-.free-gift-callout img{width:50px;height:50px;border-radius:6px;object-fit:cover}
-.free-gift-callout .text{font-size:12px;line-height:1.4;color:#333}
+.free-gift-callout{background:linear-gradient(135deg,var(--bg-warm),#fff);border:1px solid #f2d9b4;border-radius:18px;padding:14px 15px;margin-top:16px;display:flex;align-items:center;gap:12px}
+.free-gift-callout img{width:54px;height:54px;border-radius:14px;object-fit:cover;box-shadow:0 10px 20px rgba(88,64,35,.12)}
+.free-gift-callout .text{font-size:12px;line-height:1.55;color:#5b5046}
 .free-gift-callout .text strong{color:var(--orange)}
+.free-gift-callout.soft{background:rgba(255,245,231,.24);border-color:rgba(242,217,180,.45)}
+.free-gift-callout.soft .text{color:rgba(91,80,70,.78)}
+.free-gift-callout .gift-link{display:inline-block;margin-top:6px;color:var(--green-dark);font-weight:700;text-decoration:underline;text-underline-offset:2px}
 
-.product-desc{font-size:14px;line-height:1.65;color:var(--text-light);margin-top:14px;padding-top:14px;border-top:1px solid var(--border)}
+.product-desc{font-size:14px;line-height:1.7;color:var(--text-light);margin-top:16px;padding:16px;border:1px solid var(--border);border-radius:18px;background:#fff}
 .product-desc strong{color:var(--text)}
 
-.gift-note{margin-top:14px;padding:12px;background:var(--bg-alt);border-radius:8px;border:1px solid var(--border)}
+.gift-note{margin-top:14px;padding:14px;background:var(--bg-alt);border-radius:18px;border:1px solid var(--border)}
 .gift-note label{font-size:13px;font-weight:600;display:block;margin-bottom:6px}
-.gift-note textarea{width:100%;height:60px;border:1px solid #ddd;border-radius:6px;padding:8px;font-family:var(--sans);font-size:13px;resize:none}
+.gift-note textarea{width:100%;height:72px;border:1px solid var(--border);border-radius:14px;padding:10px 12px;font-family:var(--sans);font-size:13px;resize:none;background:#fff}
 
-.related-section{padding:20px 16px;border-top:4px solid var(--border)}
-.section-title{font-family:var(--serif);font-size:20px;margin-bottom:14px}
+.featured-review{margin:0 20px 22px;padding:20px;border-radius:24px;background:linear-gradient(135deg,#fff7ef,#f6ede4);border:1px solid #eed9c0}
+.featured-review .section-kicker,.inside-intro .section-kicker,.related-section .section-kicker,.reviews-section .section-kicker,.faq-section .section-kicker,.upsell-section .section-kicker{font-size:11px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:var(--green-dark)}
+.featured-review blockquote{font-family:var(--serif);font-size:25px;line-height:1.15;color:var(--text);margin-top:10px}
+.featured-review p{font-size:14px;line-height:1.65;color:var(--text-light);margin-top:10px}
+.featured-review .review-credit{margin-top:12px;font-size:12px;font-weight:700;color:var(--text)}
+.featured-review .review-credit span{color:var(--text-muted);font-weight:600}
+
+.inside-intro,.related-section,.faq-section,.upsell-section,.reviews-section{padding:24px 16px 0;border-top:4px solid var(--border)}
+.inside-intro{padding:26px 20px 4px}
+.section-title{font-family:var(--serif);font-size:26px;line-height:1.05;margin-top:10px;margin-bottom:10px;color:var(--text)}
+.section-copy{font-size:14px;line-height:1.65;color:var(--text-light);max-width:36ch}
+.inside-preview-rail{display:flex;gap:12px;padding:10px 20px 2px;overflow-x:auto}
+.inside-preview-card{flex:0 0 120px;padding:10px;border-radius:18px;border:1px solid var(--border);background:#fff;box-shadow:0 10px 22px rgba(64,46,28,.06)}
+.inside-preview-card img{width:100%;height:100px;object-fit:cover;border-radius:14px}
+.inside-preview-card .label{font-size:12px;font-weight:700;line-height:1.35;color:var(--text);margin-top:8px}
 .related-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
-.related-card{border:1px solid var(--border);border-radius:10px;overflow:hidden}
+.related-card{border:1px solid var(--border);border-radius:18px;overflow:hidden;background:#fff;box-shadow:0 10px 22px rgba(64,46,28,.06)}
 .related-card img{width:100%;aspect-ratio:1/1;object-fit:cover}
 .related-card .info{padding:10px}
 .related-card .name{font-size:13px;font-weight:500;line-height:1.3;margin-bottom:6px}
 .related-card .price{font-size:15px;font-weight:700}
 
-.value-props{display:grid;grid-template-columns:1fr 1fr;gap:0;border-top:4px solid var(--border)}
-.value-prop{padding:20px 14px;text-align:center;border-bottom:1px solid var(--border);border-right:1px solid var(--border)}
+.value-props{display:grid;grid-template-columns:1fr 1fr;gap:10px;padding:0 20px 4px}
+.value-prop{padding:18px 14px;text-align:left;border:1px solid var(--border);border-radius:18px;background:#fff}
 .value-prop:nth-child(2n){border-right:none}
-.value-prop .vp-icon{font-size:28px;margin-bottom:6px}
-.value-prop .vp-title{font-family:var(--serif);font-size:14px;margin-bottom:4px}
-.value-prop .vp-desc{font-size:11px;color:var(--text-muted);line-height:1.4}
+.value-prop .vp-icon{font-size:11px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:var(--green-dark);margin-bottom:8px}
+.value-prop .vp-title{font-family:var(--serif);font-size:18px;line-height:1.1;margin-bottom:6px}
+.value-prop .vp-desc{font-size:12px;color:var(--text-muted);line-height:1.5}
 
-.green-banner{background:var(--green);padding:28px 20px;text-align:center;color:#fff}
-.green-banner h3{font-family:var(--serif);font-size:22px;font-weight:400;line-height:1.2}
-.green-banner p{font-size:14px;opacity:.9;margin-top:8px}
+.green-banner{margin:24px 20px 0;padding:28px 20px;border-radius:28px;background:linear-gradient(135deg,var(--green-dark),var(--green));text-align:center;color:#fff;box-shadow:0 18px 36px rgba(62,120,46,.24)}
+.green-banner h3{font-family:var(--serif);font-size:28px;font-weight:400;line-height:1.08}
+.green-banner p{font-size:14px;opacity:.92;margin-top:10px}
 
 .breakdown-section{padding:0}
-.category-header{background:var(--bg-alt);padding:16px 20px;border-top:3px solid var(--green);border-bottom:1px solid var(--border)}
+.category-header{background:var(--bg-alt);padding:18px 20px;border-top:1px solid var(--border);border-bottom:1px solid var(--border);margin-top:18px}
 .category-header h3{font-family:var(--serif);font-size:18px;color:var(--text)}
-.item-card{display:flex;gap:12px;padding:14px 16px;border-bottom:1px solid #f5f5f5}
-.item-card img{width:70px;height:70px;object-fit:cover;border-radius:8px;flex-shrink:0}
+.item-card{display:flex;gap:12px;padding:14px 20px;border-bottom:1px solid #f2ece4}
+.item-card img{width:74px;height:74px;object-fit:cover;border-radius:18px;flex-shrink:0}
 .item-card .item-info{flex:1}
-.item-card .item-name{font-size:14px;font-weight:600;margin-bottom:4px;color:var(--text)}
-.item-card .item-desc{font-size:12px;line-height:1.5;color:var(--text-light);display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
+.item-card .item-name{font-size:14px;font-weight:700;margin-bottom:4px;color:var(--text)}
+.item-card .item-desc{font-size:12px;line-height:1.55;color:var(--text-light);display:-webkit-box;-webkit-line-clamp:4;-webkit-box-orient:vertical;overflow:hidden}
 
-.faq-section{padding:20px 16px;border-top:4px solid var(--border)}
 .faq-item{border-bottom:1px solid var(--border);padding:14px 0;cursor:pointer;user-select:none}
 .faq-item .faq-header{display:flex;justify-content:space-between;align-items:center}
 .faq-item .q{font-size:14px;font-weight:600;flex:1;padding-right:12px}
@@ -118,15 +153,15 @@ picture{display:contents}
 
 .gallery-main{width:100%;display:block;touch-action:pan-y;position:relative;overflow:hidden}
 .gallery-swipe-hint{position:absolute;bottom:8px;right:8px;background:rgba(0,0,0,.5);color:#fff;font-size:10px;padding:3px 8px;border-radius:10px;pointer-events:none;opacity:1;transition:opacity .5s}
-.gallery-wrap{position:relative;overflow:hidden;touch-action:pan-y}
+.gallery-wrap{position:relative;overflow:hidden;touch-action:pan-y;background:linear-gradient(180deg,var(--bg-soft),#fff);padding:0 14px}
 
-.upsell-section{padding:20px 16px;border-top:4px solid var(--border);background:var(--bg-alt)}
+.upsell-section{background:var(--bg-alt);padding-bottom:24px}
 .upsell-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
-.upsell-card{background:#fff;border-radius:8px;overflow:hidden;border:1px solid var(--border);text-align:center}
+.upsell-card{background:#fff;border-radius:16px;overflow:hidden;border:1px solid var(--border);text-align:center}
 .upsell-card img{width:100%;aspect-ratio:1/1;object-fit:cover}
 .upsell-card .uname{font-size:11px;font-weight:500;padding:6px 6px 8px;line-height:1.3}
 
-.reviews-section{padding:20px 16px;border-top:4px solid var(--border)}
+.reviews-section{padding-bottom:28px}
 .review-summary{text-align:center;margin-bottom:16px}
 .review-summary .big-rating{font-size:48px;font-weight:700}
 .review-summary .stars-big{font-size:20px;color:#f59e0b}
@@ -138,7 +173,7 @@ picture{display:contents}
 .review-tabs{display:flex;gap:0;margin-bottom:12px}
 .review-tab{flex:1;padding:10px;text-align:center;font-size:13px;font-weight:600;border-bottom:2px solid var(--border);color:var(--text-muted);cursor:pointer}
 .review-tab.active{border-bottom-color:var(--orange);color:var(--text)}
-.review-card{background:var(--bg-alt);border-radius:8px;padding:14px;margin-bottom:10px}
+.review-card{background:var(--bg-alt);border-radius:18px;padding:14px;margin-bottom:10px;border:1px solid var(--border)}
 .review-card .stars{color:#f59e0b;font-size:13px;margin-bottom:4px}
 .review-card .r-title{font-size:14px;font-weight:600;margin-bottom:4px}
 .review-card .r-text{font-size:13px;line-height:1.5;color:var(--text-light)}
@@ -159,6 +194,13 @@ picture{display:contents}
 .footer-subscribe button{padding:8px 14px;background:var(--orange);color:#fff;border:none;border-radius:4px;font-size:12px;font-weight:600;cursor:pointer}
 .footer-bottom{margin-top:16px;padding-top:12px;border-top:1px solid #333;font-size:11px;color:#666;text-align:center}
 .footer-socials{display:flex;justify-content:center;gap:14px;margin:10px 0;font-size:16px}
+.sticky-cart{position:fixed;left:0;right:0;bottom:0;z-index:20;padding:12px 14px calc(12px + env(safe-area-inset-bottom));background:rgba(255,253,249,.96);backdrop-filter:blur(14px);border-top:1px solid rgba(234,223,206,.95);box-shadow:0 -12px 24px rgba(44,30,14,.08)}
+.sticky-cart .sticky-inner{max-width:480px;margin:0 auto;display:flex;align-items:center;gap:12px}
+.sticky-cart .sticky-meta{min-width:0;flex:1}
+.sticky-cart .sticky-label{font-size:11px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:var(--text-muted)}
+.sticky-cart .sticky-price{font-size:20px;font-weight:800;color:var(--text);margin-top:2px}
+.sticky-btn{flex:0 0 58%;padding:15px 16px;font-size:14px}
+@media(min-width:481px){.sticky-cart{left:50%;right:auto;transform:translateX(-50%);width:480px;border-radius:22px;bottom:18px;border:1px solid rgba(234,223,206,.95)}}
 </style>
 </head>
 <body>
@@ -185,7 +227,7 @@ picture{display:contents}
 
   <!-- SOCIAL PROOF BANNER -->
   <div class="social-proof-banner">
-    ★★★★★ <strong>156 families</strong> have sent love with this package
+    <strong>3,153 packages sent</strong> with a 5-star average from real customers
   </div>
 
   <!-- PRODUCT GALLERY (swipeable) -->
@@ -200,32 +242,56 @@ picture{display:contents}
     <picture><source type="image/avif" srcset="/assets/uploads/2018/04/Mens_Chemo_Medium_Product-Tiles_engaging-mind.avif"><source type="image/webp" srcset="/assets/uploads/2018/04/Mens_Chemo_Medium_Product-Tiles_engaging-mind.webp"><img src="/assets/uploads/2018/04/Mens_Chemo_Medium_Product-Tiles_engaging-mind.jpg" alt="Medium Men's Chemo Care Package" decoding="async" data-index="3"></picture>
   </div>
 
+
   <!-- PRODUCT INFO -->
   <div class="product-info">
+    <div class="eyebrow">Ready-to-send comfort gift</div>
     <h1 class="product-title">Medium Men's Chemo Care Package</h1>
-    <div class="product-price">$119.99</div>
-    <div class="qty-row">
-      <button class="qty-btn" onclick="var i=document.getElementById('qty');i.value=Math.max(1,+i.value-1)">−</button>
-      <input class="qty-input" id="qty" value="1" readonly>
-      <button class="qty-btn" onclick="var i=document.getElementById('qty');i.value=+i.value+1">+</button>
+    <p class="product-subtitle">The medium men's chemo care package includes all essentials that ease the side effects of chemotherapy for him.</p>
+    <div class="hero-highlights">
+      <span>Gift note included</span>
+      <span>Hand-packed in New York</span>
+      <span>Curated for comfort</span>
     </div>
-    <a href="https://www.rockthetreatment.com/?add-to-cart=232" class="btn-cart">Add to Cart</a>
-    <div class="urgency">Orders placed before 2pm ship same day</div>
-    <div class="shipping-note">Free shipping on this order!</div>
+    <div class="price-row">
+      <div class="product-price">$119.99</div>
+      <div class="price-note">Free shipping included<br>Secure checkout on rockthetreatment.com</div>
+    </div>
+    <div class="qty-row">
+      <div class="qty-label">Quantity</div>
+      <div class="qty-controls">
+        <button class="qty-btn" onclick="var i=document.getElementById('qty');i.value=Math.max(1,+i.value-1)">−</button>
+        <input class="qty-input" id="qty" value="1" readonly>
+        <button class="qty-btn" onclick="var i=document.getElementById('qty');i.value=+i.value+1">+</button>
+      </div>
+    </div>
+    <div class="cta-stack">
+      <a href="https://www.rockthetreatment.com/?add-to-cart=232" class="btn-cart js-cart-btn">Send This Gift</a>
+      <a href="#inside" class="btn-secondary">See What's Inside</a>
+      <div class="urgency">Orders placed before 2pm ship same day</div>
+      <div class="shipping-note">Free shipping on this order</div>
+    </div>
+    <div class="reassurance-row">
+      <div class="reassurance-card"><strong>Fast</strong><span>Ships in 1-2 business days</span></div>
+      <div class="reassurance-card"><strong>Easy</strong><span>Gift-ready and simple to send</span></div>
+      <div class="reassurance-card"><strong>Thoughtful</strong><span>Curated essentials, not filler</span></div>
+    </div>
 
     <!-- TRUST BADGES -->
     <div class="trust-badges">
-      <div class="trust-badge"><span class="icon">🔒</span>Secure<br>Checkout</div>
-      <div class="trust-badge"><span class="icon">📦</span>Ships in<br>1-2 Days</div>
-      <div class="trust-badge"><span class="icon">🎁</span>15+ Items<br>Included</div>
-      <div class="trust-badge"><span class="icon">💝</span>Free Gift<br>Included</div>
+      <div class="trust-badge"><span class="icon">Checkout</span>Secure purchase on the main RTT store</div>
+      <div class="trust-badge"><span class="icon">In the box</span>15+ practical, comforting essentials</div>
+
+      <div class="trust-badge"><span class="icon">Support</span>A personal gift note can be added at checkout</div>
+      <div class="trust-badge"><span class="icon">Service</span>Real humans ready to help if you need guidance</div>
     </div>
 
     <!-- FREE GIFT CALLOUT -->
     <div class="free-gift-callout">
       <picture><source type="image/avif" srcset="/assets/uploads/2023/06/bell.avif"><source type="image/webp" srcset="/assets/uploads/2023/06/bell.webp"><img src="/assets/uploads/2023/06/bell.png" alt="Celebration Bell" width="50" height="50" loading="lazy" decoding="async"></picture>
       <div class="text">
-        <strong>FREE bonus!</strong> Every purchase includes an End of Treatment Celebration Gift — order separately at no charge.
+        <strong>Complimentary extra:</strong> Every purchase includes access to RTT's end-of-treatment celebration gift at no charge.
+
       </div>
     </div>
 
@@ -236,38 +302,24 @@ picture{display:contents}
 
     <!-- GIFT NOTE -->
     <div class="gift-note">
-      <label>🖊 Add a gift note:</label>
+      <label>Add a gift note</label>
       <textarea placeholder="Write a personal message for the recipient..."></textarea>
     </div>
   </div>
 
-  <!-- RELATED PRODUCTS -->
-  <div class="related-section">
-    <div class="section-title">You may also like…</div>
-    <div class="related-grid">
-      <a href="https://www.rockthetreatment.com/mens-small-chemo-basket/" class="related-card">
-        <picture><source type="image/avif" srcset="/assets/uploads/2018/04/Small-Mens-Chemo-Care-Package-Main.avif"><source type="image/webp" srcset="/assets/uploads/2018/04/Small-Mens-Chemo-Care-Package-Main.webp"><img src="/assets/uploads/2018/04/Small-Mens-Chemo-Care-Package-Main.jpg" alt="Small Men's Chemo Care Package" loading="lazy" decoding="async" onerror="this.closest('.related-card,.upsell-card')?.remove()"></picture>
-        <div class="info">
-          <div class="name">Small Men's Chemo Care Package</div>
-          <div class="price">$69.99</div>
-        </div>
-      </a>
-      <a href="https://www.rockthetreatment.com/mens-large-chemo-basket/" class="related-card">
-        <img src="/assets/uploads/2018/04/Large-Mens-Chemo-Care-Package-Main.jpg" alt="Large Men's Chemo Care Package" loading="lazy" decoding="async" onerror="this.closest('.related-card,.upsell-card')?.remove()">
-        <div class="info">
-          <div class="name">Large Men's Chemo Care Package</div>
-          <div class="price">$159.99</div>
-        </div>
-      </a>
-    </div>
+  <div class="featured-review">
+    <div class="section-kicker">Why it lands</div>
+    <blockquote>"Dad loved it"</blockquote>
+    <p>Sent this to my father starting chemo. He said it was the most thoughtful gift he received and used the socks and lozenges immediately.</p>
+    <div class="review-credit">Verified Buyer <span>Verified buyer</span></div>
   </div>
 
   <!-- VALUE PROPS -->
   <div class="value-props">
-    <div class="value-prop"><div class="vp-icon">💜</div><div class="vp-title">Thoughtfully Curated</div><div class="vp-desc">Every item hand-picked for comfort during treatment</div></div>
-    <div class="value-prop"><div class="vp-icon">📦</div><div class="vp-title">Convenient & Discreet</div><div class="vp-desc">Ready to gift — beautifully packed and shipped fast</div></div>
-    <div class="value-prop"><div class="vp-icon">⭐</div><div class="vp-title">Unmatched Service</div><div class="vp-desc">Personal attention to every order and customer</div></div>
-    <div class="value-prop"><div class="vp-icon">🤝</div><div class="vp-title">Caring Contributions</div><div class="vp-desc">A portion of proceeds supports cancer patients in need</div></div>
+    <div class="value-prop"><div class="vp-icon">Curated</div><div class="vp-title">Built to feel useful</div><div class="vp-desc">Each item is chosen to bring comfort, distraction, and practical support.</div></div>
+    <div class="value-prop"><div class="vp-icon">Gift-ready</div><div class="vp-title">Easy to send well</div><div class="vp-desc">No guesswork, no extra wrapping, just a thoughtful package that arrives ready to open.</div></div>
+    <div class="value-prop"><div class="vp-icon">Trusted</div><div class="vp-title">Backed by real buyers</div><div class="vp-desc">Thousands of families have relied on RTT when they wanted to show up with care.</div></div>
+    <div class="value-prop"><div class="vp-icon">Mission-led</div><div class="vp-title">Made by people who care</div><div class="vp-desc">Every order supports a brand built around comfort, encouragement, and community.</div></div>
   </div>
 
   <!-- GREEN BANNER -->
@@ -275,6 +327,13 @@ picture{display:contents}
     <h3>Nurturing Strength.<br>Uplifting Spirits.</h3>
     <p>Nourish the Body. Focus the Mind.</p>
   </div>
+
+  <div class="inside-intro" id="inside">
+    <div class="section-kicker">Inside the package</div>
+    <div class="section-title">What she'll open</div>
+    <div class="section-copy">15+ comforting items selected to soothe, encourage, and make treatment days feel a little gentler.</div>
+  </div>
+
 
   <!-- PRODUCT BREAKDOWN -->
   <div class="category-header"><h3>For Dry Mouth, Lips &amp; Skin</h3></div>
@@ -387,8 +446,32 @@ picture{display:contents}
     </div>
   </div>
 
+  <!-- RELATED PRODUCTS -->
+  <div class="related-section">
+    <div class="section-kicker">More options</div>
+    <div class="section-title">Explore other care packages</div>
+    <div class="section-copy">Prefer a different size or a different kind of support? Start here.</div>
+    <div class="related-grid" style="margin-top:16px;">
+      <a href="https://www.rockthetreatment.com/mens-small-chemo-basket/" class="related-card">
+        <picture><source type="image/avif" srcset="/assets/uploads/2018/04/Small-Mens-Chemo-Care-Package-Main.avif"><source type="image/webp" srcset="/assets/uploads/2018/04/Small-Mens-Chemo-Care-Package-Main.webp"><img src="/assets/uploads/2018/04/Small-Mens-Chemo-Care-Package-Main.jpg" alt="Small Men's Chemo Care Package" loading="lazy" decoding="async" onerror="this.closest('.related-card,.upsell-card')?.remove()"></picture>
+        <div class="info">
+          <div class="name">Small Men's Chemo Care Package</div>
+          <div class="price">$69.99</div>
+        </div>
+      </a>
+      <a href="https://www.rockthetreatment.com/mens-large-chemo-basket/" class="related-card">
+        <img src="/assets/uploads/2018/04/Large-Mens-Chemo-Care-Package-Main.jpg" alt="Large Men's Chemo Care Package" loading="lazy" decoding="async" onerror="this.closest('.related-card,.upsell-card')?.remove()">
+        <div class="info">
+          <div class="name">Large Men's Chemo Care Package</div>
+          <div class="price">$159.99</div>
+        </div>
+      </a>
+    </div>
+  </div>
+
   <!-- FAQs -->
   <div class="faq-section">
+    <div class="section-kicker">Questions</div>
     <div class="section-title" style="margin-bottom:8px;">FAQs</div>
     <div class="faq-item" onclick="this.classList.toggle('open')">
       <div class="faq-header"><span class="q">What gifts to avoid?</span><span class="chev">▾</span></div>
@@ -417,7 +500,8 @@ picture{display:contents}
 
   <!-- UPSELL GRID -->
   <div class="upsell-section">
-    <div class="section-title" style="font-family:var(--serif);font-size:20px;margin-bottom:14px;">Add even more support</div>
+    <div class="section-kicker">Optional add-ons</div>
+    <div class="section-title" style="font-size:24px;margin-bottom:14px;">Add even more support</div>
     <div class="upsell-grid">
       <a href="https://www.rockthetreatment.com/you-rock-worry-stone-package/" class="upsell-card">
         <picture><source type="image/avif" srcset="/assets/uploads/2025/04/YOU-ROCK-Worry-Stone-Package.avif"><source type="image/webp" srcset="/assets/uploads/2025/04/YOU-ROCK-Worry-Stone-Package.webp"><img src="/assets/uploads/2025/04/YOU-ROCK-Worry-Stone-Package.png" alt="YOU ROCK! Worry Stone" loading="lazy" decoding="async" onerror="this.closest('.related-card,.upsell-card')?.remove()"></picture>
@@ -472,7 +556,8 @@ picture{display:contents}
 
   <!-- REVIEWS -->
   <div class="reviews-section">
-    <div class="section-title">Our Fan Club</div>
+    <div class="section-kicker">Social proof</div>
+    <div class="section-title">What customers say</div>
     <div class="review-summary">
       <div class="big-rating">5.0</div>
       <div class="stars-big">★★★★★</div>
@@ -489,6 +574,7 @@ picture{display:contents}
       <div class="review-tab active">Reviews (156)</div>
       <div class="review-tab">Questions (4)</div>
     </div>
+
     <div class="review-card">
       <div class="r-date">01/2026</div>
       <div class="stars">★★★★★</div>
@@ -560,6 +646,16 @@ picture{display:contents}
     </div>
   </div>
 
+</div>
+
+<div class="sticky-cart">
+  <div class="sticky-inner">
+    <div class="sticky-meta">
+      <div class="sticky-label">Medium Men's Chemo Care Package</div>
+      <div class="sticky-price">$119.99</div>
+    </div>
+    <a href="https://www.rockthetreatment.com/?add-to-cart=232" class="sticky-btn js-cart-btn">Send This Gift</a>
+  </div>
 </div>
 
 <script>
@@ -657,14 +753,18 @@ picture{display:contents}
 
   // Quantity sync with cart URL
   var qtyInput = document.getElementById('qty');
-  var cartBtn = document.querySelector('.btn-cart');
-  if (qtyInput && cartBtn) {
-    var baseUrl = cartBtn.href;
+  var cartBtns = Array.prototype.slice.call(document.querySelectorAll('.js-cart-btn'));
+  if (qtyInput && cartBtns.length) {
+    var baseUrl = cartBtns[0].href;
+    function syncCartLinks() {
+      cartBtns.forEach(function(btn){
+        btn.href = baseUrl + '&quantity=' + qtyInput.value;
+      });
+    }
+    syncCartLinks();
     document.querySelectorAll('.qty-btn').forEach(function(btn){
       btn.addEventListener('click', function(){
-        setTimeout(function(){
-          cartBtn.href = baseUrl + '&quantity=' + qtyInput.value;
-        }, 10);
+        setTimeout(syncCartLinks, 10);
       });
     });
   }
