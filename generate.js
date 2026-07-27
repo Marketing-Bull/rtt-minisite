@@ -16,6 +16,7 @@ const ALLOW_INDEXING = false;
 const { wwwBase, mBase, imageBase, logo, bellImg, itemImages, upsellProducts, faqs, radiationFaqs, products } = data;
 
 function img(relPath) {
+  if (/^https?:\/\//.test(relPath)) return relPath;
   return imageBase + relPath;
 }
 
@@ -119,11 +120,23 @@ function generateLargeWomensPage(product) {
   const featuredReview = product.reviews[ui.featuredReviewIndex || 0] || product.reviews[0];
   const featuredItems = ui.featuredItems || [];
   const celebrationImage = img(ui.celebrationImage || '/2023/06/bell.png');
-  const relatedAddOns = [
-    { name: "YOU ROCK! Worry Stone", image: "/2025/04/YOU-ROCK-Worry-Stone-Package.png", url: "/you-rock-worry-stone-package/" },
-    { name: "Celebration Bell", image: ui.celebrationImage || "/2023/06/bell.png", url: "/bell/" },
-    { name: "Cozy Companion™ Blanket", image: "/2020/02/rock_the_treatment_cozycompanion_plush_2-in-1-blanketpillow_white-bg_thumbnail.webp", url: "/luxurious-soft-plush-blanket-throw/" }
+  const requestedAddOns = [
+    "Cozy Companion™ Blanket",
+    "YOU ROCK! Worry Stone",
+    "Anti-Nausea Wristband",
+    "Reusable Folding Tote",
+    "#ROCKtheTREATMENT Wristband",
+    "Knit Beanie",
+    "Warmies® Plush Animal"
   ];
+  const relatedAddOns = requestedAddOns
+    .map(name => upsellProducts.find(item => item.name === name))
+    .filter(Boolean)
+    .concat([{
+      name: "Warmies® + YOU ROCK! Stone",
+      image: "https://www.rockthetreatment.com/wp-content/uploads/2026/04/Hippo-and-Stone-Thumb-isolated-400x400.png",
+      url: "/hippo-warmies-you-rock-worry-stone-package-combination/"
+    }]);
   const faqItems = [
     {
       q: 'When will it ship?',
@@ -167,9 +180,9 @@ function generateLargeWomensPage(product) {
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="preload" as="image" href="${heroPreloadHref}"${heroPreloadType} fetchpriority="high">
-<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Catamaran:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
-:root{--green:#4f913f;--green-dark:#315f2b;--green-soft:#edf6e9;--orange:#e95716;--orange-dark:#c7460c;--cream:#fffaf3;--sand:#f6ede2;--white:#fff;--ink:#201c19;--muted:#665d55;--subtle:#877d75;--line:#e8ddd1;--star:#e49a00;--serif:'DM Serif Display',Georgia,serif;--sans:'Inter',system-ui,sans-serif;--shadow:0 22px 55px rgba(66,43,24,.12)}
+:root{--green:#4f913f;--green-dark:#315f2b;--green-soft:#edf6e9;--orange:#cf4609;--orange-dark:#ad3605;--blue:#29a9e0;--purple:#aa1bcc;--cream:#fffaf3;--sand:#f6ede2;--white:#fff;--ink:#201c19;--muted:#665d55;--subtle:#877d75;--line:#e8ddd1;--star:#e49a00;--display:'Catamaran',system-ui,sans-serif;--sans:'Catamaran',system-ui,sans-serif;--shadow:0 22px 55px rgba(66,43,24,.12)}
 *{box-sizing:border-box}
 html{scroll-behavior:smooth}
 body{margin:0;background:#f4eee7;color:var(--ink);font-family:var(--sans);padding-bottom:88px}
@@ -181,28 +194,29 @@ img{max-width:100%}
 .sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
 :focus-visible{outline:3px solid #1769aa;outline-offset:3px}
 .page{max-width:1120px;margin:0 auto;background:var(--white);min-height:100vh;box-shadow:var(--shadow)}
-.announcement{background:var(--green-dark);color:#fff;text-align:center;padding:10px 16px;font-size:12px;font-weight:800;letter-spacing:.065em;text-transform:uppercase}
-.site-header{height:68px;padding:10px 20px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--line);background:rgba(255,255,255,.97)}
-.site-header .logo img{display:block;height:43px;width:auto}
+.announcement{background:var(--orange);color:#fff;text-align:center;padding:9px 16px;font-size:11px;font-weight:800;letter-spacing:.065em;text-transform:uppercase}
+.site-header{height:76px;padding:8px 18px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid #3d3b39;background:#292826}
+.site-header .logo img{display:block;height:53px;width:auto;max-width:220px}
 .header-link{font-size:13px;font-weight:700;color:var(--green-dark);padding:10px;border-radius:10px}
-.proof-strip{display:flex;justify-content:center;align-items:center;gap:9px;padding:11px 16px;background:#fff8eb;border-bottom:1px solid #f0dfc4;font-size:13px;color:#554c43}
-.proof-strip .stars,.rating-stars{color:var(--star);letter-spacing:.08em}
-.proof-strip strong{color:var(--ink)}
+.site-header .header-link{color:#fff}
+.header-link svg{display:block;width:23px;height:23px}
+.rating-stars{color:var(--star);letter-spacing:.08em}
 .hero{display:grid}
-.gallery{background:linear-gradient(180deg,#f8f2eb,#fff);min-width:0}
+.gallery{background:linear-gradient(180deg,#f1f1f1,#fff);min-width:0}
 .gallery-stage{position:relative;overflow:hidden;touch-action:pan-y}
 .gallery-main{display:block;width:100%;aspect-ratio:1/1;object-fit:cover}
 .swipe-hint{position:absolute;right:14px;bottom:12px;background:rgba(32,28,25,.76);color:#fff;padding:6px 10px;border-radius:999px;font-size:11px;pointer-events:none}
-.gallery-thumbs{display:flex;gap:9px;padding:12px 16px 17px;overflow:auto}
+.gallery-rating{display:flex;align-items:center;justify-content:center;padding:12px 16px 2px}
+.gallery-thumbs{display:flex;gap:9px;padding:11px 16px 17px;overflow:auto}
 .thumb{flex:0 0 auto;border:2px solid transparent;border-radius:13px;background:#fff;padding:0;cursor:pointer;overflow:hidden}
 .thumb[aria-current=true]{border-color:var(--green-dark)}
-.thumb img{display:block;width:62px;height:62px;object-fit:cover}
+.thumb img{display:block;width:62px;height:62px;object-fit:contain;background:#f3f3f3;padding:4px}
 .hero-copy{padding:24px 20px 28px}
 .rating-link{display:inline-flex;align-items:center;gap:8px;font-size:13px;font-weight:700;color:#443d37;border-radius:8px}
 .rating-link span:last-child{color:var(--muted);font-weight:600}
 .eyebrow{margin-top:18px;font-size:11px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:var(--green-dark)}
-h1{font-family:var(--serif);font-size:clamp(34px,7vw,48px);line-height:1.02;font-weight:400;letter-spacing:-.02em;margin:10px 0 0}
-.supporting{font-family:var(--serif);font-size:24px;line-height:1.15;color:var(--green-dark);margin:13px 0 0}
+h1{font-family:var(--display);font-size:clamp(34px,7vw,48px);line-height:1.02;font-weight:800;letter-spacing:-.025em;margin:10px 0 0}
+.supporting{font-family:var(--display);font-size:24px;font-weight:700;line-height:1.15;color:var(--green-dark);margin:13px 0 0}
 .hero-desc{font-size:15px;line-height:1.65;color:var(--muted);margin:13px 0 0;max-width:58ch}
 .price{font-size:32px;font-weight:800;margin-top:20px;font-variant-numeric:tabular-nums}
 .hero-checks{display:grid;gap:9px;margin:16px 0 0;padding:0;list-style:none}
@@ -220,25 +234,25 @@ h1{font-family:var(--serif);font-size:clamp(34px,7vw,48px);line-height:1.02;font
 .benefit{padding:17px 15px;border-right:1px solid var(--line);border-bottom:1px solid var(--line)}
 .benefit:nth-child(2n){border-right:0}
 .benefit:nth-last-child(-n+2){border-bottom:0}
-.benefit strong{display:block;font-family:var(--serif);font-size:18px;font-weight:400}
+.benefit strong{display:block;font-family:var(--display);font-size:18px;font-weight:800}
 .benefit span{display:block;margin-top:4px;font-size:11.5px;line-height:1.45;color:var(--muted)}
 .section{padding:52px 20px}
-.section-alt{background:var(--cream)}
+.section-alt{background-color:var(--cream);background-image:radial-gradient(circle at 8% 12%,rgba(233,87,22,.08) 0 5px,transparent 6px),radial-gradient(circle at 88% 20%,rgba(41,169,224,.08) 0 7px,transparent 8px),radial-gradient(circle at 76% 82%,rgba(170,27,204,.07) 0 5px,transparent 6px),radial-gradient(circle at 17% 77%,rgba(79,145,63,.08) 0 8px,transparent 9px);background-size:170px 170px,220px 220px,190px 190px,240px 240px}
 .section-kicker{font-size:11px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:var(--green-dark)}
-.section-title{font-family:var(--serif);font-size:clamp(30px,6vw,42px);font-weight:400;line-height:1.05;margin:9px 0 0}
+.section-title{font-family:var(--display);font-size:clamp(30px,6vw,42px);font-weight:800;line-height:1.05;margin:9px 0 0}
 .section-copy{font-size:14px;line-height:1.65;color:var(--muted);margin:12px 0 0;max-width:64ch}
 .featured-quote{padding:38px 20px;background:linear-gradient(135deg,var(--green-dark),#4f913f);color:#fff}
-.featured-quote blockquote{font-family:var(--serif);font-size:clamp(28px,6vw,40px);line-height:1.15;margin:10px 0 0;max-width:26ch}
+.featured-quote blockquote{font-family:var(--display);font-size:clamp(28px,6vw,40px);font-weight:700;line-height:1.15;margin:10px 0 0;max-width:26ch}
 .featured-quote p{font-size:14px;line-height:1.65;margin:14px 0 0;max-width:68ch;color:rgba(255,255,255,.9)}
 .quote-credit{font-size:12px;font-weight:800;margin-top:15px}
 .help-grid{display:grid;gap:12px;margin-top:22px}
 .help-card{padding:20px;border:1px solid var(--line);border-radius:20px;background:#fff}
 .help-label{font-size:10px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:var(--green-dark)}
-.help-card h3{font-family:var(--serif);font-size:21px;font-weight:400;line-height:1.12;margin:7px 0 0}
+.help-card h3{font-family:var(--display);font-size:21px;font-weight:800;line-height:1.12;margin:7px 0 0}
 .help-card p{font-size:12.5px;line-height:1.55;color:var(--muted);margin:8px 0 0}
-.featured-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;margin-top:22px}
-.item-tile{border:1px solid var(--line);border-radius:18px;background:#fff;overflow:hidden}
-.item-tile img{display:block;width:100%;aspect-ratio:1.15/1;object-fit:contain;background:#fbfaf7;padding:10px}
+.featured-grid{display:flex;gap:12px;margin:22px -20px 0;padding:0 20px 8px;overflow-x:auto;scroll-snap-type:x proximity;scrollbar-width:thin}
+.item-tile{flex:0 0 72%;scroll-snap-align:start;border:1px solid #ddd;border-radius:18px;background:#fff;overflow:hidden}
+.item-tile img{display:block;width:100%;aspect-ratio:1.15/1;object-fit:contain;background:#f2f2f2;padding:12px}
 .item-tile-body{padding:12px}
 .item-tile h3{font-size:13px;line-height:1.35;margin:0}
 .item-tile p{font-size:11.5px;line-height:1.5;color:var(--muted);margin:6px 0 0}
@@ -249,12 +263,12 @@ h1{font-family:var(--serif);font-size:clamp(34px,7vw,48px);line-height:1.02;font
 .contents[open] summary::after{content:'−'}
 .contents-inner{border-top:1px solid var(--line);padding:4px 18px 20px}
 .content-group{padding-top:19px}
-.content-group h3{font-family:var(--serif);font-size:21px;font-weight:400;margin:0 0 8px}
+.content-group h3{font-family:var(--display);font-size:21px;font-weight:800;margin:0 0 8px}
 .content-item{display:grid;grid-template-columns:58px 1fr;gap:11px;padding:11px 0;border-top:1px solid #eee6dd}
 .content-item img{width:58px;height:58px;object-fit:contain;background:#fbfaf7;padding:4px;border-radius:12px}
 .content-item h4{font-size:12.5px;margin:2px 0 0}
 .content-item p{font-size:11.5px;line-height:1.5;color:var(--muted);margin:4px 0 0}
-.optional-note{display:flex;gap:13px;align-items:center;margin-top:18px;padding:15px;border:1px solid #dfd0bc;background:#fff8eb;border-radius:17px;font-size:12px;line-height:1.5;color:#5b5044}
+.optional-note{display:flex;gap:13px;align-items:center;margin-top:18px;padding:13px;border:1px solid rgba(223,208,188,.65);background:rgba(255,248,235,.55);border-radius:17px;font-size:12px;line-height:1.5;color:#74695f}
 .optional-note img{width:58px;height:58px;object-fit:contain;border-radius:12px;background:#fff}
 .optional-note a{font-weight:800;text-decoration:underline;text-underline-offset:3px;color:var(--green-dark)}
 .faq-list{margin-top:19px;border-top:1px solid var(--line)}
@@ -262,8 +276,9 @@ h1{font-family:var(--serif);font-size:clamp(34px,7vw,48px);line-height:1.02;font
 .faq-button{width:100%;border:0;background:transparent;padding:17px 2px;display:flex;align-items:center;justify-content:space-between;gap:16px;text-align:left;font-size:14px;font-weight:700;cursor:pointer}
 .faq-icon{font-size:20px;color:var(--green-dark)}
 .faq-answer{padding:0 2px 18px;font-size:13px;line-height:1.65;color:var(--muted)}
-.reviews-grid{display:grid;gap:12px;margin-top:20px}
-.review{border:1px solid var(--line);border-radius:18px;padding:17px;background:#fff}
+.reviews-section{background-color:#fff8eb;background-image:radial-gradient(circle at 10% 18%,rgba(233,87,22,.12) 0 7px,transparent 8px),radial-gradient(circle at 88% 14%,rgba(41,169,224,.12) 0 9px,transparent 10px),radial-gradient(circle at 80% 84%,rgba(170,27,204,.1) 0 7px,transparent 8px),radial-gradient(circle at 18% 80%,rgba(79,145,63,.12) 0 10px,transparent 11px);background-size:180px 180px,230px 230px,200px 200px,250px 250px}
+.reviews-grid{display:flex;gap:12px;margin:20px -20px 0;padding:0 20px 8px;overflow-x:auto;scroll-snap-type:x proximity;scrollbar-width:thin}
+.review{flex:0 0 82%;scroll-snap-align:start;border:1px solid var(--line);border-radius:18px;padding:17px;background:rgba(255,255,255,.92)}
 .review h3{font-size:14px;margin:7px 0 0}
 .review p{font-size:12.5px;line-height:1.6;color:var(--muted);margin:7px 0 0}
 .review-author{font-size:11.5px;font-weight:800;color:#5e554e;margin-top:10px}
@@ -271,14 +286,16 @@ h1{font-family:var(--serif);font-size:clamp(34px,7vw,48px);line-height:1.02;font
 .final-cta .btn-primary{max-width:360px;margin:20px auto 0}
 .final-cta .microcopy{max-width:420px;margin:10px auto 0}
 .shop-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;margin-top:20px}
+.shop-rail{display:flex;gap:12px;margin:20px -20px 0;padding:0 20px 8px;overflow-x:auto;scroll-snap-type:x proximity;scrollbar-width:thin}
+.shop-rail .shop-card{flex:0 0 43%;scroll-snap-align:start}
 .shop-card{border:1px solid var(--line);border-radius:17px;background:#fff;overflow:hidden}
 .shop-card img{display:block;width:100%;aspect-ratio:1/1;object-fit:cover}
 .shop-card-body{padding:11px}
 .shop-card h3{font-size:12.5px;line-height:1.35;margin:0}
 .shop-card p{font-size:13px;font-weight:800;margin:5px 0 0}
-.split-heading{font-family:var(--serif);font-size:24px;font-weight:400;margin:30px 0 0}
+.split-heading{font-family:var(--display);font-size:24px;font-weight:800;margin:30px 0 0}
 .footer{padding:28px 20px 110px;background:#262421;color:#d4cec8;font-size:12px;line-height:1.7}
-.footer strong{color:#fff;font-family:var(--serif);font-size:20px;font-weight:400}
+.footer strong{color:#fff;font-family:var(--display);font-size:20px;font-weight:800}
 .footer-links{display:flex;flex-wrap:wrap;gap:10px 18px;margin-top:12px}
 .footer-links a{text-decoration:underline;text-underline-offset:3px}
 .sticky{position:fixed;left:0;right:0;bottom:0;z-index:20;background:rgba(255,255,255,.97);border-top:1px solid var(--line);box-shadow:0 -10px 28px rgba(41,30,20,.12);padding:10px 12px calc(10px + env(safe-area-inset-bottom))}
@@ -297,8 +314,13 @@ h1{font-family:var(--serif);font-size:clamp(34px,7vw,48px);line-height:1.02;font
   .section{padding:72px 54px}
   .featured-quote{padding:58px 54px}
   .help-grid{grid-template-columns:repeat(4,1fr)}
-  .featured-grid{grid-template-columns:repeat(3,1fr)}
+  .featured-grid{display:grid;grid-template-columns:repeat(3,1fr);margin:22px 0 0;padding:0;overflow:visible}
+  .item-tile{min-width:0}
+  .reviews-grid{display:grid;grid-template-columns:repeat(3,1fr);margin:20px 0 0;padding:0;overflow:visible}
+  .review{min-width:0}
   .shop-grid{grid-template-columns:repeat(3,1fr)}
+  .shop-rail{display:grid;grid-template-columns:repeat(4,1fr);margin:20px 0 0;padding:0;overflow:visible}
+  .shop-rail .shop-card{min-width:0}
   .footer{padding:36px 54px 120px}
 }
 @media(max-width:380px){
@@ -318,9 +340,8 @@ h1{font-family:var(--serif);font-size:clamp(34px,7vw,48px);line-height:1.02;font
   <header class="site-header">
     <a class="header-link" href="${wwwBase}/shop/" aria-label="Browse all care packages">Shop</a>
     <a class="logo" href="${wwwBase}" aria-label="Rock The Treatment home">${picture(logo, { alt: 'Rock The Treatment', lazy: false })}</a>
-    <a class="header-link" href="${wwwBase}/cart/" aria-label="View cart">Cart</a>
+    <a class="header-link" href="${wwwBase}/cart/" aria-label="View cart"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="M3 4h2l2.3 10.2a2 2 0 0 0 2 1.6h7.9a2 2 0 0 0 2-1.6L21 8H6M10 20h.01M18 20h.01"/></svg></a>
   </header>
-  <div class="proof-strip"><span class="stars" aria-hidden="true">★★★★★</span><span><strong>${rating.toFixed(1)}</strong> from <a href="${wwwBase}/${product.slug}/#reviews"><strong>${product.reviewCount} reviews</strong></a> · ${packagesSent.toLocaleString()}+ packages sent company-wide</span></div>
 
   <main>
     <section class="hero" aria-labelledby="product-title">
@@ -329,13 +350,13 @@ h1{font-family:var(--serif);font-size:clamp(34px,7vw,48px);line-height:1.02;font
           ${picture(heroUrl, { id: 'mainImg', cls: 'gallery-main', alt: product.title, priority: true, lazy: false, avifId: 'mainSrcAvif', webpId: 'mainSrcWebp' })}
           <span class="swipe-hint" id="swipeHint" aria-hidden="true">Swipe to explore</span>
         </div>
+        <div class="gallery-rating"><a class="rating-link" href="${wwwBase}/${product.slug}/#reviews" data-track="rating_click"><span class="rating-stars" aria-hidden="true">★★★★★</span><span>${rating.toFixed(1)} · ${product.reviewCount} verified reviews</span></a></div>
         <div class="gallery-thumbs" id="galleryThumbs" aria-label="Choose a product image">
 ${galleryImages.map((gi, i) => `          <button class="thumb" type="button" data-index="${i}" aria-label="Show image ${i + 1} of ${galleryImages.length}" aria-current="${i === 0 ? 'true' : 'false'}">${picture(img(gi), { alt: '', lazy: i > 1 })}</button>`).join('\n')}
         </div>
       </div>
 
       <div class="hero-copy">
-        <a class="rating-link" href="${wwwBase}/${product.slug}/#reviews" data-track="rating_click"><span class="rating-stars" aria-hidden="true">★★★★★</span><span>${rating.toFixed(1)} · ${product.reviewCount} verified reviews</span></a>
         <div class="eyebrow">${escHtml(ui.eyebrow || 'A ready-to-send comfort gift')}</div>
         <h1 id="product-title">${escHtml(product.title)}</h1>
         <p class="supporting">${escHtml(ui.supportingHeadline)}</p>
@@ -361,7 +382,7 @@ ${galleryImages.map((gi, i) => `          <button class="thumb" type="button" da
     </section>
 
     <section class="benefit-bar" aria-label="Why choose this gift">
-      <div class="benefit"><strong>Clear timing</strong><span>Processed and shipped from New York in 1–2 business days.</span></div>
+      <div class="benefit"><strong>${packagesSent.toLocaleString()}+ sent</strong><span>Care packages shipped by Rock The Treatment company-wide.</span></div>
       <div class="benefit"><strong>Chosen with purpose</strong><span>Personal care, cozy essentials, familiar snacks, and quiet activities.</span></div>
       <div class="benefit"><strong>Ready to send</strong><span>Ship it directly and add a personal note at checkout.</span></div>
       <div class="benefit"><strong>Packed by hand</strong><span>Prepared with care by the Rock The Treatment team.</span></div>
@@ -387,9 +408,9 @@ ${ui.benefitGroups.map(group => `        <article class="help-card">
     </section>
 
     <section class="section" id="inside" aria-labelledby="inside-title">
-      <div class="section-kicker">Inside the package</div>
-      <h2 class="section-title" id="inside-title">A few of the comforts she’ll open</h2>
-      <p class="section-copy">See six highlights below, then open the complete list of ${product.itemCount} included items.</p>
+      <div class="section-kicker">What’s inside</div>
+      <h2 class="section-title" id="inside-title">Packed with purpose</h2>
+      <p class="section-copy">Swipe through a few highlights, then open the complete item list for full details.</p>
       <div class="featured-grid">
 ${featuredItems.map(item => `        <article class="item-tile">
           ${picture(itemImg(item.name), { alt: item.name })}
@@ -426,10 +447,10 @@ ${faqItems.map((faq, i) => `        <div class="faq-item">
       </div>
     </section>
 
-    <section class="section" id="reviews" aria-labelledby="reviews-title">
-      <div class="section-kicker">Real customer stories</div>
-      <h2 class="section-title" id="reviews-title">${rating.toFixed(1)} stars from ${product.reviewCount} reviews</h2>
-      <p class="section-copy">A few recent reviews from verified buyers.</p>
+    <section class="section reviews-section" id="reviews" aria-labelledby="reviews-title">
+      <div class="section-kicker">${product.reviewCount} verified reviews</div>
+      <h2 class="section-title" id="reviews-title">Our fan club</h2>
+      <p class="section-copy">Real notes from people who sent care at the right time.</p>
       <div class="reviews-grid">
 ${product.reviews.map(review => `        <article class="review">
           <div class="rating-stars" aria-label="${review.stars} out of 5 stars">${stars(review.stars)}</div>
@@ -466,7 +487,7 @@ ${product.relatedProducts.map(rp => {
 }).join('\n')}
       </div>
       <h3 class="split-heading">Optional gifts</h3>
-      <div class="shop-grid">
+      <div class="shop-rail" aria-label="Optional gifts">
 ${relatedAddOns.map(item => `        <a class="shop-card" href="${wwwBase}${item.url}">
           ${picture(img(item.image), { alt: item.name })}
           <div class="shop-card-body"><h3>${escHtml(item.name)}</h3></div>
