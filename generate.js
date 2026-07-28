@@ -102,7 +102,7 @@ function stars(n) {
   return '★'.repeat(n) + '☆'.repeat(5 - n);
 }
 
-function generateLargeWomensPage(product) {
+function generateWomensCroPage(product) {
   const ui = product.mobileUi;
   const heroUrl = img(product.heroImage);
   const galleryImages = ui.galleryImages || product.galleryImages;
@@ -169,7 +169,7 @@ function generateLargeWomensPage(product) {
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-<meta name="theme-color" content="#315f2b">
+<meta name="theme-color" content="#81d742">
 <meta name="robots" content="${ALLOW_INDEXING ? 'index, follow' : 'noindex, follow'}">
 <title>${escHtml(product.metaTitle)} | Rock The Treatment</title>
 <meta name="description" content="${escHtml(product.shortDesc)}">
@@ -182,7 +182,7 @@ function generateLargeWomensPage(product) {
 <link rel="preload" as="image" href="${heroPreloadHref}"${heroPreloadType} fetchpriority="high">
 <link href="https://fonts.googleapis.com/css2?family=Catamaran:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
-:root{--green:#4f913f;--green-dark:#315f2b;--green-soft:#edf6e9;--orange:#cf4609;--orange-dark:#ad3605;--blue:#29a9e0;--purple:#aa1bcc;--cream:#fffaf3;--sand:#f6ede2;--white:#fff;--ink:#201c19;--muted:#665d55;--subtle:#877d75;--line:#e8ddd1;--star:#e49a00;--display:'Catamaran',system-ui,sans-serif;--sans:'Catamaran',system-ui,sans-serif;--shadow:0 22px 55px rgba(66,43,24,.12)}
+:root{--green:#81d742;--green-dark:#376a28;--green-soft:#f0fbe8;--orange:#cf4609;--orange-dark:#ad3605;--blue:#0693e3;--purple:#cf2aba;--cream:#fffdf8;--sand:#fff4ec;--white:#fff;--ink:#201c19;--muted:#665d55;--subtle:#877d75;--line:#e8ddd1;--star:#e49a00;--display:'Catamaran',system-ui,sans-serif;--sans:'Catamaran',system-ui,sans-serif;--shadow:0 22px 55px rgba(66,43,24,.12)}
 *{box-sizing:border-box}
 html{scroll-behavior:smooth}
 body{margin:0;background:#f4eee7;color:var(--ink);font-family:var(--sans);padding-bottom:88px}
@@ -192,9 +192,9 @@ button{color:inherit}
 picture{display:contents}
 img{max-width:100%}
 .sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
-:focus-visible{outline:3px solid #1769aa;outline-offset:3px}
+:focus-visible{outline:3px solid var(--blue);outline-offset:3px}
 .page{max-width:1120px;margin:0 auto;background:var(--white);min-height:100vh;box-shadow:var(--shadow)}
-.announcement{background:var(--orange);color:#fff;text-align:center;padding:9px 16px;font-size:11px;font-weight:800;letter-spacing:.065em;text-transform:uppercase}
+.announcement{background:var(--green);color:var(--ink);text-align:center;padding:9px 16px;font-size:11px;font-weight:800;letter-spacing:.065em;text-transform:uppercase}
 .site-header{height:76px;padding:8px 18px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid #3d3b39;background:#292826}
 .site-header .logo img{display:block;height:53px;width:auto;max-width:220px}
 .header-link{font-size:13px;font-weight:700;color:var(--green-dark);padding:10px;border-radius:10px}
@@ -209,7 +209,7 @@ img{max-width:100%}
 .gallery-rating{display:flex;align-items:center;justify-content:center;padding:12px 16px 2px}
 .gallery-thumbs{display:flex;gap:9px;padding:11px 16px 17px;overflow:auto}
 .thumb{flex:0 0 auto;border:2px solid transparent;border-radius:13px;background:#fff;padding:0;cursor:pointer;overflow:hidden}
-.thumb[aria-current=true]{border-color:var(--green-dark)}
+.thumb[aria-current=true]{border-color:var(--blue)}
 .thumb img{display:block;width:62px;height:62px;object-fit:contain;background:#f3f3f3;padding:4px}
 .hero-copy{padding:24px 20px 28px}
 .rating-link{display:inline-flex;align-items:center;gap:8px;font-size:13px;font-weight:700;color:#443d37;border-radius:8px}
@@ -241,9 +241,10 @@ h1{font-family:var(--display);font-size:clamp(34px,7vw,48px);line-height:1.02;fo
 .section-kicker{font-size:11px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:var(--green-dark)}
 .section-title{font-family:var(--display);font-size:clamp(30px,6vw,42px);font-weight:800;line-height:1.05;margin:9px 0 0}
 .section-copy{font-size:14px;line-height:1.65;color:var(--muted);margin:12px 0 0;max-width:64ch}
-.featured-quote{padding:38px 20px;background:linear-gradient(135deg,var(--green-dark),#4f913f);color:#fff}
+.featured-quote{padding:38px 20px;background:linear-gradient(135deg,#81d742,#96f24c);color:var(--ink)}
+.featured-quote .section-kicker{color:var(--ink)}
 .featured-quote blockquote{font-family:var(--display);font-size:clamp(28px,6vw,40px);font-weight:700;line-height:1.15;margin:10px 0 0;max-width:26ch}
-.featured-quote p{font-size:14px;line-height:1.65;margin:14px 0 0;max-width:68ch;color:rgba(255,255,255,.9)}
+.featured-quote p{font-size:14px;line-height:1.65;margin:14px 0 0;max-width:68ch;color:rgba(32,28,25,.82)}
 .quote-credit{font-size:12px;font-weight:800;margin-top:15px}
 .help-grid{display:grid;gap:12px;margin-top:22px}
 .help-card{padding:20px;border:1px solid var(--line);border-radius:20px;background:#fff}
@@ -389,7 +390,7 @@ ${galleryImages.map((gi, i) => `          <button class="thumb" type="button" da
     </section>
 
 ${featuredReview ? `    <section class="featured-quote" aria-label="Featured customer review">
-      <div class="section-kicker" style="color:#fff">Verified buyer story</div>
+      <div class="section-kicker">Verified buyer story</div>
       <blockquote>“${escHtml(featuredReview.text)}”</blockquote>
       <div class="quote-credit">— ${escHtml(featuredReview.author)} · Verified Buyer</div>
     </section>` : ''}
@@ -511,7 +512,7 @@ ${relatedAddOns.map(item => `        <a class="shop-card" href="${wwwBase}${item
 
 <aside class="sticky" aria-label="Purchase">
   <div class="sticky-inner">
-    <div class="sticky-meta"><div class="sticky-label">Large Women’s Package · Qty <span id="stickyQty">1</span></div><div class="sticky-price">${escHtml(product.price)}</div></div>
+    <div class="sticky-meta"><div class="sticky-label">${escHtml(ui.stickyLabel || product.title)} · Qty <span id="stickyQty">1</span></div><div class="sticky-price">${escHtml(product.price)}</div></div>
     <a class="btn-primary js-cart-btn" href="${cartUrl}" data-track="add_to_cart_sticky">Send This Gift</a>
   </div>
 </aside>
@@ -592,14 +593,14 @@ ${relatedAddOns.map(item => `        <a class="shop-card" href="${wwwBase}${item
 
 function generatePage(product) {
   if (product.mobileUi && product.mobileUi.croMaster) {
-    return generateLargeWomensPage(product);
+    return generateWomensCroPage(product);
   }
   const isRadiation = product.slug.includes('radiation');
   const ui = product.mobileUi || {};
   const faqList = isRadiation ? radiationFaqs : faqs;
   const totalItems = product.categories.reduce((sum, cat) => sum + cat.items.length, 0);
   const cartUrl = `${wwwBase}/?add-to-cart=${product.id}`;
-  const freeShipping = parseFloat(product.price.replace('$','')) >= 100;
+  const freeShipping = parseFloat(product.price.replace('$','')) >= 200;
   const heroUrl = img(product.heroImage);
   const displayPrice = ui.displayPrice || product.price;
   const leadReview = product.reviews[0];
@@ -911,7 +912,7 @@ ${galleryReviewRowHtml}
     </div>
     <div class="price-row">
       <div class="product-price">${displayPrice}</div>
-      <div class="price-note">${freeShipping ? 'Free shipping included' : 'Free shipping over $100'}<br>Secure checkout on rockthetreatment.com</div>
+      <div class="price-note">${freeShipping ? 'Free shipping included' : 'Free shipping over $200'}<br>Secure checkout on rockthetreatment.com</div>
     </div>
     <div class="qty-row">
       <div class="qty-label">Quantity</div>
@@ -925,7 +926,7 @@ ${galleryReviewRowHtml}
       <a href="${cartUrl}" class="btn-cart js-cart-btn">Send This Gift</a>
       <a href="#inside" class="btn-secondary">See What's Inside</a>
       <div class="urgency">Orders placed before 2pm ship same day</div>
-      <div class="shipping-note">${freeShipping ? 'Free shipping on this order' : 'Free shipping on orders over $100'}</div>
+      <div class="shipping-note">${freeShipping ? 'Free shipping on this order' : 'Free shipping on orders over $200'}</div>
     </div>
     <div class="reassurance-row">
       <div class="reassurance-card"><strong>Fast</strong><span>Ships in 1-2 business days</span></div>
