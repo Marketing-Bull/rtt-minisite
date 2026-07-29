@@ -57,6 +57,10 @@ h1{font-family:var(--display);font-size:clamp(34px,7vw,48px);line-height:1.02;fo
 .hero-checks{display:grid;gap:9px;margin:16px 0 0;padding:0;list-style:none}
 .hero-checks li{display:flex;gap:9px;font-size:13px;line-height:1.45;color:#4f4740}
 .hero-checks li::before{content:'✓';font-weight:900;color:var(--green-dark)}
+.trust-row{list-style:none;display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin:16px 0 0;padding:14px 0;border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+.trust-item{display:flex;flex-direction:column;align-items:center;text-align:center;gap:7px;font-size:10.5px;font-weight:700;line-height:1.25;color:var(--muted)}
+.trust-item svg{width:23px;height:23px;flex:0 0 auto;fill:none;stroke:var(--green-dark);stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
+@media(max-width:340px){.trust-row{grid-template-columns:repeat(2,1fr);gap:12px 6px}}
 .purchase-row{display:grid;grid-template-columns:132px 1fr;gap:10px;margin-top:20px}
 .quantity{height:54px;display:grid;grid-template-columns:44px 44px 44px;border:1px solid #cfc3b7;border-radius:14px;overflow:hidden;background:#fff}
 .qty-btn{border:0;background:#fff;font-size:21px;cursor:pointer}
@@ -180,7 +184,7 @@ h1{font-family:var(--display);font-size:clamp(34px,7vw,48px);line-height:1.02;fo
 </head>
 <body>
 <div class="page">
-  <div class="announcement">FREE SHIPPING OVER $200 · SHIPPING CALCULATED AT CHECKOUT</div>
+
   <header class="site-header">
     <a class="header-link" href="https://www.rockthetreatment.com/shop/" aria-label="Browse all care packages">Shop</a>
     <a class="logo" href="https://www.rockthetreatment.com" aria-label="Rock The Treatment home"><picture><source type="image/avif" srcset="/assets/uploads/2023/01/RTT.S1.tm_.new-logo.avif"><source type="image/webp" srcset="/assets/uploads/2023/01/RTT.S1.tm_.new-logo.webp"><img src="/assets/uploads/2023/01/RTT.S1.tm_.new-logo.png" alt="Rock The Treatment" decoding="async"></picture></a>
@@ -196,10 +200,15 @@ h1{font-family:var(--display);font-size:clamp(34px,7vw,48px);line-height:1.02;fo
         </div>
         <div class="gallery-rating"><a class="rating-link" href="https://www.rockthetreatment.com/womens-large-chemo-basket/#reviews" data-track="rating_click"><span class="rating-stars" aria-hidden="true">★★★★★</span><span>5.0 · 259 verified reviews</span></a></div>
         <div class="gallery-thumbs" id="galleryThumbs" aria-label="Choose a product image">
-          <button class="thumb" type="button" data-index="0" aria-label="Show image 1 of 4" aria-current="true"><picture><source type="image/avif" srcset="/assets/uploads/2018/04/Women-Large-Chemo-Basket-Main.avif"><source type="image/webp" srcset="/assets/uploads/2018/04/Women-Large-Chemo-Basket-Main.webp"><img src="/assets/uploads/2018/04/Women-Large-Chemo-Basket-Main.jpg" alt="" decoding="async"></picture></button>
-          <button class="thumb" type="button" data-index="1" aria-label="Show image 2 of 4" aria-current="false"><picture><source type="image/avif" srcset="/assets/uploads/2019/05/lindi-face-serum.avif"><source type="image/webp" srcset="/assets/uploads/2019/05/lindi-face-serum.webp"><img src="/assets/uploads/2019/05/lindi-face-serum.jpg" alt="" decoding="async"></picture></button>
-          <button class="thumb" type="button" data-index="2" aria-label="Show image 3 of 4" aria-current="false"><picture><source type="image/avif" srcset="/assets/uploads/2018/04/fuzzy-socks.avif"><source type="image/webp" srcset="/assets/uploads/2018/04/fuzzy-socks.webp"><img src="/assets/uploads/2018/04/fuzzy-socks.jpg" alt="" loading="lazy" decoding="async"></picture></button>
-          <button class="thumb" type="button" data-index="3" aria-label="Show image 4 of 4" aria-current="false"><picture><source type="image/avif" srcset="/assets/uploads/2019/07/knit-cap.avif"><source type="image/webp" srcset="/assets/uploads/2019/07/knit-cap.webp"><img src="/assets/uploads/2019/07/knit-cap.jpg" alt="" loading="lazy" decoding="async"></picture></button>
+          <button class="thumb" type="button" data-index="0" aria-label="Show image 1 of 9" aria-current="true"><picture><source type="image/avif" srcset="/assets/uploads/2018/04/Women-Large-Chemo-Basket-Main.avif"><source type="image/webp" srcset="/assets/uploads/2018/04/Women-Large-Chemo-Basket-Main.webp"><img src="/assets/uploads/2018/04/Women-Large-Chemo-Basket-Main.jpg" alt="" decoding="async"></picture></button>
+          <button class="thumb" type="button" data-index="1" aria-label="Show image 2 of 9" aria-current="false"><picture><source type="image/avif" srcset="/assets/uploads/2019/05/lindi-face-serum.avif"><source type="image/webp" srcset="/assets/uploads/2019/05/lindi-face-serum.webp"><img src="/assets/uploads/2019/05/lindi-face-serum.jpg" alt="" decoding="async"></picture></button>
+          <button class="thumb" type="button" data-index="2" aria-label="Show image 3 of 9" aria-current="false"><picture><source type="image/avif" srcset="/assets/uploads/2018/04/fuzzy-socks.avif"><source type="image/webp" srcset="/assets/uploads/2018/04/fuzzy-socks.webp"><img src="/assets/uploads/2018/04/fuzzy-socks.jpg" alt="" loading="lazy" decoding="async"></picture></button>
+          <button class="thumb" type="button" data-index="3" aria-label="Show image 4 of 9" aria-current="false"><picture><source type="image/avif" srcset="/assets/uploads/2019/07/knit-cap.avif"><source type="image/webp" srcset="/assets/uploads/2019/07/knit-cap.webp"><img src="/assets/uploads/2019/07/knit-cap.jpg" alt="" loading="lazy" decoding="async"></picture></button>
+          <button class="thumb" type="button" data-index="4" aria-label="Show image 5 of 9" aria-current="false"><picture><source type="image/avif" srcset="/assets/uploads/2019/07/eye-pillow.avif"><source type="image/webp" srcset="/assets/uploads/2019/07/eye-pillow.webp"><img src="/assets/uploads/2019/07/eye-pillow.jpg" alt="" loading="lazy" decoding="async"></picture></button>
+          <button class="thumb" type="button" data-index="5" aria-label="Show image 6 of 9" aria-current="false"><picture><source type="image/avif" srcset="/assets/uploads/2019/05/queasy-pops.avif"><source type="image/webp" srcset="/assets/uploads/2019/05/queasy-pops.webp"><img src="/assets/uploads/2019/05/queasy-pops.jpg" alt="" loading="lazy" decoding="async"></picture></button>
+          <button class="thumb" type="button" data-index="6" aria-label="Show image 7 of 9" aria-current="false"><picture><source type="image/avif" srcset="/assets/uploads/2018/04/coloring-books-sharpener.avif"><source type="image/webp" srcset="/assets/uploads/2018/04/coloring-books-sharpener.webp"><img src="/assets/uploads/2018/04/coloring-books-sharpener.jpg" alt="" loading="lazy" decoding="async"></picture></button>
+          <button class="thumb" type="button" data-index="7" aria-label="Show image 8 of 9" aria-current="false"><picture><source type="image/avif" srcset="/assets/uploads/2019/07/note-cards.avif"><source type="image/webp" srcset="/assets/uploads/2019/07/note-cards.webp"><img src="/assets/uploads/2019/07/note-cards.jpg" alt="" loading="lazy" decoding="async"></picture></button>
+          <button class="thumb" type="button" data-index="8" aria-label="Show image 9 of 9" aria-current="false"><picture><source type="image/avif" srcset="/assets/uploads/2019/05/jelly-belly-cocktail-crop.avif"><source type="image/webp" srcset="/assets/uploads/2019/05/jelly-belly-cocktail-crop.webp"><img src="/assets/uploads/2019/05/jelly-belly-cocktail-crop.jpg" alt="" loading="lazy" decoding="async"></picture></button>
         </div>
       </div>
 
@@ -213,7 +222,7 @@ h1{font-family:var(--display);font-size:clamp(34px,7vw,48px);line-height:1.02;fo
           <li>Personal care, cozy essentials, familiar snacks, and quiet activities</li>
           <li>Free personal gift note added at checkout</li>
           <li>Processed and shipped from New York in 1–2 business days</li>
-          <li>Shipping calculated at checkout; free on orders over $200</li>
+          <li>Free shipping on orders over $200</li>
         </ul>
         <div class="purchase-row">
           <div class="quantity" aria-label="Quantity">
@@ -224,6 +233,12 @@ h1{font-family:var(--display);font-size:clamp(34px,7vw,48px);line-height:1.02;fo
           <a class="btn-primary js-cart-btn" href="https://www.rockthetreatment.com/cart/?add-to-cart=248&quantity=1" data-track="add_to_cart">Send This Gift</a>
         </div>
         <a class="btn-secondary" href="#inside" data-track="see_inside">See What’s Inside</a>
+        <ul class="trust-row" aria-label="What's included with every order">
+          <li class="trust-item"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><rect x="4" y="10.5" width="16" height="9.5" rx="2"/><path d="M8 10.5V7a4 4 0 0 1 8 0v3.5"/></svg><span>Secure checkout</span></li>
+          <li class="trust-item"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M3 8l9-4 9 4v8l-9 4-9-4z"/><path d="M3 8l9 4 9-4"/><path d="M12 12v8"/></svg><span>Hand-packed in New York</span></li>
+          <li class="trust-item"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M3.5 10h10.5a5 5 0 0 1 0 10h-3.5"/><path d="M7.5 5.5L3 10l4.5 4.5"/></svg><span>180-day returns</span></li>
+          <li class="trust-item"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><rect x="3" y="9" width="18" height="11" rx="2"/><path d="M3 13h18"/><path d="M12 9v11"/><path d="M12 9S9.6 4.8 7.8 6.2 9.6 9 12 9zM12 9s2.4-4.2 4.2-2.8S14.4 9 12 9z"/></svg><span>Free gift note</span></li>
+        </ul>
         <p class="microcopy">Secure checkout on RockTheTreatment.com · Delivery time varies by carrier and destination</p>
       </div>
     </section>
@@ -409,7 +424,7 @@ h1{font-family:var(--display);font-size:clamp(34px,7vw,48px);line-height:1.02;fo
         </div>
         <div class="faq-item">
           <h3 style="margin:0"><button class="faq-button" type="button" id="faq-button-1" aria-expanded="false" aria-controls="faq-answer-1"><span>How much is shipping?</span><span class="faq-icon" aria-hidden="true">+</span></button></h3>
-          <div class="faq-answer" id="faq-answer-1" role="region" aria-labelledby="faq-button-1" hidden>Shipping is calculated at checkout. Orders over $200 qualify for free shipping.</div>
+          <div class="faq-answer" id="faq-answer-1" role="region" aria-labelledby="faq-button-1" hidden>Orders over $200 ship free. Shipping on smaller orders depends on the delivery address.</div>
         </div>
         <div class="faq-item">
           <h3 style="margin:0"><button class="faq-button" type="button" id="faq-button-2" aria-expanded="false" aria-controls="faq-answer-2"><span>Can I include a personal gift note?</span><span class="faq-icon" aria-hidden="true">+</span></button></h3>
@@ -421,7 +436,7 @@ h1{font-family:var(--display);font-size:clamp(34px,7vw,48px);line-height:1.02;fo
         </div>
         <div class="faq-item">
           <h3 style="margin:0"><button class="faq-button" type="button" id="faq-button-4" aria-expanded="false" aria-controls="faq-answer-4"><span>What is the return policy?</span><span class="faq-icon" aria-hidden="true">+</span></button></h3>
-          <div class="faq-answer" id="faq-answer-4" role="region" aria-labelledby="faq-button-4" hidden>Unopened packages in their original packaging may be returned within 180 days with proof of purchase. The customer pays return shipping, and original shipping charges are nonrefundable.</div>
+          <div class="faq-answer" id="faq-answer-4" role="region" aria-labelledby="faq-button-4" hidden>Packages in their original packaging may be returned within 180 days with proof of purchase. The customer pays return shipping, and original shipping charges are nonrefundable.</div>
         </div>
         <div class="faq-item">
           <h3 style="margin:0"><button class="faq-button" type="button" id="faq-button-5" aria-expanded="false" aria-controls="faq-answer-5"><span>Is the Celebration Bell included?</span><span class="faq-icon" aria-hidden="true">+</span></button></h3>
@@ -463,7 +478,7 @@ h1{font-family:var(--display);font-size:clamp(34px,7vw,48px);line-height:1.02;fo
       <h2 class="section-title" id="final-title">Send something thoughtful, useful, and ready to give.</h2>
       <p class="section-copy" style="margin-left:auto;margin-right:auto">A gift-ready care package, hand-packed in New York and ready for your personal note.</p>
       <a class="btn-primary js-cart-btn" href="https://www.rockthetreatment.com/cart/?add-to-cart=248&quantity=1" data-track="add_to_cart_final">Send This Gift · $169.99</a>
-      <p class="microcopy">Free gift note at checkout · Shipping calculated at checkout · 180-day unopened return policy</p>
+      <p class="microcopy">Free gift note at checkout · Free shipping over $200 · 180-day return policy</p>
     </section>
 
     <section class="section section-alt" aria-labelledby="more-title">
@@ -540,7 +555,7 @@ h1{font-family:var(--display);font-size:clamp(34px,7vw,48px);line-height:1.02;fo
 
 <script>
 (function(){
-  var gallery = [{"a":"/assets/uploads/2018/04/Women-Large-Chemo-Basket-Main.avif","w":"/assets/uploads/2018/04/Women-Large-Chemo-Basket-Main.webp","f":"/assets/uploads/2018/04/Women-Large-Chemo-Basket-Main.jpg"},{"a":"/assets/uploads/2019/05/lindi-face-serum.avif","w":"/assets/uploads/2019/05/lindi-face-serum.webp","f":"/assets/uploads/2019/05/lindi-face-serum.jpg"},{"a":"/assets/uploads/2018/04/fuzzy-socks.avif","w":"/assets/uploads/2018/04/fuzzy-socks.webp","f":"/assets/uploads/2018/04/fuzzy-socks.jpg"},{"a":"/assets/uploads/2019/07/knit-cap.avif","w":"/assets/uploads/2019/07/knit-cap.webp","f":"/assets/uploads/2019/07/knit-cap.jpg"}];
+  var gallery = [{"a":"/assets/uploads/2018/04/Women-Large-Chemo-Basket-Main.avif","w":"/assets/uploads/2018/04/Women-Large-Chemo-Basket-Main.webp","f":"/assets/uploads/2018/04/Women-Large-Chemo-Basket-Main.jpg"},{"a":"/assets/uploads/2019/05/lindi-face-serum.avif","w":"/assets/uploads/2019/05/lindi-face-serum.webp","f":"/assets/uploads/2019/05/lindi-face-serum.jpg"},{"a":"/assets/uploads/2018/04/fuzzy-socks.avif","w":"/assets/uploads/2018/04/fuzzy-socks.webp","f":"/assets/uploads/2018/04/fuzzy-socks.jpg"},{"a":"/assets/uploads/2019/07/knit-cap.avif","w":"/assets/uploads/2019/07/knit-cap.webp","f":"/assets/uploads/2019/07/knit-cap.jpg"},{"a":"/assets/uploads/2019/07/eye-pillow.avif","w":"/assets/uploads/2019/07/eye-pillow.webp","f":"/assets/uploads/2019/07/eye-pillow.jpg"},{"a":"/assets/uploads/2019/05/queasy-pops.avif","w":"/assets/uploads/2019/05/queasy-pops.webp","f":"/assets/uploads/2019/05/queasy-pops.jpg"},{"a":"/assets/uploads/2018/04/coloring-books-sharpener.avif","w":"/assets/uploads/2018/04/coloring-books-sharpener.webp","f":"/assets/uploads/2018/04/coloring-books-sharpener.jpg"},{"a":"/assets/uploads/2019/07/note-cards.avif","w":"/assets/uploads/2019/07/note-cards.webp","f":"/assets/uploads/2019/07/note-cards.jpg"},{"a":"/assets/uploads/2019/05/jelly-belly-cocktail-crop.avif","w":"/assets/uploads/2019/05/jelly-belly-cocktail-crop.webp","f":"/assets/uploads/2019/05/jelly-belly-cocktail-crop.jpg"}];
   var stage = document.getElementById('galleryStage');
   var main = document.getElementById('mainImg');
   var avif = document.getElementById('mainSrcAvif');

@@ -73,13 +73,17 @@
       "heroImage": "/2018/04/Women-Large-Chemo-Basket-Main.jpg",
       "mobileUi": {
         "croMaster": true,
-        "announcement": "FREE SHIPPING OVER $200 · SHIPPING CALCULATED AT CHECKOUT",
         "darkHeader": true,
         "galleryImages": [
           "/2018/04/Women-Large-Chemo-Basket-Main.jpg",
           "/2019/05/lindi-face-serum.jpg",
           "/2018/04/fuzzy-socks.jpg",
-          "/2019/07/knit-cap.jpg"
+          "/2019/07/knit-cap.jpg",
+          "/2019/07/eye-pillow.jpg",
+          "/2019/05/queasy-pops.jpg",
+          "/2018/04/coloring-books-sharpener.jpg",
+          "/2019/07/note-cards.jpg",
+          "/2019/05/jelly-belly-cocktail-crop.jpg"
         ],
         "celebrationImage": "/2023/06/Copy-of-free-bell-w-box-1-1.jpg",
         "eyebrow": "Thoughtfully chosen. Ready to send.",
@@ -179,14 +183,17 @@
       "mobileUi": {
         "croMaster": true,
         "reviewCorpusIntegrated": true,
-        "announcement": "FREE SHIPPING OVER $200 · SHIPPING CALCULATED AT CHECKOUT",
         "darkHeader": true,
         "galleryImages": [
           "/2018/04/Women-Medium-Chemo-Basket-Main.jpg",
           "/lifestyle/medium-womens-care-package.jpg",
           "/2019/05/lindi-face-serum.jpg",
           "/2018/04/fuzzy-socks.jpg",
-          "/2023/04/Puzzle-Book.jpg"
+          "/2023/04/Puzzle-Book.jpg",
+          "/2019/07/eye-pillow.jpg",
+          "/2019/05/10-dry-mouth-lozenges.jpg",
+          "/2019/05/queasy-pops.jpg",
+          "/2019/05/jelly-belly-cocktail-crop.jpg"
         ],
         "celebrationImage": "/2023/06/Copy-of-free-bell-w-box-1-1.jpg",
         "eyebrow": "Thoughtfully chosen. Ready to send.",

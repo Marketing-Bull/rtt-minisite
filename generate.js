@@ -35,6 +35,17 @@ function cartUrlFor(productId, quantity) {
   return `${wwwBase}/cart/?add-to-cart=${productId}&quantity=${qty}`;
 }
 
+// Trust badges under the buy box. Inline SVG rather than image files: it adds
+// no network requests, scales cleanly, and inherits colour from CSS. Icons are
+// decorative — the adjacent label carries the meaning for screen readers.
+const svgIcon = d => `<svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">${d}</svg>`;
+const trustBadges = [
+  { label: 'Secure checkout', icon: svgIcon('<rect x="4" y="10.5" width="16" height="9.5" rx="2"/><path d="M8 10.5V7a4 4 0 0 1 8 0v3.5"/>') },
+  { label: 'Hand-packed in New York', icon: svgIcon('<path d="M3 8l9-4 9 4v8l-9 4-9-4z"/><path d="M3 8l9 4 9-4"/><path d="M12 12v8"/>') },
+  { label: '180-day returns', icon: svgIcon('<path d="M3.5 10h10.5a5 5 0 0 1 0 10h-3.5"/><path d="M7.5 5.5L3 10l4.5 4.5"/>') },
+  { label: 'Free gift note', icon: svgIcon('<rect x="3" y="9" width="18" height="11" rx="2"/><path d="M3 13h18"/><path d="M12 9v11"/><path d="M12 9S9.6 4.8 7.8 6.2 9.6 9 12 9zM12 9s2.4-4.2 4.2-2.8S14.4 9 12 9z"/>') },
+];
+
 // Render a rating at its natural precision so the hero and the review-proof
 // block can never disagree (4.98 stays 4.98; a flat 5 reads 5.0, not 5.00).
 function fmtRating(value) {
@@ -176,7 +187,7 @@ function generateWomensCroPage(product) {
     },
     {
       q: 'How much is shipping?',
-      a: 'Shipping is calculated at checkout. Orders over $200 qualify for free shipping.'
+      a: 'Orders over $200 ship free. Shipping on smaller orders depends on the delivery address.'
     },
     {
       q: 'Can I include a personal gift note?',
@@ -188,7 +199,7 @@ function generateWomensCroPage(product) {
     },
     {
       q: 'What is the return policy?',
-      a: 'Unopened packages in their original packaging may be returned within 180 days with proof of purchase. The customer pays return shipping, and original shipping charges are nonrefundable.'
+      a: 'Packages in their original packaging may be returned within 180 days with proof of purchase. The customer pays return shipping, and original shipping charges are nonrefundable.'
     },
     {
       q: 'Is the Celebration Bell included?',
@@ -255,6 +266,10 @@ h1{font-family:var(--display);font-size:clamp(34px,7vw,48px);line-height:1.02;fo
 .hero-checks{display:grid;gap:9px;margin:16px 0 0;padding:0;list-style:none}
 .hero-checks li{display:flex;gap:9px;font-size:13px;line-height:1.45;color:#4f4740}
 .hero-checks li::before{content:'✓';font-weight:900;color:var(--green-dark)}
+.trust-row{list-style:none;display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin:16px 0 0;padding:14px 0;border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+.trust-item{display:flex;flex-direction:column;align-items:center;text-align:center;gap:7px;font-size:10.5px;font-weight:700;line-height:1.25;color:var(--muted)}
+.trust-item svg{width:23px;height:23px;flex:0 0 auto;fill:none;stroke:var(--green-dark);stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
+@media(max-width:340px){.trust-row{grid-template-columns:repeat(2,1fr);gap:12px 6px}}
 .purchase-row{display:grid;grid-template-columns:132px 1fr;gap:10px;margin-top:20px}
 .quantity{height:54px;display:grid;grid-template-columns:44px 44px 44px;border:1px solid #cfc3b7;border-radius:14px;overflow:hidden;background:#fff}
 .qty-btn{border:0;background:#fff;font-size:21px;cursor:pointer}
@@ -378,7 +393,7 @@ h1{font-family:var(--display);font-size:clamp(34px,7vw,48px);line-height:1.02;fo
 ${gtmHead}</head>
 <body>
 ${gtmBody}<div class="page">
-  <div class="announcement">${escHtml(ui.announcement)}</div>
+${ui.announcement ? `  <div class="announcement">${escHtml(ui.announcement)}</div>\n` : ''}
   <header class="site-header">
     <a class="header-link" href="${wwwBase}/shop/" aria-label="Browse all care packages">Shop</a>
     <a class="logo" href="${wwwBase}" aria-label="Rock The Treatment home">${picture(logo, { alt: 'Rock The Treatment', lazy: false })}</a>
@@ -408,7 +423,7 @@ ${galleryImages.map((gi, i) => `          <button class="thumb" type="button" da
           <li>Personal care, cozy essentials, familiar snacks, and quiet activities</li>
           <li>Free personal gift note added at checkout</li>
           <li>Processed and shipped from New York in 1–2 business days</li>
-          <li>Shipping calculated at checkout; free on orders over $200</li>
+          <li>Free shipping on orders over $200</li>
         </ul>
         <div class="purchase-row">
           <div class="quantity" aria-label="Quantity">
@@ -419,6 +434,9 @@ ${galleryImages.map((gi, i) => `          <button class="thumb" type="button" da
           <a class="btn-primary js-cart-btn" href="${cartUrl}" data-track="add_to_cart">Send This Gift</a>
         </div>
         <a class="btn-secondary" href="#inside" data-track="see_inside">See What’s Inside</a>
+        <ul class="trust-row" aria-label="What's included with every order">
+${trustBadges.map(b => `          <li class="trust-item">${b.icon}<span>${escHtml(b.label)}</span></li>`).join('\n')}
+        </ul>
         <p class="microcopy">Secure checkout on RockTheTreatment.com · Delivery time varies by carrier and destination</p>
       </div>
     </section>
@@ -513,7 +531,7 @@ ${product.reviews.map(review => `        <article class="review">
       <h2 class="section-title" id="final-title">${escHtml(ui.finalHeadline || ui.supportingHeadline)}</h2>
       <p class="section-copy" style="margin-left:auto;margin-right:auto">A gift-ready care package, hand-packed in New York and ready for your personal note.</p>
       <a class="btn-primary js-cart-btn" href="${cartUrl}" data-track="add_to_cart_final">Send This Gift · ${escHtml(product.price)}</a>
-      <p class="microcopy">Free gift note at checkout · Shipping calculated at checkout · 180-day unopened return policy</p>
+      <p class="microcopy">Free gift note at checkout · Free shipping over $200 · 180-day return policy</p>
     </section>
 
     <section class="section section-alt" aria-labelledby="more-title">
