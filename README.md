@@ -1,133 +1,140 @@
-# rtt-minisite
+# RTT Minisite
 
-A standalone, mobile-optimized **product minisite** for Rock The Treatment, built to
-serve at **`m.rockthetreatment.com`** via **Cloudflare Pages**.
+Mobile-first product landing pages for
+[Rock The Treatment](https://www.rockthetreatment.com/). The minisite is a fast
+marketing front end: product discovery happens here, while cart and checkout hand
+off to the live WooCommerce store.
 
-It renders the five best-selling care packages as lightweight, self-contained static
-pages (~40 KB each, inline CSS + vanilla JS — no Elementor, no frameworks) so that
-paid / mobile traffic gets a fast experience. **Cart and checkout intentionally hand
-off to the live WooCommerce store** on `www.rockthetreatment.com` — this minisite is a
-marketing front-end, not a second store.
+The **Medium Women's Chemo Care Package** is the current CRO pilot. Its page uses
+the unified conversion template, verified exact-product review data, optimized
+local images, and quantity-aware WooCommerce cart links.
 
-| Product | Slug | WC ID | Price |
-|---|---|:---:|---|
-| Large Women's Chemo | `womens-large-chemo-basket` | 248 | $159.99 |
-| Medium Women's Chemo | `womens-medium-chemo-basket` | 235 | $119.99 |
-| Small Women's Chemo | `womens-small-chemo-basket` | 10338 | $69.99 |
-| Radiation Care Package | `radiation-basket` | 250 | $134.99 |
-| Medium Men's Chemo | `mens-medium-chemo-basket` | 232 | $119.99 |
+## Current products
 
-## How it works
+Product facts live in `product-data.json`. Do not hard-code prices, product IDs,
+ratings, or review counts in the generator.
 
-`generate.js` (Node, **zero dependencies**) reads `product-data.json` and writes the
-five product pages plus an `index.html` hub into `public/`, which is what Cloudflare
-Pages serves.
+| Product | Page | WooCommerce ID | Price |
+| --- | --- | ---: | ---: |
+| Large Women's Chemo Care Package | `womens-large-chemo-basket.html` | 248 | $169.99 |
+| Medium Women's Chemo Care Package | `womens-medium-chemo-basket.html` | 235 | $129.99 |
+| Small Women's Chemo Care Package | `womens-small-chemo-basket.html` | 10338 | $74.99 |
+| Radiation Care Package | `radiation-basket.html` | 250 | $134.99 |
+| Medium Men's Chemo Care Package | `mens-medium-chemo-basket.html` | 232 | $119.99 |
 
-```
-npm run build      # == node generate.js  -> writes public/*.html
-```
+## Quick start
 
-`public/` is committed, so the site works even if the Pages build step is skipped.
-Re-run the build whenever `product-data.json` or `generate.js` changes, and commit the
-regenerated `public/`.
+Requires Node.js 22 or newer.
 
-### Repo layout
-
-```
-generate.js          # static-site generator (template lives here)
-product-data.json    # product content (titles, prices, items, reviews, image paths)
-public/              # ← Cloudflare Pages output directory (built + committed)
-  index.html         #   mobile hub linking to the 5 product pages
-  *-basket.html      #   the 5 product pages
-  _headers           #   caching + security headers
-  assets/uploads/    #   self-hosted product images (downloaded by tools/fetch-images.js)
-design/              # reference design mockups (v4 full, v5 production) — not deployed
-tools/               # fetch-images.js (downloads images), optimize-images.js (AVIF/WebP) + reference scrapers
-wordpress/           # reference WordPress child-theme implementation of the same design
+```bash
+npm ci
+npm run build
+npm run preview
 ```
 
-### Notable behavior baked into the generator
+Wrangler serves the site at `http://localhost:8787` by default.
 
-- **Images are self-hosted** under `public/assets/uploads/...`. Run
-  `node tools/fetch-images.js` to (re)download them from the store. This avoids the main
-  site's hotlink/referer protection, which returns **403** for cross-origin image requests
-  from `*.pages.dev` and any non-`rockthetreatment.com` referer.
-- **SEO:** each page sets `<link rel="canonical">` to its `www` product page and, by
-  default, `<meta name="robots" content="noindex, follow">` so the mobile mirror doesn't
-  compete with the main store in organic search. Flip `ALLOW_INDEXING = true` at the top
-  of `generate.js` to make the pages indexable.
-- **Mobile performance:** every image is served as **AVIF/WebP via `<picture>`** with the
-  original as a fallback (generated offline by `npm run optimize`). The hero is preloaded as
-  AVIF with `fetchpriority="high"`; below-the-fold images use `loading="lazy"` +
-  `decoding="async"`; fonts are preconnected. The Warmies upsell GIF is converted to a small
-  animated WebP (~7.2 MB → ~0.57 MB). `generate.js` only references variant files that exist
-  on disk, so any un-optimized or missing image degrades gracefully to a plain `<img>`.
-- **Add-to-cart** links to `https://www.rockthetreatment.com/?add-to-cart=<id>&quantity=<n>`.
+| Command | Purpose |
+| --- | --- |
+| `npm run build` | Generate the hub and five product pages in `public/` |
+| `npm run preview` | Run the Cloudflare Worker locally |
+| `npm run optimize` | Generate AVIF/WebP image variants with Sharp |
+| `npm run deploy` | Deploy the static-assets Worker with Wrangler |
 
-## Deploy to Cloudflare Pages
+## Source and build workflow
 
-### Option A — Git integration (recommended)
+`generate.js` reads `product-data.json` and writes the generated HTML to
+`public/`. Both source and generated output are committed so previews and
+deployments use the same reviewed artifact.
 
-1. Cloudflare dashboard → account **Rock The Treatment** → **Workers & Pages** →
-   **Create** → **Pages** → **Connect to Git**.
-2. Select the `Marketing-Bull/rtt-minisite` repo and the production branch.
-3. Build settings:
-   - **Framework preset:** None
-   - **Build command:** `node generate.js` (or leave blank — `public/` is committed)
-   - **Build output directory:** `public`
-   - **Root directory:** `/`
-4. **Save and Deploy** → you get a `*.pages.dev` preview URL.
-5. **Custom domain:** project → **Custom domains** → **Set up a custom domain** →
-   `m.rockthetreatment.com`. Because the `rockthetreatment.com` zone is in the same
-   Cloudflare account, the `m` CNAME and TLS cert are created automatically.
+For every content or template change:
 
-### Option B — Wrangler (needs an API token)
-
-```
-npm i -g wrangler
-node generate.js
-CLOUDFLARE_API_TOKEN=*** wrangler pages deploy public \
-  --project-name=rtt-minisite --branch=main
-```
-Token scope: *Account → Cloudflare Pages: Edit* and *Zone → DNS: Edit* on the
-rockthetreatment.com zone (for the custom domain).
-
-## Verify locally
-
-```
-node generate.js
-npx serve public         # or: python3 -m http.server 8000 --directory public
+```bash
+npm run build
+git diff --check
+git status --short
 ```
 
-Open a product page in a mobile viewport and check:
+Commit changes to `generate.js` and/or `product-data.json` together with the
+regenerated files under `public/`.
 
-- All 5 pages + the hub render; layout is mobile-first (≤480px).
-- Images load from `/assets/uploads/...` (Network tab: AVIF/WebP served, 200; logo + bell load;
-  no `.gif` request). Missing "Large Men's" related card self-hides.
-- Gallery thumb-click / swipe / arrow keys change the main image (format negotiation preserved);
-  FAQ accordion toggles;
-  quantity stepper updates and appends `&quantity=` to the Add-to-Cart link.
-- View source: `rel=canonical` → `www/<slug>/`, `robots noindex,follow`, theme-color,
-  hero `rel=preload`, below-the-fold `loading="lazy"`.
+## Repository layout
 
-## Regenerating images
-
-```
-node tools/fetch-images.js     # (re)download originals from the store (no/empty referer)
-npm run optimize               # generate AVIF + WebP variants; convert the Warmies GIF
-node generate.js               # rebuild the HTML to reference the new variants
+```text
+generate.js                    Static-site generator and shared templates
+product-data.json              Product facts, page copy, reviews, and image paths
+public/                        Generated site and self-hosted image assets
+research/reviews-medium-women/ Review evidence and source-preserving exports
+tools/                         Image, product, and review collection utilities
+design/                        Reference mockups; not deployed
+wordpress/                     Legacy/reference WordPress implementation
+wrangler.jsonc                 Cloudflare static-assets Worker configuration
 ```
 
-`npm run optimize` (which uses `sharp`, a **dev**-only dependency — the runtime build stays
-dependency-free) is idempotent: it skips up-to-date variants and re-converts the GIF only if
-the original is present.
+## Product and review integrity
 
-## Roadmap
+- Cart links use
+  `https://www.rockthetreatment.com/?add-to-cart=<id>&quantity=<n>`.
+- The free gift note is entered at checkout.
+- Shipping is free over $200; shipping for lower totals is calculated at
+  checkout.
+- Current fulfillment guidance is 1–2 business days from New York, followed by
+  carrier transit time.
+- Unopened packages in original packaging may be returned within 180 days with
+  proof of purchase. Return shipping is customer-paid and original shipping is
+  nonrefundable.
+- Do not publish scarcity, comparison-value, same-day shipping, medical, or
+  treatment claims without current supporting evidence.
+- Exact-product reviews must remain distinct from company-level reviews.
 
-- ✅ **Self-hosted images** — originals under `public/assets/uploads/`, fetched via
-  `node tools/fetch-images.js`. Removes the hotlink dependency on the main store.
-- ✅ **Optimize images** — AVIF + WebP variants for every image, served via `<picture>` with
-  the original as fallback; the ~7.2 MB animated Warmies upsell GIF is converted to a ~0.57 MB
-  animated WebP (+ still-JPG fallback) and the original removed. Run with `npm run optimize`.
-- 5 source images are missing upstream (redirect to the homepage); 4 are unused and one is the
-  "Large Men's" related card, which self-hides via an `onerror` fallback.
+The Medium Women's review archive currently contains:
+
+- 145 exact-product Stamped.io reviews
+- 2 exact-listing Etsy reviews
+- 233 company-level Google reviews
+- 4 company-level Yelp reviews
+
+See `research/reviews-medium-women/README.md` for scope rules, source URLs, and
+deduplication counts. `tools/gather-review-sources.js` rebuilds the archive from
+the Stamped feed and browser-open Google, Etsy, and Yelp review pages.
+
+## Images and performance
+
+Images are self-hosted under `public/assets/uploads/` to avoid the live store's
+cross-origin hotlink restrictions. Product images are served through `<picture>`
+with AVIF and WebP variants plus the original fallback.
+
+```bash
+node tools/fetch-images.js
+npm run optimize
+npm run build
+```
+
+The generator only references optimized variants that exist, so a missing
+variant falls back to the original image.
+
+## Verification checklist
+
+Before merging:
+
+- Build completes without modifying unexpected pages.
+- All local image references resolve.
+- Gallery thumbnails, keyboard controls, and FAQ accordions work.
+- Quantity changes update every purchase CTA with the correct product ID.
+- Mobile sticky purchase UI does not cover content.
+- Canonical URLs point to the corresponding live WooCommerce product page.
+- Generated pages retain `noindex, follow` unless indexing is intentionally
+  enabled in `generate.js`.
+- Review labels accurately distinguish exact-product and company-level proof.
+
+## Deployment
+
+The repository is configured as a Cloudflare static-assets Worker:
+
+- Worker name: `rtt-minisite`
+- Asset directory: `public`
+- Configuration: `wrangler.jsonc`
+- Production command: `npm run deploy`
+
+Cloudflare's Git integration creates preview builds for pull requests. Merge
+only after the Cloudflare check passes.

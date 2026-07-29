@@ -2,7 +2,7 @@
   "name": "rtt-minisite",
   "version": "1.0.0",
   "private": true,
-  "description": "Standalone mobile-optimized product minisite for m.rockthetreatment.com (Cloudflare Pages).",
+  "description": "Mobile-first product minisite for Rock The Treatment, deployed as a Cloudflare static-assets Worker.",
   "scripts": {
     "build": "node generate.js",
     "optimize": "node tools/optimize-images.js",
@@ -10,7 +10,7 @@
     "preview": "wrangler dev"
   },
   "devDependencies": {
-    "sharp": "^0.35.1",
-    "wrangler": "^4.102.0"
+    "sharp": "^0.35.3",
+    "wrangler": "^4.115.0"
   }
 }
