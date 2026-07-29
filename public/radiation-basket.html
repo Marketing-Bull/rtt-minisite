@@ -265,7 +265,7 @@ picture{display:contents}
       </div>
     </div>
     <div class="cta-stack">
-      <a href="https://www.rockthetreatment.com/?add-to-cart=250" class="btn-cart js-cart-btn">Send This Gift</a>
+      <a href="https://www.rockthetreatment.com/cart/?add-to-cart=250&quantity=1" class="btn-cart js-cart-btn">Send This Gift</a>
       <a href="#inside" class="btn-secondary">See What's Inside</a>
       <div class="urgency">Orders placed before 2pm ship same day</div>
       <div class="shipping-note">Free shipping on orders over $200</div>
@@ -645,7 +645,7 @@ picture{display:contents}
       <div class="sticky-label">Radiation Care Package</div>
       <div class="sticky-price">$134.99</div>
     </div>
-    <a href="https://www.rockthetreatment.com/?add-to-cart=250" class="sticky-btn js-cart-btn">Send This Gift</a>
+    <a href="https://www.rockthetreatment.com/cart/?add-to-cart=250&quantity=1" class="sticky-btn js-cart-btn">Send This Gift</a>
   </div>
 </div>
 
@@ -746,7 +746,9 @@ picture{display:contents}
   var qtyInput = document.getElementById('qty');
   var cartBtns = Array.prototype.slice.call(document.querySelectorAll('.js-cart-btn'));
   if (qtyInput && cartBtns.length) {
-    var baseUrl = cartBtns[0].href;
+    // The rendered href already carries quantity=1; strip it before re-appending
+    // so stepping the quantity can't emit ?add-to-cart=N&quantity=1&quantity=3.
+    var baseUrl = cartBtns[0].href.replace(/[?&]quantity=\d+/, '');
     function syncCartLinks() {
       cartBtns.forEach(function(btn){
         btn.href = baseUrl + '&quantity=' + qtyInput.value;
