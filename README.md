@@ -6,8 +6,8 @@ marketing front end: product discovery happens here, while cart and checkout han
 off to the live WooCommerce store.
 
 The **Medium Women's Chemo Care Package** is the current CRO pilot. Its page uses
-the unified conversion template, verified exact-product review data, optimized
-local images, and quantity-aware WooCommerce cart links.
+the warm editorial v3 design system, verified exact-product review data,
+optimized local images, and quantity-aware WooCommerce cart links.
 
 ## Current products
 

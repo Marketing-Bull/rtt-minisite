@@ -178,6 +178,14 @@
       "heroImage": "/2018/04/Women-Medium-Chemo-Basket-Main.jpg",
       "mobileUi": {
         "croMaster": true,
+        "designVersion": "v3",
+        "familyName": "Bigger Hug",
+        "familySubtitle": "Medium Women's Chemo Care Package",
+        "heroChips": [
+          "15+ useful comforts",
+          "Gift-ready presentation",
+          "Free personal note"
+        ],
         "reviewCorpusIntegrated": true,
         "announcement": "FREE SHIPPING OVER $200 · SHIPPING CALCULATED AT CHECKOUT",
         "darkHeader": true,
@@ -194,7 +202,7 @@
         "brandStoryTitle": "Thoughtful support, without the guesswork",
         "brandStoryCopy": "Rock The Treatment makes it easier to show up for someone going through treatment. This medium package brings personal care, cozy essentials, familiar snacks, and quiet activities together in one bright, gift-ready box.",
         "finalHeadline": "Send something thoughtful, useful, and ready to give.",
-        "stickyLabel": "Medium Women’s Package",
+        "stickyLabel": "Bigger Hug · Medium Package",
         "featuredItems": [
           { "name": "Lindi Skin Face Serum", "desc": "A light, non-greasy travel-size serum for a simple skin-care routine." },
           { "name": "Hot & Cold Eye Pillow", "desc": "A silky, scented pillow that can be warmed or chilled for personal comfort." },
