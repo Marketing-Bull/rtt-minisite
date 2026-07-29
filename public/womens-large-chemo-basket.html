@@ -16,7 +16,7 @@
 <link rel="preload" as="image" href="/assets/uploads/2018/04/Women-Large-Chemo-Basket-Main.avif" type="image/avif" fetchpriority="high">
 <link href="https://fonts.googleapis.com/css2?family=Catamaran:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
-:root{--green:#81d742;--green-dark:#376a28;--green-soft:#f0fbe8;--orange:#cf4609;--orange-dark:#ad3605;--blue:#0693e3;--purple:#cf2aba;--cream:#fffdf8;--sand:#fff4ec;--white:#fff;--ink:#201c19;--muted:#665d55;--subtle:#877d75;--line:#e8ddd1;--star:#e49a00;--display:'Catamaran',system-ui,sans-serif;--sans:'Catamaran',system-ui,sans-serif;--shadow:0 22px 55px rgba(66,43,24,.12)}
+:root{--green:#81d742;--green-dark:#376a28;--green-soft:#f0fbe8;--orange:#cf4609;--orange-dark:#ad3605;--blue:#0693e3;--purple:#cf2aba;--cream:#fffdf8;--sand:#fff4ec;--white:#fff;--ink:#201c19;--muted:#665d55;--subtle:#736961;--line:#e8ddd1;--star:#e49a00;--display:'Catamaran',system-ui,sans-serif;--sans:'Catamaran',system-ui,sans-serif;--shadow:0 22px 55px rgba(66,43,24,.12)}
 *{box-sizing:border-box}
 html{scroll-behavior:smooth}
 body{margin:0;background:#f4eee7;color:var(--ink);font-family:var(--sans);padding-bottom:88px}
@@ -32,7 +32,8 @@ img{max-width:100%}
 .site-header{height:76px;padding:8px 18px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid #3d3b39;background:#292826}
 .site-header .logo img{display:block;height:53px;width:auto;max-width:220px}
 .header-link{font-size:13px;font-weight:700;color:var(--green-dark);padding:10px;border-radius:10px}
-.site-header .header-link{color:#fff}
+.site-header .header-link{display:inline-flex;align-items:center;justify-content:center;min-width:44px;min-height:44px;color:#fff}
+.footer a[href^="mailto:"],.footer a[href^="tel:"]{display:inline-flex;align-items:center;min-height:44px}
 .header-link svg{display:block;width:23px;height:23px}
 .rating-stars{color:var(--star);letter-spacing:.08em}
 .hero{display:grid}
@@ -46,7 +47,7 @@ img{max-width:100%}
 .thumb[aria-current=true]{border-color:var(--blue)}
 .thumb img{display:block;width:62px;height:62px;object-fit:contain;background:#f3f3f3;padding:4px}
 .hero-copy{padding:24px 20px 28px}
-.rating-link{display:inline-flex;align-items:center;gap:8px;font-size:13px;font-weight:700;color:#443d37;border-radius:8px}
+.rating-link{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:44px;padding:0 10px;font-size:13px;font-weight:700;color:#443d37;border-radius:8px}
 .rating-link span:last-child{color:var(--muted);font-weight:600}
 .eyebrow{margin-top:18px;font-size:11px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:var(--green-dark)}
 h1{font-family:var(--display);font-size:clamp(34px,7vw,48px);line-height:1.02;font-weight:800;letter-spacing:-.025em;margin:10px 0 0}
@@ -56,8 +57,8 @@ h1{font-family:var(--display);font-size:clamp(34px,7vw,48px);line-height:1.02;fo
 .hero-checks{display:grid;gap:9px;margin:16px 0 0;padding:0;list-style:none}
 .hero-checks li{display:flex;gap:9px;font-size:13px;line-height:1.45;color:#4f4740}
 .hero-checks li::before{content:'✓';font-weight:900;color:var(--green-dark)}
-.purchase-row{display:grid;grid-template-columns:118px 1fr;gap:10px;margin-top:20px}
-.quantity{height:54px;display:grid;grid-template-columns:40px 38px 40px;border:1px solid #cfc3b7;border-radius:14px;overflow:hidden;background:#fff}
+.purchase-row{display:grid;grid-template-columns:132px 1fr;gap:10px;margin-top:20px}
+.quantity{height:54px;display:grid;grid-template-columns:44px 44px 44px;border:1px solid #cfc3b7;border-radius:14px;overflow:hidden;background:#fff}
 .qty-btn{border:0;background:#fff;font-size:21px;cursor:pointer}
 .qty-value{display:flex;align-items:center;justify-content:center;font-size:15px;font-weight:800;font-variant-numeric:tabular-nums}
 .btn-primary{min-height:54px;display:flex;align-items:center;justify-content:center;border-radius:14px;background:var(--orange);color:#fff;font-size:15px;font-weight:800;padding:14px 18px;box-shadow:0 12px 24px rgba(233,87,22,.22)}
@@ -135,9 +136,14 @@ h1{font-family:var(--display);font-size:clamp(34px,7vw,48px);line-height:1.02;fo
 .split-heading{font-family:var(--display);font-size:24px;font-weight:800;margin:30px 0 0}
 .footer{padding:28px 20px 110px;background:#262421;color:#d4cec8;font-size:12px;line-height:1.7}
 .footer strong{color:#fff;font-family:var(--display);font-size:20px;font-weight:800}
-.footer-links{display:flex;flex-wrap:wrap;gap:10px 18px;margin-top:12px}
-.footer-links a{text-decoration:underline;text-underline-offset:3px}
-.sticky{position:fixed;left:0;right:0;bottom:0;z-index:20;background:rgba(255,255,255,.97);border-top:1px solid var(--line);box-shadow:0 -10px 28px rgba(41,30,20,.12);padding:10px 12px calc(10px + env(safe-area-inset-bottom))}
+.footer-links{display:flex;flex-wrap:wrap;gap:2px 18px;margin-top:8px}
+.footer-links a{display:inline-flex;align-items:center;min-height:44px;text-decoration:underline;text-underline-offset:3px}
+.sticky{position:fixed;left:0;right:0;bottom:0;z-index:20;background:rgba(255,255,255,.97);border-top:1px solid var(--line);box-shadow:0 -10px 28px rgba(41,30,20,.12);padding:10px 12px calc(10px + env(safe-area-inset-bottom));transition:transform .22s ease,opacity .22s ease}
+/* Hidden until the in-page buy box scrolls off the top. At 375x812 the bar sat
+   over the h1 (h1 top 705px, bar top 723px), hiding ~75% of the product name on
+   first paint. Markup ships with .is-hidden and a scroll listener toggles it, so
+   the bar only appears once the buy box is above the fold. */
+.sticky.is-hidden{transform:translateY(110%);opacity:0;pointer-events:none}
 .sticky-inner{max-width:680px;margin:0 auto;display:flex;align-items:center;gap:12px}
 .sticky-meta{flex:1;min-width:0}
 .sticky-label{font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:.08em;color:var(--subtle)}
@@ -163,8 +169,7 @@ h1{font-family:var(--display);font-size:clamp(34px,7vw,48px);line-height:1.02;fo
   .footer{padding:36px 54px 120px}
 }
 @media(max-width:380px){
-  .purchase-row{grid-template-columns:108px 1fr}
-  .quantity{grid-template-columns:36px 36px 36px}
+  /* Quantity stepper keeps 44px targets at every width; only the gutters shrink. */
   .hero-copy{padding-left:16px;padding-right:16px}
 }
 @media(prefers-reduced-motion:reduce){
@@ -216,7 +221,7 @@ h1{font-family:var(--display);font-size:clamp(34px,7vw,48px);line-height:1.02;fo
             <output class="qty-value" id="qtyValue" aria-live="polite">1</output>
             <button class="qty-btn" id="qtyInc" type="button" aria-label="Increase quantity">+</button>
           </div>
-          <a class="btn-primary js-cart-btn" href="https://www.rockthetreatment.com/?add-to-cart=248&quantity=1" data-track="add_to_cart">Send This Gift</a>
+          <a class="btn-primary js-cart-btn" href="https://www.rockthetreatment.com/cart/?add-to-cart=248&quantity=1" data-track="add_to_cart">Send This Gift</a>
         </div>
         <a class="btn-secondary" href="#inside" data-track="see_inside">See What’s Inside</a>
         <p class="microcopy">Secure checkout on RockTheTreatment.com · Delivery time varies by carrier and destination</p>
@@ -457,7 +462,7 @@ h1{font-family:var(--display);font-size:clamp(34px,7vw,48px);line-height:1.02;fo
       <div class="section-kicker">Send care with confidence</div>
       <h2 class="section-title" id="final-title">Send something thoughtful, useful, and ready to give.</h2>
       <p class="section-copy" style="margin-left:auto;margin-right:auto">A gift-ready care package, hand-packed in New York and ready for your personal note.</p>
-      <a class="btn-primary js-cart-btn" href="https://www.rockthetreatment.com/?add-to-cart=248&quantity=1" data-track="add_to_cart_final">Send This Gift · $169.99</a>
+      <a class="btn-primary js-cart-btn" href="https://www.rockthetreatment.com/cart/?add-to-cart=248&quantity=1" data-track="add_to_cart_final">Send This Gift · $169.99</a>
       <p class="microcopy">Free gift note at checkout · Shipping calculated at checkout · 180-day unopened return policy</p>
     </section>
 
@@ -526,10 +531,10 @@ h1{font-family:var(--display);font-size:clamp(34px,7vw,48px);line-height:1.02;fo
   </footer>
 </div>
 
-<aside class="sticky" aria-label="Purchase">
+<aside class="sticky is-hidden" aria-label="Purchase">
   <div class="sticky-inner">
     <div class="sticky-meta"><div class="sticky-label">Large Women's Chemo Care Package · Qty <span id="stickyQty">1</span></div><div class="sticky-price">$169.99</div></div>
-    <a class="btn-primary js-cart-btn" href="https://www.rockthetreatment.com/?add-to-cart=248&quantity=1" data-track="add_to_cart_sticky">Send This Gift</a>
+    <a class="btn-primary js-cart-btn" href="https://www.rockthetreatment.com/cart/?add-to-cart=248&quantity=1" data-track="add_to_cart_sticky">Send This Gift</a>
   </div>
 </aside>
 
@@ -577,11 +582,40 @@ h1{font-family:var(--display);font-size:clamp(34px,7vw,48px);line-height:1.02;fo
   function syncQuantity() {
     qtyValue.textContent = quantity;
     stickyQty.textContent = quantity;
-    cartButtons.forEach(function(button){ button.href = "https://www.rockthetreatment.com/?add-to-cart=248" + '&quantity=' + quantity; });
+    cartButtons.forEach(function(button){ button.href = "https://www.rockthetreatment.com/cart/?add-to-cart=248" + '&quantity=' + quantity; });
   }
   document.getElementById('qtyDec').addEventListener('click', function(){ quantity = Math.max(1, quantity - 1); syncQuantity(); });
   document.getElementById('qtyInc').addEventListener('click', function(){ quantity += 1; syncQuantity(); });
   cartButtons.forEach(function(button){ button.addEventListener('click', function(){ track(button.dataset.track || 'add_to_cart', {quantity:quantity, value:169.99}); }); });
+
+  // Reveal the sticky purchase bar only once the in-page buy box has scrolled
+  // ABOVE the viewport — not merely "out of view", which is also true before the
+  // buyer has reached it and would put the bar back over the h1 on load.
+  // A passive rAF-throttled scroll listener rather than IntersectionObserver:
+  // IO is present-but-inert in some embedded webviews, and there the bar would
+  // stay hidden forever, leaving no reachable CTA. This degrades safely.
+  var stickyBar = document.querySelector('.sticky');
+  var buyBox = document.querySelector('.purchase-row');
+  if (stickyBar && buyBox) {
+    // Measure once (and on resize/load) so the scroll handler is pure arithmetic
+    // — no getBoundingClientRect per scroll event, and no rAF, which some
+    // webviews throttle to the point of never running.
+    var buyBoxBottom = 0;
+    var measureBuyBox = function(){
+      buyBoxBottom = buyBox.getBoundingClientRect().bottom + (window.pageYOffset || 0);
+    };
+    var updateSticky = function(){
+      stickyBar.classList.toggle('is-hidden', (window.pageYOffset || 0) < buyBoxBottom);
+    };
+    var remeasure = function(){ measureBuyBox(); updateSticky(); };
+    remeasure();
+    window.addEventListener('scroll', updateSticky, {passive:true});
+    window.addEventListener('resize', remeasure, {passive:true});
+    // Images settling after load can shift the buy box; re-measure once they do.
+    window.addEventListener('load', remeasure);
+  } else if (stickyBar) {
+    stickyBar.classList.remove('is-hidden');
+  }
 
   document.querySelectorAll('.faq-button').forEach(function(button){
     button.addEventListener('click', function(){

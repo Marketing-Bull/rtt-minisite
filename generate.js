@@ -13,7 +13,38 @@ fs.mkdirSync(outDir, { recursive: true });
 // the main store in organic results. Flip to `true` if marketing wants m. indexed.
 const ALLOW_INDEXING = false;
 
+// Google Tag Manager container for the minisite. The pages already push a full
+// event set (view_item, add_to_cart, add_to_cart_sticky, add_to_cart_final,
+// faq_open, rating_click, see_inside, product_gallery_view, celebration_bell)
+// into window.dataLayer — but without a container nothing consumes them, so none
+// of it reaches GA4. Set RTT_GTM_ID (or hardcode below) to emit the container.
+//
+// Cart/checkout lives on a different host (www.rockthetreatment.com), so the GA4
+// config tag in this container MUST enable cross-domain measurement for both
+// m.rockthetreatment.com and www.rockthetreatment.com — otherwise the session
+// splits at the exact moment of conversion and add_to_cart never ties to revenue.
+const GTM_ID = process.env.RTT_GTM_ID || '';
+
 const { wwwBase, mBase, imageBase, logo, bellImg, itemImages, upsellProducts, faqs, radiationFaqs, products } = data;
+
+// WooCommerce adds the item for any `?add-to-cart=` request and then renders
+// whatever page the request hit. Pointing at the site root therefore dropped
+// buyers on the homepage mid-funnel; /cart/ adds the item AND shows the cart.
+function cartUrlFor(productId, quantity) {
+  const qty = quantity == null ? 1 : quantity;
+  return `${wwwBase}/cart/?add-to-cart=${productId}&quantity=${qty}`;
+}
+
+// Render a rating at its natural precision so the hero and the review-proof
+// block can never disagree (4.98 stays 4.98; a flat 5 reads 5.0, not 5.00).
+function fmtRating(value) {
+  const s = (Math.round(value * 100) / 100).toFixed(2);
+  return s.endsWith('0') ? s.slice(0, -1) : s;
+}
+
+// GTM container snippet (head) + noscript iframe (body). Empty when GTM_ID unset.
+const gtmHead = GTM_ID ? `<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);})(window,document,'script','dataLayer','${GTM_ID}');</script>` : '';
+const gtmBody = GTM_ID ? `<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=${GTM_ID}" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>` : '';
 
 function img(relPath) {
   if (/^https?:\/\//.test(relPath)) return relPath;
@@ -114,7 +145,7 @@ function generateWomensCroPage(product) {
   const heroV = variants(heroUrl);
   const heroPreloadHref = heroV && heroV.avif ? heroV.avif : heroUrl;
   const heroPreloadType = heroV && heroV.avif ? ' type="image/avif"' : '';
-  const cartUrl = `${wwwBase}/?add-to-cart=${product.id}&quantity=1`;
+  const cartUrl = cartUrlFor(product.id, 1);
   const rating = product.rating || 5;
   const packagesSent = product.companyPackagesSent || product.totalSales;
   const reviewCorpusIntegrated = Boolean(ui.reviewCorpusIntegrated);
@@ -183,7 +214,7 @@ function generateWomensCroPage(product) {
 <link rel="preload" as="image" href="${heroPreloadHref}"${heroPreloadType} fetchpriority="high">
 <link href="https://fonts.googleapis.com/css2?family=Catamaran:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
-:root{--green:#81d742;--green-dark:#376a28;--green-soft:#f0fbe8;--orange:#cf4609;--orange-dark:#ad3605;--blue:#0693e3;--purple:#cf2aba;--cream:#fffdf8;--sand:#fff4ec;--white:#fff;--ink:#201c19;--muted:#665d55;--subtle:#877d75;--line:#e8ddd1;--star:#e49a00;--display:'Catamaran',system-ui,sans-serif;--sans:'Catamaran',system-ui,sans-serif;--shadow:0 22px 55px rgba(66,43,24,.12)}
+:root{--green:#81d742;--green-dark:#376a28;--green-soft:#f0fbe8;--orange:#cf4609;--orange-dark:#ad3605;--blue:#0693e3;--purple:#cf2aba;--cream:#fffdf8;--sand:#fff4ec;--white:#fff;--ink:#201c19;--muted:#665d55;--subtle:#736961;--line:#e8ddd1;--star:#e49a00;--display:'Catamaran',system-ui,sans-serif;--sans:'Catamaran',system-ui,sans-serif;--shadow:0 22px 55px rgba(66,43,24,.12)}
 *{box-sizing:border-box}
 html{scroll-behavior:smooth}
 body{margin:0;background:#f4eee7;color:var(--ink);font-family:var(--sans);padding-bottom:88px}
@@ -199,7 +230,8 @@ img{max-width:100%}
 .site-header{height:76px;padding:8px 18px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid #3d3b39;background:#292826}
 .site-header .logo img{display:block;height:53px;width:auto;max-width:220px}
 .header-link{font-size:13px;font-weight:700;color:var(--green-dark);padding:10px;border-radius:10px}
-.site-header .header-link{color:#fff}
+.site-header .header-link{display:inline-flex;align-items:center;justify-content:center;min-width:44px;min-height:44px;color:#fff}
+.footer a[href^="mailto:"],.footer a[href^="tel:"]{display:inline-flex;align-items:center;min-height:44px}
 .header-link svg{display:block;width:23px;height:23px}
 .rating-stars{color:var(--star);letter-spacing:.08em}
 .hero{display:grid}
@@ -213,7 +245,7 @@ img{max-width:100%}
 .thumb[aria-current=true]{border-color:var(--blue)}
 .thumb img{display:block;width:62px;height:62px;object-fit:contain;background:#f3f3f3;padding:4px}
 .hero-copy{padding:24px 20px 28px}
-.rating-link{display:inline-flex;align-items:center;gap:8px;font-size:13px;font-weight:700;color:#443d37;border-radius:8px}
+.rating-link{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:44px;padding:0 10px;font-size:13px;font-weight:700;color:#443d37;border-radius:8px}
 .rating-link span:last-child{color:var(--muted);font-weight:600}
 .eyebrow{margin-top:18px;font-size:11px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:var(--green-dark)}
 h1{font-family:var(--display);font-size:clamp(34px,7vw,48px);line-height:1.02;font-weight:800;letter-spacing:-.025em;margin:10px 0 0}
@@ -223,8 +255,8 @@ h1{font-family:var(--display);font-size:clamp(34px,7vw,48px);line-height:1.02;fo
 .hero-checks{display:grid;gap:9px;margin:16px 0 0;padding:0;list-style:none}
 .hero-checks li{display:flex;gap:9px;font-size:13px;line-height:1.45;color:#4f4740}
 .hero-checks li::before{content:'✓';font-weight:900;color:var(--green-dark)}
-.purchase-row{display:grid;grid-template-columns:118px 1fr;gap:10px;margin-top:20px}
-.quantity{height:54px;display:grid;grid-template-columns:40px 38px 40px;border:1px solid #cfc3b7;border-radius:14px;overflow:hidden;background:#fff}
+.purchase-row{display:grid;grid-template-columns:132px 1fr;gap:10px;margin-top:20px}
+.quantity{height:54px;display:grid;grid-template-columns:44px 44px 44px;border:1px solid #cfc3b7;border-radius:14px;overflow:hidden;background:#fff}
 .qty-btn{border:0;background:#fff;font-size:21px;cursor:pointer}
 .qty-value{display:flex;align-items:center;justify-content:center;font-size:15px;font-weight:800;font-variant-numeric:tabular-nums}
 .btn-primary{min-height:54px;display:flex;align-items:center;justify-content:center;border-radius:14px;background:var(--orange);color:#fff;font-size:15px;font-weight:800;padding:14px 18px;box-shadow:0 12px 24px rgba(233,87,22,.22)}
@@ -302,9 +334,14 @@ h1{font-family:var(--display);font-size:clamp(34px,7vw,48px);line-height:1.02;fo
 .split-heading{font-family:var(--display);font-size:24px;font-weight:800;margin:30px 0 0}
 .footer{padding:28px 20px 110px;background:#262421;color:#d4cec8;font-size:12px;line-height:1.7}
 .footer strong{color:#fff;font-family:var(--display);font-size:20px;font-weight:800}
-.footer-links{display:flex;flex-wrap:wrap;gap:10px 18px;margin-top:12px}
-.footer-links a{text-decoration:underline;text-underline-offset:3px}
-.sticky{position:fixed;left:0;right:0;bottom:0;z-index:20;background:rgba(255,255,255,.97);border-top:1px solid var(--line);box-shadow:0 -10px 28px rgba(41,30,20,.12);padding:10px 12px calc(10px + env(safe-area-inset-bottom))}
+.footer-links{display:flex;flex-wrap:wrap;gap:2px 18px;margin-top:8px}
+.footer-links a{display:inline-flex;align-items:center;min-height:44px;text-decoration:underline;text-underline-offset:3px}
+.sticky{position:fixed;left:0;right:0;bottom:0;z-index:20;background:rgba(255,255,255,.97);border-top:1px solid var(--line);box-shadow:0 -10px 28px rgba(41,30,20,.12);padding:10px 12px calc(10px + env(safe-area-inset-bottom));transition:transform .22s ease,opacity .22s ease}
+/* Hidden until the in-page buy box scrolls off the top. At 375x812 the bar sat
+   over the h1 (h1 top 705px, bar top 723px), hiding ~75% of the product name on
+   first paint. Markup ships with .is-hidden and a scroll listener toggles it, so
+   the bar only appears once the buy box is above the fold. */
+.sticky.is-hidden{transform:translateY(110%);opacity:0;pointer-events:none}
 .sticky-inner{max-width:680px;margin:0 auto;display:flex;align-items:center;gap:12px}
 .sticky-meta{flex:1;min-width:0}
 .sticky-label{font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:.08em;color:var(--subtle)}
@@ -330,8 +367,7 @@ h1{font-family:var(--display);font-size:clamp(34px,7vw,48px);line-height:1.02;fo
   .footer{padding:36px 54px 120px}
 }
 @media(max-width:380px){
-  .purchase-row{grid-template-columns:108px 1fr}
-  .quantity{grid-template-columns:36px 36px 36px}
+  /* Quantity stepper keeps 44px targets at every width; only the gutters shrink. */
   .hero-copy{padding-left:16px;padding-right:16px}
 }
 @media(prefers-reduced-motion:reduce){
@@ -339,9 +375,9 @@ h1{font-family:var(--display);font-size:clamp(34px,7vw,48px);line-height:1.02;fo
   *,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}
 }
 </style>
-</head>
+${gtmHead}</head>
 <body>
-<div class="page">
+${gtmBody}<div class="page">
   <div class="announcement">${escHtml(ui.announcement)}</div>
   <header class="site-header">
     <a class="header-link" href="${wwwBase}/shop/" aria-label="Browse all care packages">Shop</a>
@@ -356,7 +392,7 @@ h1{font-family:var(--display);font-size:clamp(34px,7vw,48px);line-height:1.02;fo
           ${picture(heroUrl, { id: 'mainImg', cls: 'gallery-main', alt: product.title, priority: true, lazy: false, avifId: 'mainSrcAvif', webpId: 'mainSrcWebp' })}
           <span class="swipe-hint" id="swipeHint" aria-hidden="true">Swipe to explore</span>
         </div>
-        <div class="gallery-rating"><a class="rating-link" href="${wwwBase}/${product.slug}/#reviews" data-track="rating_click"><span class="rating-stars" aria-hidden="true">★★★★★</span><span>${rating.toFixed(1)} · ${product.reviewCount} verified reviews</span></a></div>
+        <div class="gallery-rating"><a class="rating-link" href="${wwwBase}/${product.slug}/#reviews" data-track="rating_click"><span class="rating-stars" aria-hidden="true">★★★★★</span><span>${fmtRating(rating)} · ${product.reviewCount} verified reviews</span></a></div>
         <div class="gallery-thumbs" id="galleryThumbs" aria-label="Choose a product image">
 ${galleryImages.map((gi, i) => `          <button class="thumb" type="button" data-index="${i}" aria-label="Show image ${i + 1} of ${galleryImages.length}" aria-current="${i === 0 ? 'true' : 'false'}">${picture(img(gi), { alt: '', lazy: i > 1 })}</button>`).join('\n')}
         </div>
@@ -457,8 +493,8 @@ ${faqItems.map((faq, i) => `        <div class="faq-item">
       <div class="section-kicker">${reviewCorpusIntegrated ? 'Verified reviews for this exact package' : `${product.reviewCount} verified reviews`}</div>
       <h2 class="section-title" id="reviews-title">${reviewCorpusIntegrated ? 'What senders—and recipients—say' : 'Our fan club'}</h2>
       <p class="section-copy">${reviewCorpusIntegrated ? `Selected from ${product.reviewCount} verified reviews of the Medium Women’s Chemo Care Package.` : 'Real notes from people who sent care at the right time.'}</p>
-${reviewCorpusIntegrated ? `      <div class="review-proof" aria-label="${rating.toFixed(2)} out of 5 from ${product.reviewCount} verified reviews">
-        <div class="review-score">${rating.toFixed(2)}</div>
+${reviewCorpusIntegrated ? `      <div class="review-proof" aria-label="${fmtRating(rating)} out of 5 from ${product.reviewCount} verified reviews">
+        <div class="review-score">${fmtRating(rating)}</div>
         <div class="review-proof-copy"><span class="rating-stars" aria-hidden="true">★★★★★</span><strong>${product.reviewCount} verified product reviews</strong>Collected through the live Rock The Treatment review feed.</div>
       </div>` : ''}
       <div class="reviews-grid">
@@ -519,7 +555,7 @@ ${relatedAddOns.map(item => `        <a class="shop-card" href="${wwwBase}${item
   </footer>
 </div>
 
-<aside class="sticky" aria-label="Purchase">
+<aside class="sticky is-hidden" aria-label="Purchase">
   <div class="sticky-inner">
     <div class="sticky-meta"><div class="sticky-label">${escHtml(ui.stickyLabel || product.title)} · Qty <span id="stickyQty">1</span></div><div class="sticky-price">${escHtml(product.price)}</div></div>
     <a class="btn-primary js-cart-btn" href="${cartUrl}" data-track="add_to_cart_sticky">Send This Gift</a>
@@ -570,11 +606,40 @@ ${relatedAddOns.map(item => `        <a class="shop-card" href="${wwwBase}${item
   function syncQuantity() {
     qtyValue.textContent = quantity;
     stickyQty.textContent = quantity;
-    cartButtons.forEach(function(button){ button.href = ${JSON.stringify(`${wwwBase}/?add-to-cart=${product.id}`)} + '&quantity=' + quantity; });
+    cartButtons.forEach(function(button){ button.href = ${JSON.stringify(`${wwwBase}/cart/?add-to-cart=${product.id}`)} + '&quantity=' + quantity; });
   }
   document.getElementById('qtyDec').addEventListener('click', function(){ quantity = Math.max(1, quantity - 1); syncQuantity(); });
   document.getElementById('qtyInc').addEventListener('click', function(){ quantity += 1; syncQuantity(); });
   cartButtons.forEach(function(button){ button.addEventListener('click', function(){ track(button.dataset.track || 'add_to_cart', {quantity:quantity, value:${Number(product.price.replace('$', ''))}}); }); });
+
+  // Reveal the sticky purchase bar only once the in-page buy box has scrolled
+  // ABOVE the viewport — not merely "out of view", which is also true before the
+  // buyer has reached it and would put the bar back over the h1 on load.
+  // A passive rAF-throttled scroll listener rather than IntersectionObserver:
+  // IO is present-but-inert in some embedded webviews, and there the bar would
+  // stay hidden forever, leaving no reachable CTA. This degrades safely.
+  var stickyBar = document.querySelector('.sticky');
+  var buyBox = document.querySelector('.purchase-row');
+  if (stickyBar && buyBox) {
+    // Measure once (and on resize/load) so the scroll handler is pure arithmetic
+    // — no getBoundingClientRect per scroll event, and no rAF, which some
+    // webviews throttle to the point of never running.
+    var buyBoxBottom = 0;
+    var measureBuyBox = function(){
+      buyBoxBottom = buyBox.getBoundingClientRect().bottom + (window.pageYOffset || 0);
+    };
+    var updateSticky = function(){
+      stickyBar.classList.toggle('is-hidden', (window.pageYOffset || 0) < buyBoxBottom);
+    };
+    var remeasure = function(){ measureBuyBox(); updateSticky(); };
+    remeasure();
+    window.addEventListener('scroll', updateSticky, {passive:true});
+    window.addEventListener('resize', remeasure, {passive:true});
+    // Images settling after load can shift the buy box; re-measure once they do.
+    window.addEventListener('load', remeasure);
+  } else if (stickyBar) {
+    stickyBar.classList.remove('is-hidden');
+  }
 
   document.querySelectorAll('.faq-button').forEach(function(button){
     button.addEventListener('click', function(){
@@ -608,7 +673,7 @@ function generatePage(product) {
   const ui = product.mobileUi || {};
   const faqList = isRadiation ? radiationFaqs : faqs;
   const totalItems = product.categories.reduce((sum, cat) => sum + cat.items.length, 0);
-  const cartUrl = `${wwwBase}/?add-to-cart=${product.id}`;
+  const cartUrl = cartUrlFor(product.id, 1);
   const freeShipping = parseFloat(product.price.replace('$','')) >= 200;
   const heroUrl = img(product.heroImage);
   const displayPrice = ui.displayPrice || product.price;
@@ -871,9 +936,9 @@ picture{display:contents}
 .sticky-btn{flex:0 0 58%;padding:15px 16px;font-size:14px}
 @media(min-width:481px){.sticky-cart{left:50%;right:auto;transform:translateX(-50%);width:480px;border-radius:22px;bottom:18px;border:1px solid rgba(234,223,206,.95)}}
 </style>
-</head>
+${gtmHead}</head>
 <body>
-
+${gtmBody}
 <div class="page-wrapper">
 
   <!-- HEADER -->
@@ -1240,7 +1305,9 @@ ${r.reply ? `      <div class="review-reply"><strong>Rock The Treatment</strong>
   var qtyInput = document.getElementById('qty');
   var cartBtns = Array.prototype.slice.call(document.querySelectorAll('.js-cart-btn'));
   if (qtyInput && cartBtns.length) {
-    var baseUrl = cartBtns[0].href;
+    // The rendered href already carries quantity=1; strip it before re-appending
+    // so stepping the quantity can't emit ?add-to-cart=N&quantity=1&quantity=3.
+    var baseUrl = cartBtns[0].href.replace(/[?&]quantity=\\d+/, '');
     function syncCartLinks() {
       cartBtns.forEach(function(btn){
         btn.href = baseUrl + '&quantity=' + qtyInput.value;
