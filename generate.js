@@ -35,6 +35,22 @@ function cartUrlFor(productId, quantity) {
   return `${wwwBase}/cart/?add-to-cart=${productId}&quantity=${qty}`;
 }
 
+// Trust badges under the buy box. Inline SVG rather than image files: it adds
+// no network requests, scales cleanly, and inherits colour from CSS. Icons are
+// decorative — the adjacent label carries the meaning for screen readers.
+const svgIcon = d => `<svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">${d}</svg>`;
+// These replace the old ✓ bullet list, so between them they must still carry the
+// two facts only that list stated: the 1–2 day ship time and the $200 free-shipping
+// threshold. (The other two bullets restated the product description verbatim.)
+const trustBadges = [
+  { label: 'Ships in 1–2 business days', icon: svgIcon('<path d="M3 7.5h10v9H3z"/><path d="M13 10.5h4l4 3.5v2.5h-8z"/><circle cx="7" cy="18.5" r="1.6"/><circle cx="17" cy="18.5" r="1.6"/>') },
+  { label: 'Free shipping over $200', icon: svgIcon('<circle cx="12" cy="12" r="8.5"/><path d="M14.5 9.2c-.6-.9-1.5-1.3-2.6-1.3-1.6 0-2.6.8-2.6 2s1 1.7 2.6 2.1 2.7.9 2.7 2.2-1.1 2-2.7 2c-1.2 0-2.1-.4-2.7-1.4"/><path d="M12 6.4v11.2"/>') },
+  { label: 'Hand-packed in New York', icon: svgIcon('<path d="M3 8l9-4 9 4v8l-9 4-9-4z"/><path d="M3 8l9 4 9-4"/><path d="M12 12v8"/>') },
+  { label: 'Free gift note', icon: svgIcon('<rect x="3" y="9" width="18" height="11" rx="2"/><path d="M3 13h18"/><path d="M12 9v11"/><path d="M12 9S9.6 4.8 7.8 6.2 9.6 9 12 9zM12 9s2.4-4.2 4.2-2.8S14.4 9 12 9z"/>') },
+  { label: '180-day returns', icon: svgIcon('<path d="M3.5 10h10.5a5 5 0 0 1 0 10h-3.5"/><path d="M7.5 5.5L3 10l4.5 4.5"/>') },
+  { label: 'Secure checkout', icon: svgIcon('<rect x="4" y="10.5" width="16" height="9.5" rx="2"/><path d="M8 10.5V7a4 4 0 0 1 8 0v3.5"/>') },
+];
+
 // Render a rating at its natural precision so the hero and the review-proof
 // block can never disagree (4.98 stays 4.98; a flat 5 reads 5.0, not 5.00).
 function fmtRating(value) {
@@ -176,7 +192,7 @@ function generateWomensCroPage(product) {
     },
     {
       q: 'How much is shipping?',
-      a: 'Shipping is calculated at checkout. Orders over $200 qualify for free shipping.'
+      a: 'Orders over $200 ship free. Shipping on smaller orders depends on the delivery address.'
     },
     {
       q: 'Can I include a personal gift note?',
@@ -188,7 +204,7 @@ function generateWomensCroPage(product) {
     },
     {
       q: 'What is the return policy?',
-      a: 'Unopened packages in their original packaging may be returned within 180 days with proof of purchase. The customer pays return shipping, and original shipping charges are nonrefundable.'
+      a: 'Packages in their original packaging may be returned within 180 days with proof of purchase. The customer pays return shipping, and original shipping charges are nonrefundable.'
     },
     {
       q: 'Is the Celebration Bell included?',
@@ -248,13 +264,14 @@ img{max-width:100%}
 .rating-link{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:44px;padding:0 10px;font-size:13px;font-weight:700;color:#443d37;border-radius:8px}
 .rating-link span:last-child{color:var(--muted);font-weight:600}
 .eyebrow{margin-top:18px;font-size:11px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:var(--green-dark)}
-h1{font-family:var(--display);font-size:clamp(34px,7vw,48px);line-height:1.02;font-weight:800;letter-spacing:-.025em;margin:10px 0 0}
+h1{font-family:var(--display);font-size:clamp(34px,7vw,48px);line-height:1.02;font-weight:800;letter-spacing:-.025em;margin:10px 0 0;color:var(--green-dark)}
 .supporting{font-family:var(--display);font-size:24px;font-weight:700;line-height:1.15;color:var(--green-dark);margin:13px 0 0}
 .hero-desc{font-size:15px;line-height:1.65;color:var(--muted);margin:13px 0 0;max-width:58ch}
-.price{font-size:32px;font-weight:800;margin-top:20px;font-variant-numeric:tabular-nums}
-.hero-checks{display:grid;gap:9px;margin:16px 0 0;padding:0;list-style:none}
-.hero-checks li{display:flex;gap:9px;font-size:13px;line-height:1.45;color:#4f4740}
-.hero-checks li::before{content:'✓';font-weight:900;color:var(--green-dark)}
+.price{font-size:32px;font-weight:800;margin-top:20px;font-variant-numeric:tabular-nums;color:var(--green-dark)}
+.trust-row{list-style:none;display:grid;grid-template-columns:repeat(3,1fr);gap:16px 6px;margin:16px 0 0;padding:16px 0;border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+.trust-item{display:flex;flex-direction:column;align-items:center;text-align:center;gap:7px;font-size:10.5px;font-weight:700;line-height:1.3;color:var(--muted)}
+.trust-item svg{width:23px;height:23px;flex:0 0 auto;fill:none;stroke:var(--green-dark);stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
+@media(max-width:340px){.trust-row{grid-template-columns:repeat(2,1fr)}}
 .purchase-row{display:grid;grid-template-columns:132px 1fr;gap:10px;margin-top:20px}
 .quantity{height:54px;display:grid;grid-template-columns:44px 44px 44px;border:1px solid #cfc3b7;border-radius:14px;overflow:hidden;background:#fff}
 .qty-btn{border:0;background:#fff;font-size:21px;cursor:pointer}
@@ -378,7 +395,7 @@ h1{font-family:var(--display);font-size:clamp(34px,7vw,48px);line-height:1.02;fo
 ${gtmHead}</head>
 <body>
 ${gtmBody}<div class="page">
-  <div class="announcement">${escHtml(ui.announcement)}</div>
+${ui.announcement ? `  <div class="announcement">${escHtml(ui.announcement)}</div>\n` : ''}
   <header class="site-header">
     <a class="header-link" href="${wwwBase}/shop/" aria-label="Browse all care packages">Shop</a>
     <a class="logo" href="${wwwBase}" aria-label="Rock The Treatment home">${picture(logo, { alt: 'Rock The Treatment', lazy: false })}</a>
@@ -404,12 +421,6 @@ ${galleryImages.map((gi, i) => `          <button class="thumb" type="button" da
         <p class="supporting">${escHtml(ui.supportingHeadline)}</p>
         <p class="hero-desc">${product.description}</p>
         <div class="price">${escHtml(product.price)}</div>
-        <ul class="hero-checks">
-          <li>Personal care, cozy essentials, familiar snacks, and quiet activities</li>
-          <li>Free personal gift note added at checkout</li>
-          <li>Processed and shipped from New York in 1–2 business days</li>
-          <li>Shipping calculated at checkout; free on orders over $200</li>
-        </ul>
         <div class="purchase-row">
           <div class="quantity" aria-label="Quantity">
             <button class="qty-btn" id="qtyDec" type="button" aria-label="Decrease quantity">−</button>
@@ -419,6 +430,9 @@ ${galleryImages.map((gi, i) => `          <button class="thumb" type="button" da
           <a class="btn-primary js-cart-btn" href="${cartUrl}" data-track="add_to_cart">Send This Gift</a>
         </div>
         <a class="btn-secondary" href="#inside" data-track="see_inside">See What’s Inside</a>
+        <ul class="trust-row" aria-label="What's included with every order">
+${trustBadges.map(b => `          <li class="trust-item">${b.icon}<span>${escHtml(b.label)}</span></li>`).join('\n')}
+        </ul>
         <p class="microcopy">Secure checkout on RockTheTreatment.com · Delivery time varies by carrier and destination</p>
       </div>
     </section>
@@ -513,7 +527,7 @@ ${product.reviews.map(review => `        <article class="review">
       <h2 class="section-title" id="final-title">${escHtml(ui.finalHeadline || ui.supportingHeadline)}</h2>
       <p class="section-copy" style="margin-left:auto;margin-right:auto">A gift-ready care package, hand-packed in New York and ready for your personal note.</p>
       <a class="btn-primary js-cart-btn" href="${cartUrl}" data-track="add_to_cart_final">Send This Gift · ${escHtml(product.price)}</a>
-      <p class="microcopy">Free gift note at checkout · Shipping calculated at checkout · 180-day unopened return policy</p>
+      <p class="microcopy">Free gift note at checkout · Free shipping over $200 · 180-day return policy</p>
     </section>
 
     <section class="section section-alt" aria-labelledby="more-title">
@@ -557,7 +571,7 @@ ${relatedAddOns.map(item => `        <a class="shop-card" href="${wwwBase}${item
 
 <aside class="sticky is-hidden" aria-label="Purchase">
   <div class="sticky-inner">
-    <div class="sticky-meta"><div class="sticky-label">${escHtml(ui.stickyLabel || product.title)} · Qty <span id="stickyQty">1</span></div><div class="sticky-price">${escHtml(product.price)}</div></div>
+    <div class="sticky-meta"><div class="sticky-label">${escHtml(ui.stickyLabel || product.title)}</div><div class="sticky-price">${escHtml(product.price)}</div></div>
     <a class="btn-primary js-cart-btn" href="${cartUrl}" data-track="add_to_cart_sticky">Send This Gift</a>
   </div>
 </aside>
@@ -601,11 +615,10 @@ ${relatedAddOns.map(item => `        <a class="shop-card" href="${wwwBase}${item
 
   var quantity = 1;
   var qtyValue = document.getElementById('qtyValue');
-  var stickyQty = document.getElementById('stickyQty');
   var cartButtons = Array.prototype.slice.call(document.querySelectorAll('.js-cart-btn'));
   function syncQuantity() {
+    // The sticky bar shows price only — no qty mirror to keep in sync.
     qtyValue.textContent = quantity;
-    stickyQty.textContent = quantity;
     cartButtons.forEach(function(button){ button.href = ${JSON.stringify(`${wwwBase}/cart/?add-to-cart=${product.id}`)} + '&quantity=' + quantity; });
   }
   document.getElementById('qtyDec').addEventListener('click', function(){ quantity = Math.max(1, quantity - 1); syncQuantity(); });
