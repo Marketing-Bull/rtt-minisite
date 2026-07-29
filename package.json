@@ -5,9 +5,12 @@
   "description": "Standalone mobile-optimized product minisite for m.rockthetreatment.com (Cloudflare Pages).",
   "scripts": {
     "build": "node generate.js",
-    "optimize": "node tools/optimize-images.js"
+    "optimize": "node tools/optimize-images.js",
+    "deploy": "wrangler deploy",
+    "preview": "wrangler dev"
   },
   "devDependencies": {
-    "sharp": "^0.35.1"
+    "sharp": "^0.35.1",
+    "wrangler": "^4.102.0"
   }
 }
