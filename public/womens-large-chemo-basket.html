@@ -50,17 +50,14 @@ img{max-width:100%}
 .rating-link{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:44px;padding:0 10px;font-size:13px;font-weight:700;color:#443d37;border-radius:8px}
 .rating-link span:last-child{color:var(--muted);font-weight:600}
 .eyebrow{margin-top:18px;font-size:11px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:var(--green-dark)}
-h1{font-family:var(--display);font-size:clamp(34px,7vw,48px);line-height:1.02;font-weight:800;letter-spacing:-.025em;margin:10px 0 0}
+h1{font-family:var(--display);font-size:clamp(34px,7vw,48px);line-height:1.02;font-weight:800;letter-spacing:-.025em;margin:10px 0 0;color:var(--green-dark)}
 .supporting{font-family:var(--display);font-size:24px;font-weight:700;line-height:1.15;color:var(--green-dark);margin:13px 0 0}
 .hero-desc{font-size:15px;line-height:1.65;color:var(--muted);margin:13px 0 0;max-width:58ch}
-.price{font-size:32px;font-weight:800;margin-top:20px;font-variant-numeric:tabular-nums}
-.hero-checks{display:grid;gap:9px;margin:16px 0 0;padding:0;list-style:none}
-.hero-checks li{display:flex;gap:9px;font-size:13px;line-height:1.45;color:#4f4740}
-.hero-checks li::before{content:'✓';font-weight:900;color:var(--green-dark)}
-.trust-row{list-style:none;display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin:16px 0 0;padding:14px 0;border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
-.trust-item{display:flex;flex-direction:column;align-items:center;text-align:center;gap:7px;font-size:10.5px;font-weight:700;line-height:1.25;color:var(--muted)}
+.price{font-size:32px;font-weight:800;margin-top:20px;font-variant-numeric:tabular-nums;color:var(--green-dark)}
+.trust-row{list-style:none;display:grid;grid-template-columns:repeat(3,1fr);gap:16px 6px;margin:16px 0 0;padding:16px 0;border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+.trust-item{display:flex;flex-direction:column;align-items:center;text-align:center;gap:7px;font-size:10.5px;font-weight:700;line-height:1.3;color:var(--muted)}
 .trust-item svg{width:23px;height:23px;flex:0 0 auto;fill:none;stroke:var(--green-dark);stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
-@media(max-width:340px){.trust-row{grid-template-columns:repeat(2,1fr);gap:12px 6px}}
+@media(max-width:340px){.trust-row{grid-template-columns:repeat(2,1fr)}}
 .purchase-row{display:grid;grid-template-columns:132px 1fr;gap:10px;margin-top:20px}
 .quantity{height:54px;display:grid;grid-template-columns:44px 44px 44px;border:1px solid #cfc3b7;border-radius:14px;overflow:hidden;background:#fff}
 .qty-btn{border:0;background:#fff;font-size:21px;cursor:pointer}
@@ -218,12 +215,6 @@ h1{font-family:var(--display);font-size:clamp(34px,7vw,48px);line-height:1.02;fo
         <p class="supporting">Give her comfort she can use—and support she can feel.</p>
         <p class="hero-desc">Lovingly packed with personal care, cozy essentials, familiar snacks, and quiet activities chosen to offer everyday comfort. It arrives ready to give, with a free personal gift note available at checkout.</p>
         <div class="price">$169.99</div>
-        <ul class="hero-checks">
-          <li>Personal care, cozy essentials, familiar snacks, and quiet activities</li>
-          <li>Free personal gift note added at checkout</li>
-          <li>Processed and shipped from New York in 1–2 business days</li>
-          <li>Free shipping on orders over $200</li>
-        </ul>
         <div class="purchase-row">
           <div class="quantity" aria-label="Quantity">
             <button class="qty-btn" id="qtyDec" type="button" aria-label="Decrease quantity">−</button>
@@ -234,10 +225,12 @@ h1{font-family:var(--display);font-size:clamp(34px,7vw,48px);line-height:1.02;fo
         </div>
         <a class="btn-secondary" href="#inside" data-track="see_inside">See What’s Inside</a>
         <ul class="trust-row" aria-label="What's included with every order">
-          <li class="trust-item"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><rect x="4" y="10.5" width="16" height="9.5" rx="2"/><path d="M8 10.5V7a4 4 0 0 1 8 0v3.5"/></svg><span>Secure checkout</span></li>
+          <li class="trust-item"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M3 7.5h10v9H3z"/><path d="M13 10.5h4l4 3.5v2.5h-8z"/><circle cx="7" cy="18.5" r="1.6"/><circle cx="17" cy="18.5" r="1.6"/></svg><span>Ships in 1–2 business days</span></li>
+          <li class="trust-item"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="8.5"/><path d="M14.5 9.2c-.6-.9-1.5-1.3-2.6-1.3-1.6 0-2.6.8-2.6 2s1 1.7 2.6 2.1 2.7.9 2.7 2.2-1.1 2-2.7 2c-1.2 0-2.1-.4-2.7-1.4"/><path d="M12 6.4v11.2"/></svg><span>Free shipping over $200</span></li>
           <li class="trust-item"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M3 8l9-4 9 4v8l-9 4-9-4z"/><path d="M3 8l9 4 9-4"/><path d="M12 12v8"/></svg><span>Hand-packed in New York</span></li>
-          <li class="trust-item"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M3.5 10h10.5a5 5 0 0 1 0 10h-3.5"/><path d="M7.5 5.5L3 10l4.5 4.5"/></svg><span>180-day returns</span></li>
           <li class="trust-item"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><rect x="3" y="9" width="18" height="11" rx="2"/><path d="M3 13h18"/><path d="M12 9v11"/><path d="M12 9S9.6 4.8 7.8 6.2 9.6 9 12 9zM12 9s2.4-4.2 4.2-2.8S14.4 9 12 9z"/></svg><span>Free gift note</span></li>
+          <li class="trust-item"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M3.5 10h10.5a5 5 0 0 1 0 10h-3.5"/><path d="M7.5 5.5L3 10l4.5 4.5"/></svg><span>180-day returns</span></li>
+          <li class="trust-item"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><rect x="4" y="10.5" width="16" height="9.5" rx="2"/><path d="M8 10.5V7a4 4 0 0 1 8 0v3.5"/></svg><span>Secure checkout</span></li>
         </ul>
         <p class="microcopy">Secure checkout on RockTheTreatment.com · Delivery time varies by carrier and destination</p>
       </div>
@@ -548,7 +541,7 @@ h1{font-family:var(--display);font-size:clamp(34px,7vw,48px);line-height:1.02;fo
 
 <aside class="sticky is-hidden" aria-label="Purchase">
   <div class="sticky-inner">
-    <div class="sticky-meta"><div class="sticky-label">Large Women's Chemo Care Package · Qty <span id="stickyQty">1</span></div><div class="sticky-price">$169.99</div></div>
+    <div class="sticky-meta"><div class="sticky-label">Large Women's Chemo Care Package</div><div class="sticky-price">$169.99</div></div>
     <a class="btn-primary js-cart-btn" href="https://www.rockthetreatment.com/cart/?add-to-cart=248&quantity=1" data-track="add_to_cart_sticky">Send This Gift</a>
   </div>
 </aside>
@@ -592,11 +585,10 @@ h1{font-family:var(--display);font-size:clamp(34px,7vw,48px);line-height:1.02;fo
 
   var quantity = 1;
   var qtyValue = document.getElementById('qtyValue');
-  var stickyQty = document.getElementById('stickyQty');
   var cartButtons = Array.prototype.slice.call(document.querySelectorAll('.js-cart-btn'));
   function syncQuantity() {
+    // The sticky bar shows price only — no qty mirror to keep in sync.
     qtyValue.textContent = quantity;
-    stickyQty.textContent = quantity;
     cartButtons.forEach(function(button){ button.href = "https://www.rockthetreatment.com/cart/?add-to-cart=248" + '&quantity=' + quantity; });
   }
   document.getElementById('qtyDec').addEventListener('click', function(){ quantity = Math.max(1, quantity - 1); syncQuantity(); });
