@@ -79,8 +79,7 @@
           "/2018/04/Women-Large-Chemo-Basket-Main.jpg",
           "/2019/05/lindi-face-serum.jpg",
           "/2018/04/fuzzy-socks.jpg",
-          "/2019/07/knit-cap.jpg",
-          "/2023/03/Cancer-Organizer-Card-with-QR.jpg"
+          "/2019/07/knit-cap.jpg"
         ],
         "celebrationImage": "/2023/06/Copy-of-free-bell-w-box-1-1.jpg",
         "eyebrow": "Thoughtfully chosen. Ready to send.",
@@ -173,12 +172,13 @@
       "metaTitle": "Chemo Care Package for Her | Medium",
       "price": "$129.99",
       "totalSales": 5200,
-      "reviewCount": 144,
-      "rating": 5,
+      "reviewCount": 145,
+      "rating": 4.98,
       "companyPackagesSent": 45000,
       "heroImage": "/2018/04/Women-Medium-Chemo-Basket-Main.jpg",
       "mobileUi": {
         "croMaster": true,
+        "reviewCorpusIntegrated": true,
         "announcement": "FREE SHIPPING OVER $200 · SHIPPING CALCULATED AT CHECKOUT",
         "darkHeader": true,
         "galleryImages": [
@@ -209,7 +209,11 @@
           { "label": "Quiet moments", "title": "Ways to pass the time", "desc": "Puzzles and a pocket-size brain teaser offer simple, screen-free activities." },
           { "label": "Ready to give", "title": "No wrapping required", "desc": "The colorful box arrives gift-ready, with a free personal note available at checkout." }
         ],
-        "featuredReviewIndex": 2,
+        "featuredQuote": {
+          "text": "I didn’t know exactly what was needed or would be appreciated for what she was going through. This site made it easy and made me feel good purchasing from them.",
+          "author": "Jennifer F.",
+          "date": "05/31/2023"
+        },
         "celebrationLabel": "Looking for an end-of-treatment gift? Explore the Celebration Bell.",
         "celebrationUrl": "https://www.rockthetreatment.com/bell/"
       },
@@ -264,9 +268,12 @@
         { "name": "Large Women's Chemo Care Package", "price": "$169.99", "image": "/2018/04/Women-Large-Chemo-Basket-Main.jpg", "url": "/womens-large-chemo-basket/" }
       ],
       "reviews": [
-        { "stars": 5, "title": "Rick the Treatment Box", "text": "I purchased the box for my best friend of 40 years who just started her chemo treatments. She really enjoyed looking through the box and having several items to try.", "author": "Verified Buyer", "date": "02/2026" },
-        { "stars": 5, "title": "Care Package for Family member Fighting Lung Cancer", "text": "I cannot thank this shop enough for their incredible service. The shipping was incredibly fast. The product itself is wonderful — she truly loved it.", "author": "Verified Buyer", "date": "01/2026" },
-        { "stars": 5, "title": "The Perfect Gift", "text": "I was looking for an appropriate gift for a friend going through chemo. I love the great care and consideration in selecting products that bring comfort. She absolutely loved the basket.", "author": "Verified Buyer", "date": "12/2025" }
+        { "stars": 5, "title": "Chemo care package", "text": "Friend was delighted with package. From presentation to carefully selected contents to delicious pops Definitely would recommend to anyone who is looking for a way to comfort a family member or friend going through this horrible journey", "author": "Susan M.", "date": "06/14/2026" },
+        { "stars": 5, "title": "Rick the Treatment Box", "text": "I purchased the box for my best friend of 40 years who just started her chemo treatments. She really enjoyed looking through the box and having several items to try to see what works best for her needs. It is such a difficult time so just to see a small smile makes me extremely happy.", "author": "Kimberly S.", "date": "02/13/2026" },
+        { "stars": 5, "title": "My sister loved the box!", "text": "The box really picked up her spirits specially the unique jelly beans! Thank you", "author": "Anita D.", "date": "04/23/2026" },
+        { "stars": 5, "title": "The Perfect Gift", "text": "I was looking for an appropriate gift to give a friend who's going through chemo when I stumbled across this website. I love the great care and consideration that was given into selecting products that would bring comfort. My friend absolutely loved the basket. The throat lozenges were right on time. Everything was packaged nicely. I will definitely order again.", "author": "Ronya H.", "date": "10/24/2024" },
+        { "stars": 5, "title": "Womens medium chemo basket", "text": "Easy to order. Very happy with product. Excellent company to deal with. Nice to have something useful as opposed to random deco or stuff lying around. Very practical useful gift.", "author": "Mary P.", "date": "03/17/2022" },
+        { "stars": 5, "title": "She loved the gift", "text": "I purchased this gift for a friend who is starting treatment for breast cancer. She loved the packaging. It lifted her spirits. She believes the items will be very helpful.", "author": "Laurie C.", "date": "03/02/2021" }
       ]
     },
     {

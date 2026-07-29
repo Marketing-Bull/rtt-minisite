@@ -112,6 +112,10 @@ h1{font-family:var(--display);font-size:clamp(34px,7vw,48px);line-height:1.02;fo
 .faq-icon{font-size:20px;color:var(--green-dark)}
 .faq-answer{padding:0 2px 18px;font-size:13px;line-height:1.65;color:var(--muted)}
 .reviews-section{background-color:#fff8eb;background-image:radial-gradient(circle at 10% 18%,rgba(233,87,22,.12) 0 7px,transparent 8px),radial-gradient(circle at 88% 14%,rgba(41,169,224,.12) 0 9px,transparent 10px),radial-gradient(circle at 80% 84%,rgba(170,27,204,.1) 0 7px,transparent 8px),radial-gradient(circle at 18% 80%,rgba(79,145,63,.12) 0 10px,transparent 11px);background-size:180px 180px,230px 230px,200px 200px,250px 250px}
+.review-proof{display:flex;align-items:center;gap:14px;margin-top:18px;padding:15px 16px;border:1px solid var(--line);border-radius:18px;background:rgba(255,255,255,.92)}
+.review-score{font-size:34px;font-weight:800;line-height:1;font-variant-numeric:tabular-nums}
+.review-proof-copy{font-size:12px;line-height:1.45;color:var(--muted)}
+.review-proof-copy strong{display:block;color:var(--ink);font-size:13px}
 .reviews-grid{display:flex;gap:12px;margin:20px -20px 0;padding:0 20px 8px;overflow-x:auto;scroll-snap-type:x proximity;scrollbar-width:thin}
 .review{flex:0 0 82%;scroll-snap-align:start;border:1px solid var(--line);border-radius:18px;padding:17px;background:rgba(255,255,255,.92)}
 .review h3{font-size:14px;margin:7px 0 0}
@@ -185,7 +189,7 @@ h1{font-family:var(--display);font-size:clamp(34px,7vw,48px);line-height:1.02;fo
           <picture><source id="mainSrcAvif" type="image/avif" srcset="/assets/uploads/2018/04/Women-Medium-Chemo-Basket-Main.avif"><source id="mainSrcWebp" type="image/webp" srcset="/assets/uploads/2018/04/Women-Medium-Chemo-Basket-Main.webp"><img id="mainImg" class="gallery-main" src="/assets/uploads/2018/04/Women-Medium-Chemo-Basket-Main.jpg" alt="Medium Women's Chemo Care Package" fetchpriority="high" decoding="async"></picture>
           <span class="swipe-hint" id="swipeHint" aria-hidden="true">Swipe to explore</span>
         </div>
-        <div class="gallery-rating"><a class="rating-link" href="https://www.rockthetreatment.com/womens-medium-chemo-basket/#reviews" data-track="rating_click"><span class="rating-stars" aria-hidden="true">★★★★★</span><span>5.0 · 144 verified reviews</span></a></div>
+        <div class="gallery-rating"><a class="rating-link" href="https://www.rockthetreatment.com/womens-medium-chemo-basket/#reviews" data-track="rating_click"><span class="rating-stars" aria-hidden="true">★★★★★</span><span>5.0 · 145 verified reviews</span></a></div>
         <div class="gallery-thumbs" id="galleryThumbs" aria-label="Choose a product image">
           <button class="thumb" type="button" data-index="0" aria-label="Show image 1 of 5" aria-current="true"><picture><source type="image/avif" srcset="/assets/uploads/2018/04/Women-Medium-Chemo-Basket-Main.avif"><source type="image/webp" srcset="/assets/uploads/2018/04/Women-Medium-Chemo-Basket-Main.webp"><img src="/assets/uploads/2018/04/Women-Medium-Chemo-Basket-Main.jpg" alt="" decoding="async"></picture></button>
           <button class="thumb" type="button" data-index="1" aria-label="Show image 2 of 5" aria-current="false"><picture><source type="image/avif" srcset="/assets/uploads/lifestyle/medium-womens-care-package.avif"><source type="image/webp" srcset="/assets/uploads/lifestyle/medium-womens-care-package.webp"><img src="/assets/uploads/lifestyle/medium-womens-care-package.jpg" alt="" decoding="async"></picture></button>
@@ -228,9 +232,9 @@ h1{font-family:var(--display);font-size:clamp(34px,7vw,48px);line-height:1.02;fo
     </section>
 
     <section class="featured-quote" aria-label="Featured customer review">
-      <div class="section-kicker">Verified buyer story</div>
-      <blockquote>“I was looking for an appropriate gift for a friend going through chemo. I love the great care and consideration in selecting products that bring comfort. She absolutely loved the basket.”</blockquote>
-      <div class="quote-credit">— Verified Buyer · Verified Buyer</div>
+      <div class="section-kicker">From a verified buyer</div>
+      <blockquote>“I didn’t know exactly what was needed or would be appreciated for what she was going through. This site made it easy and made me feel good purchasing from them.”</blockquote>
+      <div class="quote-credit">— Jennifer F. · Verified Buyer · 05/31/2023</div>
     </section>
 
     <section class="section section-alt" aria-labelledby="helps-title">
@@ -407,30 +411,52 @@ h1{font-family:var(--display);font-size:clamp(34px,7vw,48px);line-height:1.02;fo
     </section>
 
     <section class="section reviews-section" id="reviews" aria-labelledby="reviews-title">
-      <div class="section-kicker">144 verified reviews</div>
-      <h2 class="section-title" id="reviews-title">Our fan club</h2>
-      <p class="section-copy">Real notes from people who sent care at the right time.</p>
+      <div class="section-kicker">Verified reviews for this exact package</div>
+      <h2 class="section-title" id="reviews-title">What senders—and recipients—say</h2>
+      <p class="section-copy">Selected from 145 verified reviews of the Medium Women’s Chemo Care Package.</p>
+      <div class="review-proof" aria-label="4.98 out of 5 from 145 verified reviews">
+        <div class="review-score">4.98</div>
+        <div class="review-proof-copy"><span class="rating-stars" aria-hidden="true">★★★★★</span><strong>145 verified product reviews</strong>Collected through the live Rock The Treatment review feed.</div>
+      </div>
       <div class="reviews-grid">
         <article class="review">
           <div class="rating-stars" aria-label="5 out of 5 stars">★★★★★</div>
-          <h3>Rick the Treatment Box</h3>
-          <p>I purchased the box for my best friend of 40 years who just started her chemo treatments. She really enjoyed looking through the box and having several items to try.</p>
-          <div class="review-author">— Verified Buyer · Verified Buyer · 02/2026</div>
+          <h3>Chemo care package</h3>
+          <p>Friend was delighted with package. From presentation to carefully selected contents to delicious pops Definitely would recommend to anyone who is looking for a way to comfort a family member or friend going through this horrible journey</p>
+          <div class="review-author">— Susan M. · Verified Buyer · 06/14/2026</div>
         </article>
         <article class="review">
           <div class="rating-stars" aria-label="5 out of 5 stars">★★★★★</div>
-          <h3>Care Package for Family member Fighting Lung Cancer</h3>
-          <p>I cannot thank this shop enough for their incredible service. The shipping was incredibly fast. The product itself is wonderful — she truly loved it.</p>
-          <div class="review-author">— Verified Buyer · Verified Buyer · 01/2026</div>
+          <h3>Rick the Treatment Box</h3>
+          <p>I purchased the box for my best friend of 40 years who just started her chemo treatments. She really enjoyed looking through the box and having several items to try to see what works best for her needs. It is such a difficult time so just to see a small smile makes me extremely happy.</p>
+          <div class="review-author">— Kimberly S. · Verified Buyer · 02/13/2026</div>
+        </article>
+        <article class="review">
+          <div class="rating-stars" aria-label="5 out of 5 stars">★★★★★</div>
+          <h3>My sister loved the box!</h3>
+          <p>The box really picked up her spirits specially the unique jelly beans! Thank you</p>
+          <div class="review-author">— Anita D. · Verified Buyer · 04/23/2026</div>
         </article>
         <article class="review">
           <div class="rating-stars" aria-label="5 out of 5 stars">★★★★★</div>
           <h3>The Perfect Gift</h3>
-          <p>I was looking for an appropriate gift for a friend going through chemo. I love the great care and consideration in selecting products that bring comfort. She absolutely loved the basket.</p>
-          <div class="review-author">— Verified Buyer · Verified Buyer · 12/2025</div>
+          <p>I was looking for an appropriate gift to give a friend who's going through chemo when I stumbled across this website. I love the great care and consideration that was given into selecting products that would bring comfort. My friend absolutely loved the basket. The throat lozenges were right on time. Everything was packaged nicely. I will definitely order again.</p>
+          <div class="review-author">— Ronya H. · Verified Buyer · 10/24/2024</div>
+        </article>
+        <article class="review">
+          <div class="rating-stars" aria-label="5 out of 5 stars">★★★★★</div>
+          <h3>Womens medium chemo basket</h3>
+          <p>Easy to order. Very happy with product. Excellent company to deal with. Nice to have something useful as opposed to random deco or stuff lying around. Very practical useful gift.</p>
+          <div class="review-author">— Mary P. · Verified Buyer · 03/17/2022</div>
+        </article>
+        <article class="review">
+          <div class="rating-stars" aria-label="5 out of 5 stars">★★★★★</div>
+          <h3>She loved the gift</h3>
+          <p>I purchased this gift for a friend who is starting treatment for breast cancer. She loved the packaging. It lifted her spirits. She believes the items will be very helpful.</p>
+          <div class="review-author">— Laurie C. · Verified Buyer · 03/02/2021</div>
         </article>
       </div>
-      <p style="margin:18px 0 0"><a class="header-link" href="https://www.rockthetreatment.com/womens-medium-chemo-basket/#reviews">Read all reviews on RockTheTreatment.com →</a></p>
+      <p style="margin:18px 0 0"><a class="header-link" href="https://www.rockthetreatment.com/womens-medium-chemo-basket/#reviews">Read all 145 verified reviews on RockTheTreatment.com →</a></p>
     </section>
 
     <section class="final-cta" aria-labelledby="final-title">

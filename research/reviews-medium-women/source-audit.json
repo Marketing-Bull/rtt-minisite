@@ -1,0 +1,46 @@
+{
+  "generatedAt": "2026-07-28T15:44:51.284Z",
+  "sources": [
+    {
+      "source": "stamped",
+      "status": "collected",
+      "scope": "exact_product",
+      "count": 145,
+      "note": "The live Stamped API includes one review newer than the cached on-page widget."
+    },
+    {
+      "source": "etsy",
+      "status": "collected",
+      "scope": "exact_listing",
+      "count": 2,
+      "note": "The Etsy shop has more company-wide reviews, but only these two belong to the exact listing."
+    },
+    {
+      "source": "google",
+      "status": "collected",
+      "scope": "company",
+      "count": 233,
+      "note": "Company-level reviews; product relevance requires text verification."
+    },
+    {
+      "source": "yelp",
+      "status": "collected",
+      "scope": "company",
+      "count": 4,
+      "note": "Company-level reviews; none explicitly identify the Medium Women package."
+    },
+    {
+      "source": "facebook",
+      "status": "blocked_login",
+      "scope": "company",
+      "advertisedCount": 27,
+      "note": "The public page exposes one truncated recommendation; the complete set requires Facebook login."
+    },
+    {
+      "source": "rockthetreatment_testimonials",
+      "status": "not_independent",
+      "scope": "editorial",
+      "note": "Editorial testimonials are not counted as a separate review source without provenance."
+    }
+  ]
+}

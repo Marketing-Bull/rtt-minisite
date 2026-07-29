@@ -117,7 +117,8 @@ function generateWomensCroPage(product) {
   const cartUrl = `${wwwBase}/?add-to-cart=${product.id}&quantity=1`;
   const rating = product.rating || 5;
   const packagesSent = product.companyPackagesSent || product.totalSales;
-  const featuredReview = product.reviews[ui.featuredReviewIndex || 0] || product.reviews[0];
+  const reviewCorpusIntegrated = Boolean(ui.reviewCorpusIntegrated);
+  const featuredReview = ui.featuredQuote || product.reviews[ui.featuredReviewIndex || 0] || product.reviews[0];
   const featuredItems = ui.featuredItems || [];
   const celebrationImage = img(ui.celebrationImage || '/2023/06/bell.png');
   const requestedAddOns = [
@@ -278,6 +279,10 @@ h1{font-family:var(--display);font-size:clamp(34px,7vw,48px);line-height:1.02;fo
 .faq-icon{font-size:20px;color:var(--green-dark)}
 .faq-answer{padding:0 2px 18px;font-size:13px;line-height:1.65;color:var(--muted)}
 .reviews-section{background-color:#fff8eb;background-image:radial-gradient(circle at 10% 18%,rgba(233,87,22,.12) 0 7px,transparent 8px),radial-gradient(circle at 88% 14%,rgba(41,169,224,.12) 0 9px,transparent 10px),radial-gradient(circle at 80% 84%,rgba(170,27,204,.1) 0 7px,transparent 8px),radial-gradient(circle at 18% 80%,rgba(79,145,63,.12) 0 10px,transparent 11px);background-size:180px 180px,230px 230px,200px 200px,250px 250px}
+.review-proof{display:flex;align-items:center;gap:14px;margin-top:18px;padding:15px 16px;border:1px solid var(--line);border-radius:18px;background:rgba(255,255,255,.92)}
+.review-score{font-size:34px;font-weight:800;line-height:1;font-variant-numeric:tabular-nums}
+.review-proof-copy{font-size:12px;line-height:1.45;color:var(--muted)}
+.review-proof-copy strong{display:block;color:var(--ink);font-size:13px}
 .reviews-grid{display:flex;gap:12px;margin:20px -20px 0;padding:0 20px 8px;overflow-x:auto;scroll-snap-type:x proximity;scrollbar-width:thin}
 .review{flex:0 0 82%;scroll-snap-align:start;border:1px solid var(--line);border-radius:18px;padding:17px;background:rgba(255,255,255,.92)}
 .review h3{font-size:14px;margin:7px 0 0}
@@ -390,9 +395,9 @@ ${galleryImages.map((gi, i) => `          <button class="thumb" type="button" da
     </section>
 
 ${featuredReview ? `    <section class="featured-quote" aria-label="Featured customer review">
-      <div class="section-kicker">Verified buyer story</div>
+      <div class="section-kicker">${reviewCorpusIntegrated ? 'From a verified buyer' : 'Verified buyer story'}</div>
       <blockquote>“${escHtml(featuredReview.text)}”</blockquote>
-      <div class="quote-credit">— ${escHtml(featuredReview.author)} · Verified Buyer</div>
+      <div class="quote-credit">— ${escHtml(featuredReview.author)} · Verified Buyer${reviewCorpusIntegrated && featuredReview.date ? ` · ${escHtml(featuredReview.date)}` : ''}</div>
     </section>` : ''}
 
     <section class="section section-alt" aria-labelledby="helps-title">
@@ -449,9 +454,13 @@ ${faqItems.map((faq, i) => `        <div class="faq-item">
     </section>
 
     <section class="section reviews-section" id="reviews" aria-labelledby="reviews-title">
-      <div class="section-kicker">${product.reviewCount} verified reviews</div>
-      <h2 class="section-title" id="reviews-title">Our fan club</h2>
-      <p class="section-copy">Real notes from people who sent care at the right time.</p>
+      <div class="section-kicker">${reviewCorpusIntegrated ? 'Verified reviews for this exact package' : `${product.reviewCount} verified reviews`}</div>
+      <h2 class="section-title" id="reviews-title">${reviewCorpusIntegrated ? 'What senders—and recipients—say' : 'Our fan club'}</h2>
+      <p class="section-copy">${reviewCorpusIntegrated ? `Selected from ${product.reviewCount} verified reviews of the Medium Women’s Chemo Care Package.` : 'Real notes from people who sent care at the right time.'}</p>
+${reviewCorpusIntegrated ? `      <div class="review-proof" aria-label="${rating.toFixed(2)} out of 5 from ${product.reviewCount} verified reviews">
+        <div class="review-score">${rating.toFixed(2)}</div>
+        <div class="review-proof-copy"><span class="rating-stars" aria-hidden="true">★★★★★</span><strong>${product.reviewCount} verified product reviews</strong>Collected through the live Rock The Treatment review feed.</div>
+      </div>` : ''}
       <div class="reviews-grid">
 ${product.reviews.map(review => `        <article class="review">
           <div class="rating-stars" aria-label="${review.stars} out of 5 stars">${stars(review.stars)}</div>
@@ -460,7 +469,7 @@ ${product.reviews.map(review => `        <article class="review">
           <div class="review-author">— ${escHtml(review.author)} · Verified Buyer · ${escHtml(review.date)}</div>
         </article>`).join('\n')}
       </div>
-      <p style="margin:18px 0 0"><a class="header-link" href="${wwwBase}/${product.slug}/#reviews">Read all reviews on RockTheTreatment.com →</a></p>
+      <p style="margin:18px 0 0"><a class="header-link" href="${wwwBase}/${product.slug}/#reviews">${reviewCorpusIntegrated ? `Read all ${product.reviewCount} verified reviews` : 'Read all reviews'} on RockTheTreatment.com →</a></p>
     </section>
 
     <section class="final-cta" aria-labelledby="final-title">

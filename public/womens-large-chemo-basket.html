@@ -112,6 +112,10 @@ h1{font-family:var(--display);font-size:clamp(34px,7vw,48px);line-height:1.02;fo
 .faq-icon{font-size:20px;color:var(--green-dark)}
 .faq-answer{padding:0 2px 18px;font-size:13px;line-height:1.65;color:var(--muted)}
 .reviews-section{background-color:#fff8eb;background-image:radial-gradient(circle at 10% 18%,rgba(233,87,22,.12) 0 7px,transparent 8px),radial-gradient(circle at 88% 14%,rgba(41,169,224,.12) 0 9px,transparent 10px),radial-gradient(circle at 80% 84%,rgba(170,27,204,.1) 0 7px,transparent 8px),radial-gradient(circle at 18% 80%,rgba(79,145,63,.12) 0 10px,transparent 11px);background-size:180px 180px,230px 230px,200px 200px,250px 250px}
+.review-proof{display:flex;align-items:center;gap:14px;margin-top:18px;padding:15px 16px;border:1px solid var(--line);border-radius:18px;background:rgba(255,255,255,.92)}
+.review-score{font-size:34px;font-weight:800;line-height:1;font-variant-numeric:tabular-nums}
+.review-proof-copy{font-size:12px;line-height:1.45;color:var(--muted)}
+.review-proof-copy strong{display:block;color:var(--ink);font-size:13px}
 .reviews-grid{display:flex;gap:12px;margin:20px -20px 0;padding:0 20px 8px;overflow-x:auto;scroll-snap-type:x proximity;scrollbar-width:thin}
 .review{flex:0 0 82%;scroll-snap-align:start;border:1px solid var(--line);border-radius:18px;padding:17px;background:rgba(255,255,255,.92)}
 .review h3{font-size:14px;margin:7px 0 0}
@@ -187,11 +191,10 @@ h1{font-family:var(--display);font-size:clamp(34px,7vw,48px);line-height:1.02;fo
         </div>
         <div class="gallery-rating"><a class="rating-link" href="https://www.rockthetreatment.com/womens-large-chemo-basket/#reviews" data-track="rating_click"><span class="rating-stars" aria-hidden="true">★★★★★</span><span>5.0 · 259 verified reviews</span></a></div>
         <div class="gallery-thumbs" id="galleryThumbs" aria-label="Choose a product image">
-          <button class="thumb" type="button" data-index="0" aria-label="Show image 1 of 5" aria-current="true"><picture><source type="image/avif" srcset="/assets/uploads/2018/04/Women-Large-Chemo-Basket-Main.avif"><source type="image/webp" srcset="/assets/uploads/2018/04/Women-Large-Chemo-Basket-Main.webp"><img src="/assets/uploads/2018/04/Women-Large-Chemo-Basket-Main.jpg" alt="" decoding="async"></picture></button>
-          <button class="thumb" type="button" data-index="1" aria-label="Show image 2 of 5" aria-current="false"><picture><source type="image/avif" srcset="/assets/uploads/2019/05/lindi-face-serum.avif"><source type="image/webp" srcset="/assets/uploads/2019/05/lindi-face-serum.webp"><img src="/assets/uploads/2019/05/lindi-face-serum.jpg" alt="" decoding="async"></picture></button>
-          <button class="thumb" type="button" data-index="2" aria-label="Show image 3 of 5" aria-current="false"><picture><source type="image/avif" srcset="/assets/uploads/2018/04/fuzzy-socks.avif"><source type="image/webp" srcset="/assets/uploads/2018/04/fuzzy-socks.webp"><img src="/assets/uploads/2018/04/fuzzy-socks.jpg" alt="" loading="lazy" decoding="async"></picture></button>
-          <button class="thumb" type="button" data-index="3" aria-label="Show image 4 of 5" aria-current="false"><picture><source type="image/avif" srcset="/assets/uploads/2019/07/knit-cap.avif"><source type="image/webp" srcset="/assets/uploads/2019/07/knit-cap.webp"><img src="/assets/uploads/2019/07/knit-cap.jpg" alt="" loading="lazy" decoding="async"></picture></button>
-          <button class="thumb" type="button" data-index="4" aria-label="Show image 5 of 5" aria-current="false"><picture><source type="image/avif" srcset="/assets/uploads/2023/03/Cancer-Organizer-Card-with-QR.avif"><source type="image/webp" srcset="/assets/uploads/2023/03/Cancer-Organizer-Card-with-QR.webp"><img src="/assets/uploads/2023/03/Cancer-Organizer-Card-with-QR.jpg" alt="" loading="lazy" decoding="async"></picture></button>
+          <button class="thumb" type="button" data-index="0" aria-label="Show image 1 of 4" aria-current="true"><picture><source type="image/avif" srcset="/assets/uploads/2018/04/Women-Large-Chemo-Basket-Main.avif"><source type="image/webp" srcset="/assets/uploads/2018/04/Women-Large-Chemo-Basket-Main.webp"><img src="/assets/uploads/2018/04/Women-Large-Chemo-Basket-Main.jpg" alt="" decoding="async"></picture></button>
+          <button class="thumb" type="button" data-index="1" aria-label="Show image 2 of 4" aria-current="false"><picture><source type="image/avif" srcset="/assets/uploads/2019/05/lindi-face-serum.avif"><source type="image/webp" srcset="/assets/uploads/2019/05/lindi-face-serum.webp"><img src="/assets/uploads/2019/05/lindi-face-serum.jpg" alt="" decoding="async"></picture></button>
+          <button class="thumb" type="button" data-index="2" aria-label="Show image 3 of 4" aria-current="false"><picture><source type="image/avif" srcset="/assets/uploads/2018/04/fuzzy-socks.avif"><source type="image/webp" srcset="/assets/uploads/2018/04/fuzzy-socks.webp"><img src="/assets/uploads/2018/04/fuzzy-socks.jpg" alt="" loading="lazy" decoding="async"></picture></button>
+          <button class="thumb" type="button" data-index="3" aria-label="Show image 4 of 4" aria-current="false"><picture><source type="image/avif" srcset="/assets/uploads/2019/07/knit-cap.avif"><source type="image/webp" srcset="/assets/uploads/2019/07/knit-cap.webp"><img src="/assets/uploads/2019/07/knit-cap.jpg" alt="" loading="lazy" decoding="async"></picture></button>
         </div>
       </div>
 
@@ -426,6 +429,7 @@ h1{font-family:var(--display);font-size:clamp(34px,7vw,48px);line-height:1.02;fo
       <div class="section-kicker">259 verified reviews</div>
       <h2 class="section-title" id="reviews-title">Our fan club</h2>
       <p class="section-copy">Real notes from people who sent care at the right time.</p>
+
       <div class="reviews-grid">
         <article class="review">
           <div class="rating-stars" aria-label="5 out of 5 stars">★★★★★</div>
@@ -531,7 +535,7 @@ h1{font-family:var(--display);font-size:clamp(34px,7vw,48px);line-height:1.02;fo
 
 <script>
 (function(){
-  var gallery = [{"a":"/assets/uploads/2018/04/Women-Large-Chemo-Basket-Main.avif","w":"/assets/uploads/2018/04/Women-Large-Chemo-Basket-Main.webp","f":"/assets/uploads/2018/04/Women-Large-Chemo-Basket-Main.jpg"},{"a":"/assets/uploads/2019/05/lindi-face-serum.avif","w":"/assets/uploads/2019/05/lindi-face-serum.webp","f":"/assets/uploads/2019/05/lindi-face-serum.jpg"},{"a":"/assets/uploads/2018/04/fuzzy-socks.avif","w":"/assets/uploads/2018/04/fuzzy-socks.webp","f":"/assets/uploads/2018/04/fuzzy-socks.jpg"},{"a":"/assets/uploads/2019/07/knit-cap.avif","w":"/assets/uploads/2019/07/knit-cap.webp","f":"/assets/uploads/2019/07/knit-cap.jpg"},{"a":"/assets/uploads/2023/03/Cancer-Organizer-Card-with-QR.avif","w":"/assets/uploads/2023/03/Cancer-Organizer-Card-with-QR.webp","f":"/assets/uploads/2023/03/Cancer-Organizer-Card-with-QR.jpg"}];
+  var gallery = [{"a":"/assets/uploads/2018/04/Women-Large-Chemo-Basket-Main.avif","w":"/assets/uploads/2018/04/Women-Large-Chemo-Basket-Main.webp","f":"/assets/uploads/2018/04/Women-Large-Chemo-Basket-Main.jpg"},{"a":"/assets/uploads/2019/05/lindi-face-serum.avif","w":"/assets/uploads/2019/05/lindi-face-serum.webp","f":"/assets/uploads/2019/05/lindi-face-serum.jpg"},{"a":"/assets/uploads/2018/04/fuzzy-socks.avif","w":"/assets/uploads/2018/04/fuzzy-socks.webp","f":"/assets/uploads/2018/04/fuzzy-socks.jpg"},{"a":"/assets/uploads/2019/07/knit-cap.avif","w":"/assets/uploads/2019/07/knit-cap.webp","f":"/assets/uploads/2019/07/knit-cap.jpg"}];
   var stage = document.getElementById('galleryStage');
   var main = document.getElementById('mainImg');
   var avif = document.getElementById('mainSrcAvif');
