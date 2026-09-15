@@ -194,7 +194,6 @@ function generateWomensCroPage(product) {
   const reviewCorpusIntegrated = Boolean(ui.reviewCorpusIntegrated);
   const featuredReview = ui.featuredQuote || product.reviews[ui.featuredReviewIndex || 0] || product.reviews[0];
   const featuredItems = ui.featuredItems || [];
-  const celebrationImage = img(ui.celebrationImage || '/2023/06/bell.png');
   const requestedAddOns = [
     "Cozy Companion™ Blanket",
     "YOU ROCK! Worry Stone",
@@ -235,7 +234,7 @@ function generateWomensCroPage(product) {
     },
     {
       q: 'Is the Celebration Bell included?',
-      a: 'No. The Celebration Bell is a separate end-of-treatment gift and must be ordered separately.'
+      a: 'Yes — every purchase includes a free end-of-treatment Celebration Bell. It is placed as its own separate order rather than packed in this box, so it arrives for the day it is meant for.'
     }
   ];
 
@@ -350,9 +349,16 @@ h1{font-family:var(--display);font-size:clamp(34px,7vw,48px);line-height:1.02;fo
 .content-item img{width:58px;height:58px;object-fit:contain;background:#fbfaf7;padding:4px;border-radius:12px}
 .content-item h4{font-size:12.5px;margin:2px 0 0}
 .content-item p{font-size:11.5px;line-height:1.5;color:var(--muted);margin:4px 0 0}
-.optional-note{display:flex;gap:13px;align-items:center;margin-top:18px;padding:13px;border:1px solid rgba(223,208,188,.65);background:rgba(255,248,235,.55);border-radius:17px;font-size:12px;line-height:1.5;color:#74695f}
-.optional-note img{width:58px;height:58px;object-fit:contain;border-radius:12px;background:#fff}
-.optional-note a{font-weight:800;text-decoration:underline;text-underline-offset:3px;color:var(--green-dark)}
+/* Free-gift callout. The bell is free with any purchase but placed as its own
+   order, so the headline leads with the offer and the qualifier follows it
+   quietly rather than reading as a catch. */
+.gift-callout{display:flex;gap:14px;align-items:flex-start;margin-top:18px;padding:16px 15px;border:1px solid #d6ecc4;background:var(--green-soft);border-radius:18px}
+.gift-callout img{width:64px;height:64px;flex:0 0 auto;object-fit:contain}
+.gift-callout h3{font-family:var(--display);font-size:17px;font-weight:800;line-height:1.15;color:var(--green-dark);margin:0}
+.gift-callout p{font-size:13px;line-height:1.55;color:var(--muted);margin:6px 0 0}
+.gift-callout strong{color:var(--ink);font-weight:800}
+.gift-callout a{font-weight:800;color:var(--green-dark);text-decoration:underline;text-underline-offset:3px}
+.gift-callout .qualifier{display:block;margin-top:7px;font-size:12px;font-style:italic;color:var(--subtle)}
 /* Celebration Bell dialog. The note's link is a real outbound href that works
    with no JS; the script upgrades it to open this instead, so the buyer sees
    what the bell is — and that it ships on its own — before leaving the page. */
@@ -587,18 +593,21 @@ ${cat.items.map(item => `            <article class="content-item">
           </section>`).join('\n')}
         </div>
       </details>
-      <div class="optional-note">
-        ${picture(celebrationImage, { alt: '', width: 58, height: 58 })}
-        <div>${escHtml(ui.celebrationLabel)} <a class="js-bell-open" href="${ui.celebrationUrl}" data-track="celebration_bell">Order it separately</a>.</div>
+      <div class="gift-callout">
+        ${picture(bellImg, { alt: '', width: 64, height: 64 })}
+        <div>
+          <h3>Free Gift Included!</h3>
+          <p>Each purchase includes a <strong>FREE</strong> end-of-treatment <a class="js-bell-open" href="${ui.celebrationUrl}" data-track="celebration_bell">celebration gift</a>.<span class="qualifier">Must be ordered separately</span></p>
+        </div>
       </div>
       <dialog class="bell-modal" id="bellModal" aria-labelledby="bellModalTitle">
         <button class="bell-close" type="button" id="bellClose" aria-label="Close">&times;</button>
         <figure class="bell-figure">${picture(bellImg, { alt: 'The Celebration Bell', width: 210, height: 210 })}</figure>
         <div class="bell-inner">
-          <p class="bell-eyebrow">End-of-treatment gift</p>
+          <p class="bell-eyebrow">Free with every purchase</p>
           <h2 id="bellModalTitle">The Celebration Bell</h2>
           <p class="bell-tag">Ordered separately</p>
-          <p class="bell-copy">Rung on the last day of treatment — a small, loud moment people remember for years. It isn't packed inside this care package: it ships on its own so it arrives for the day it's actually meant for.</p>
+          <p class="bell-copy">Rung on the last day of treatment — a small, loud moment people remember for years. It's free with any care package, and placed as its own order rather than packed in this box, so it arrives for the day it's actually meant for.</p>
           <a class="btn-primary" href="${ui.celebrationUrl}" data-track="celebration_bell_cta">See the Celebration Bell</a>
           <button class="bell-dismiss" type="button" id="bellDismiss">Not right now</button>
         </div>
@@ -1218,7 +1227,7 @@ ${trustInBoxBadgeHtml}
     <div class="free-gift-callout${ui.softGiftCallout ? ' soft' : ''}">
       ${picture(bellImg, { alt: 'Celebration Bell', width: 50, height: 50 })}
       <div class="text">
-        <strong>Complimentary extra:</strong> Every purchase includes access to RTT's end-of-treatment celebration gift at no charge.
+        <strong>Free Gift Included!</strong> Each purchase includes a FREE end-of-treatment celebration gift. <em>Must be ordered separately.</em>
 ${giftLinkHtml}
       </div>
     </div>
