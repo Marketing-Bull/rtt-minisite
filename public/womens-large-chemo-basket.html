@@ -147,9 +147,56 @@ h1{font-family:var(--display);font-size:clamp(34px,7vw,48px);line-height:1.02;fo
 .review h3{font-size:14px;margin:7px 0 0}
 .review p{font-size:12.5px;line-height:1.6;color:var(--muted);margin:7px 0 0}
 .review-author{font-size:11.5px;font-weight:800;color:#5e554e;margin-top:10px}
-.final-cta{text-align:center;padding:48px 20px;background:var(--sand)}
+/* view-timeline-name here, not view() on the layers: the layers sit inside an
+   overflow:hidden parent, so view() resolved against that clip and never
+   progressed. Naming the timeline on the section tracks the section's own
+   travel through the page scroller instead. Inert where unsupported. */
+.final-cta{position:relative;isolation:isolate;overflow:hidden;text-align:center;padding:48px 20px;background:var(--sand);view-timeline-name:--rtt-cta;view-timeline-axis:block}
 .final-cta .btn-primary{max-width:360px;margin:20px auto 0}
 .final-cta .microcopy{max-width:420px;margin:10px auto 0}
+.final-cta > *:not(.dot-field){position:relative;z-index:1}
+
+/* Confetti dots, the same asset the www site uses. Two layers at different
+   scales and speeds so the field reads as depth rather than a flat pattern.
+   Purely decorative: aria-hidden, pointer-events off, and it sits behind the
+   CTA rather than under the type. */
+/* The mask clears a soft hole through the middle, so the dots frame the copy
+   from the edges instead of running underneath it. Without this the headline
+   and microcopy sit on top of the densest part of the field. */
+.dot-field{position:absolute;inset:0;z-index:0;pointer-events:none;overflow:hidden;
+  -webkit-mask-image:radial-gradient(112% 76% at 50% 50%,transparent 26%,#000 78%);
+  mask-image:radial-gradient(112% 76% at 50% 50%,transparent 26%,#000 78%)}
+.dot-layer{position:absolute;inset:-22% -14%;background-repeat:repeat;
+  background-image:url(/assets/uploads/2023/10/Dots-1.webp);
+  background-image:image-set(url(/assets/uploads/2023/10/Dots-1.avif) type("image/avif"),url(/assets/uploads/2023/10/Dots-1.webp) type("image/webp"));
+  will-change:transform}
+.dot-layer-a{background-size:520px auto;opacity:.42}
+.dot-layer-b{background-size:800px auto;background-position:38% 12%;opacity:.2}
+
+/* Everywhere: a slow ambient drift. Transform only, so it composites on the
+   GPU and never touches layout. */
+@media(prefers-reduced-motion:no-preference){
+  .dot-layer-a{animation:dot-drift-a 26s ease-in-out infinite alternate}
+  .dot-layer-b{animation:dot-drift-b 38s ease-in-out infinite alternate}
+}
+@keyframes dot-drift-a{from{transform:translate3d(0,0,0)}to{transform:translate3d(-3%,-5%,0)}}
+@keyframes dot-drift-b{from{transform:translate3d(0,0,0)}to{transform:translate3d(4%,6%,0)}}
+
+/* Newer phones (Chrome 115+, Safari 26+): hand the same two layers to the
+   scroll instead of a timer. Scroll-driven animations run off the main
+   thread, so this parallaxes at 60fps while the page is scrolling — which a
+   JS scroll listener cannot promise. Anything older keeps the drift above. */
+@supports (animation-timeline:view()){
+  @media(prefers-reduced-motion:no-preference){
+    .dot-layer{animation-timeline:--rtt-cta;animation-range:cover 0% cover 100%;
+      animation-iteration-count:1;animation-direction:normal;animation-fill-mode:both;
+      animation-timing-function:linear}
+    .dot-layer-a{animation-name:dot-scroll-a}
+    .dot-layer-b{animation-name:dot-scroll-b}
+  }
+}
+@keyframes dot-scroll-a{from{transform:translate3d(0,7%,0)}to{transform:translate3d(0,-8%,0)}}
+@keyframes dot-scroll-b{from{transform:translate3d(-2%,15%,0)}to{transform:translate3d(2%,-17%,0)}}
 .shop-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;margin-top:20px}
 .shop-rail{display:flex;gap:12px;margin:20px -20px 0;padding:0 20px 8px;overflow-x:auto;scroll-snap-type:x proximity;scrollbar-width:thin}
 .shop-rail .shop-card{flex:0 0 43%;scroll-snap-align:start}
@@ -506,6 +553,7 @@ h1{font-family:var(--display);font-size:clamp(34px,7vw,48px);line-height:1.02;fo
     </section>
 
     <section class="final-cta" aria-labelledby="final-title">
+      <div class="dot-field" aria-hidden="true"><div class="dot-layer dot-layer-a"></div><div class="dot-layer dot-layer-b"></div></div>
       <div class="section-kicker">Send care with confidence</div>
       <h2 class="section-title" id="final-title">Send something thoughtful, useful, and ready to give.</h2>
       <p class="section-copy" style="margin-left:auto;margin-right:auto">A gift-ready care package, hand-packed in New York and ready for your personal note.</p>
