@@ -88,14 +88,24 @@ function diskPath(url) {
   return path.join(outDir, url.replace(/^\//, ''));
 }
 
-// For a local asset URL, return {ext, avif, webp, fallback}; null for non-local
-// srcs (data: URIs, external URLs). Only includes variant URLs whose files exist.
+// For a local asset URL, return {ext, avif, webp, fallback, hqAvif, hqWebp};
+// null for non-local srcs (data: URIs, external URLs). Only includes variant
+// URLs whose files exist.
+//
+// hqAvif/hqWebp are the second, sharper tier tools/optimize-images.js writes for
+// the hero and gallery. They are never what the markup ships — the page paints
+// the light tier and upgrades after `load` — so a missing hq file just means no
+// upgrade, not a broken image. There is no HQ counterpart for `fallback`: that
+// is the untouched original, already the best we have for a browser with
+// neither AVIF nor WebP.
 function variants(url) {
   if (!url || !url.startsWith(LOCAL_PREFIX)) return null;
   const ext = path.extname(url).toLowerCase();
   const base = url.slice(0, -ext.length);
   const avifU = base + '.avif';
   const webpU = base + '.webp';
+  const hqAvifU = base + '-hq.avif';
+  const hqWebpU = base + '-hq.webp';
   // The animated GIF is converted to an animated .webp + a still .jpg fallback.
   const fallbackU = ext === '.gif' ? base + '-still.jpg' : url;
   const has = u => fs.existsSync(diskPath(u));
@@ -105,7 +115,14 @@ function variants(url) {
     // Don't duplicate a webp <source> when the fallback itself is a .webp.
     webp: (ext !== '.webp' && has(webpU)) ? webpU : '',
     fallback: has(fallbackU) ? fallbackU : url,
+    hqAvif: has(hqAvifU) ? hqAvifU : '',
+    hqWebp: (ext !== '.webp' && has(hqWebpU)) ? hqWebpU : '',
   };
+}
+
+// True when `url` has an HQ tier worth swapping in after load.
+function hasHq(v) {
+  return !!(v && (v.hqAvif || v.hqWebp));
 }
 
 function imgTag(src, o = {}) {
@@ -126,6 +143,8 @@ function imgTag(src, o = {}) {
 
 // <picture> with AVIF/WebP sources + original (or GIF still) <img> fallback.
 // Pass avifId/webpId to tag the <source>s so JS can swap them (swipe gallery).
+// Pass hq:true on images rendered large to carry the HQ tier as data-hq-*
+// attributes, which the after-load upgrade in each page's script swaps in.
 function picture(url, o = {}) {
   const v = variants(url);
   if (!v) return imgTag(url, o);
@@ -133,7 +152,10 @@ function picture(url, o = {}) {
   if (v.avif) sources.push(`<source ${o.avifId ? `id="${o.avifId}" ` : ''}type="image/avif" srcset="${v.avif}">`);
   if (v.webp) sources.push(`<source ${o.webpId ? `id="${o.webpId}" ` : ''}type="image/webp" srcset="${v.webp}">`);
   if (!sources.length) return imgTag(v.fallback, o);
-  return `<picture>${sources.join('')}${imgTag(v.fallback, o)}</picture>`;
+  const hq = (o.hq && hasHq(v))
+    ? ` data-hq-src="${v.fallback}"${v.hqAvif ? ` data-hq-avif="${v.hqAvif}"` : ''}${v.hqWebp ? ` data-hq-webp="${v.hqWebp}"` : ''}`
+    : '';
+  return `<picture${hq}>${sources.join('')}${imgTag(v.fallback, o)}</picture>`;
 }
 
 function slugToFile(url) {
@@ -156,7 +178,12 @@ function generateWomensCroPage(product) {
   const galleryVariants = galleryImages.map(gi => {
     const u = img(gi);
     const v = variants(u);
-    return { a: v ? v.avif : '', w: v ? v.webp : '', f: v ? v.fallback : u };
+    // ha/hw/hf: the HQ tier the after-load upgrade folds into a/w/f, so a swipe
+    // made after the page settled serves the sharp variant too.
+    return {
+      a: v ? v.avif : '', w: v ? v.webp : '', f: v ? v.fallback : u,
+      ha: v ? v.hqAvif : '', hw: v ? v.hqWebp : '', hf: (v && hasHq(v)) ? v.fallback : '',
+    };
   });
   const heroV = variants(heroUrl);
   const heroPreloadHref = heroV && heroV.avif ? heroV.avif : heroUrl;
@@ -252,8 +279,12 @@ img{max-width:100%}
 .rating-stars{color:var(--star);letter-spacing:.08em}
 .hero{display:grid}
 .gallery{background:linear-gradient(180deg,#f1f1f1,#fff);min-width:0}
-.gallery-stage{position:relative;overflow:hidden;touch-action:pan-y}
-.gallery-main{display:block;width:100%;aspect-ratio:1/1;object-fit:cover}
+/* The stage is square so it reserves its space before the image decodes, but
+   capped so the hero plus the buy box still fit a phone screen. contain, not
+   cover: the gallery mixes square packshots with portrait product shots (down
+   to 0.67), and cover sliced the caps and bases off those. */
+.gallery-stage{position:relative;overflow:hidden;touch-action:pan-y;aspect-ratio:1/1;background:#fff;max-height:62vh;max-height:62svh}
+.gallery-main{display:block;width:100%;height:100%;object-fit:contain}
 .swipe-hint{position:absolute;right:14px;bottom:12px;background:rgba(32,28,25,.76);color:#fff;padding:6px 10px;border-radius:999px;font-size:11px;pointer-events:none}
 .gallery-rating{display:flex;align-items:center;justify-content:center;padding:12px 16px 2px}
 .gallery-thumbs{display:flex;gap:9px;padding:11px 16px 17px;overflow:auto}
@@ -366,6 +397,9 @@ h1{font-family:var(--display);font-size:clamp(34px,7vw,48px);line-height:1.02;fo
 .sticky .btn-primary{min-height:50px;flex:0 0 58%;font-size:14px}
 @media(min-width:680px){
   .hero{grid-template-columns:minmax(0,1.03fr) minmax(0,.97fr);align-items:start}
+  /* Side by side the gallery is only half the window, so the viewport cap that
+     keeps the phone hero above the fold would just letterbox it here. */
+  .gallery-stage{max-height:none}
   .hero-copy{padding:48px 42px}
   .benefit-bar{grid-template-columns:repeat(4,1fr)}
   .benefit{border-bottom:0}
@@ -406,7 +440,7 @@ ${ui.announcement ? `  <div class="announcement">${escHtml(ui.announcement)}</di
     <section class="hero" aria-labelledby="product-title">
       <div class="gallery" aria-label="Product gallery">
         <div class="gallery-stage" id="galleryStage" tabindex="0" aria-label="Use left and right arrow keys to browse product images">
-          ${picture(heroUrl, { id: 'mainImg', cls: 'gallery-main', alt: product.title, priority: true, lazy: false, avifId: 'mainSrcAvif', webpId: 'mainSrcWebp' })}
+          ${picture(heroUrl, { id: 'mainImg', cls: 'gallery-main', alt: product.title, priority: true, lazy: false, avifId: 'mainSrcAvif', webpId: 'mainSrcWebp', hq: true })}
           <span class="swipe-hint" id="swipeHint" aria-hidden="true">Swipe to explore</span>
         </div>
         <div class="gallery-rating"><a class="rating-link" href="${wwwBase}/${product.slug}/#reviews" data-track="rating_click"><span class="rating-stars" aria-hidden="true">★★★★★</span><span>${fmtRating(rating)} · ${product.reviewCount} verified reviews</span></a></div>
@@ -593,17 +627,63 @@ ${relatedAddOns.map(item => `        <a class="shop-card" href="${wwwBase}${item
     window.dataLayer = window.dataLayer || [];
     window.dataLayer.push(Object.assign({event:eventName, product_id:${product.id}, product_name:${JSON.stringify(product.title)}}, detail || {}));
   }
-  function showImage(index) {
-    if (!gallery.length) return;
+  // Paint an image without the analytics event, so the after-load quality
+  // upgrade can re-apply the current slide without logging a phantom view.
+  function applyImage(index) {
+    if (!gallery.length) return false;
     current = (index + gallery.length) % gallery.length;
     var image = gallery[current];
     if (avif) avif.srcset = image.a || '';
     if (webp) webp.srcset = image.w || '';
     main.src = image.f;
     thumbs.forEach(function(thumb, i){ thumb.setAttribute('aria-current', i === current ? 'true' : 'false'); });
+    return true;
+  }
+  function showImage(index) {
+    if (!applyImage(index)) return;
     if (hint) hint.hidden = true;
     track('product_gallery_view', {image_index:current + 1});
   }
+
+  // Progressive image quality. The markup ships the light AVIF/WebP tier so the
+  // hero paints fast — it is what the LCP preload points at — and at 1200px /
+  // AVIF q50 that tier is visibly soft once a 3x phone stretches it across the
+  // full viewport. After load, swap everything carrying an HQ variant up to it.
+  // Assigning srcset/src leaves the decoded frame on screen until its
+  // replacement is ready, so the upgrade is invisible apart from the detail.
+  function upgradeImageQuality() {
+    Array.prototype.forEach.call(document.querySelectorAll('picture[data-hq-src]'), function(pic){
+      var image = pic.querySelector('img');
+      // The gallery owns #mainImg — upgrading it from here would snap a buyer
+      // who has already swiped back to the hero shot.
+      if (!image || image.id === 'mainImg') return;
+      var sourceAvif = pic.querySelector('source[type="image/avif"]');
+      var sourceWebp = pic.querySelector('source[type="image/webp"]');
+      var hqAvif = pic.getAttribute('data-hq-avif');
+      var hqWebp = pic.getAttribute('data-hq-webp');
+      if (sourceAvif) sourceAvif.srcset = hqAvif || sourceAvif.srcset;
+      if (sourceWebp) sourceWebp.srcset = hqWebp || sourceWebp.srcset;
+      image.src = pic.getAttribute('data-hq-src');
+      pic.removeAttribute('data-hq-src');
+    });
+    // Fold the HQ tier into the gallery data so the slide on screen and every
+    // later swipe or thumb tap both serve it.
+    var upgraded = false;
+    gallery.forEach(function(entry){
+      if (!entry.hf) return;
+      entry.a = entry.ha; entry.w = entry.hw; entry.f = entry.hf;
+      upgraded = true;
+    });
+    if (upgraded) applyImage(current);
+  }
+  function queueImageUpgrade() {
+    // Idle time after load, so the heavier tier never competes with anything
+    // the buyer is actually waiting on. The timeout keeps it honest.
+    if (window.requestIdleCallback) window.requestIdleCallback(upgradeImageQuality, {timeout:3000});
+    else window.setTimeout(upgradeImageQuality, 400);
+  }
+  if (document.readyState === 'complete') queueImageUpgrade();
+  else window.addEventListener('load', queueImageUpgrade);
   thumbs.forEach(function(thumb, i){ thumb.addEventListener('click', function(){ showImage(i); }); });
   stage.addEventListener('keydown', function(event){
     if (event.key === 'ArrowLeft') { event.preventDefault(); showImage(current - 1); }
@@ -742,7 +822,12 @@ ${insidePreviewItems.map(item => `    <div class="inside-preview-card">
   const galleryVariants = galleryImages.map(gi => {
     const u = img(gi);
     const v = variants(u);
-    return { a: v ? v.avif : '', w: v ? v.webp : '', f: v ? v.fallback : u };
+    // ha/hw/hf: the HQ tier the after-load upgrade folds into a/w/f, so a swipe
+    // made after the page settled serves the sharp variant too.
+    return {
+      a: v ? v.avif : '', w: v ? v.webp : '', f: v ? v.fallback : u,
+      ha: v ? v.hqAvif : '', hw: v ? v.hqWebp : '', hf: (v && hasHq(v)) ? v.fallback : '',
+    };
   });
 
   return `<!DOCTYPE html>
@@ -765,9 +850,9 @@ ${insidePreviewItems.map(item => `    <div class="inside-preview-card">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="preload" as="image" href="${heroPreloadHref}"${heroPreloadType} fetchpriority="high">
-<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Catamaran:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
-:root{--green:#5ba346;--green-dark:#417c31;--orange:#ff6319;--orange-dark:#de5310;--text:#1f1a17;--text-light:#60564f;--text-muted:#8d8279;--bg:#fffdf9;--bg-alt:#f8f2eb;--bg-soft:#f4ece3;--bg-warm:#fff5e7;--border:#eadfce;--shadow:0 18px 40px rgba(67,39,18,.12);--serif:'DM Serif Display',Georgia,serif;--sans:'Inter',system-ui,sans-serif}
+:root{--green:#5ba346;--green-dark:#417c31;--orange:#ff6319;--orange-dark:#de5310;--text:#1f1a17;--text-light:#60564f;--text-muted:#8d8279;--bg:#fffdf9;--bg-alt:#f8f2eb;--bg-soft:#f4ece3;--bg-warm:#fff5e7;--border:#eadfce;--shadow:0 18px 40px rgba(67,39,18,.12);--serif:'Catamaran',sans-serif;--sans:'Catamaran',sans-serif}
 *{margin:0;padding:0;box-sizing:border-box}
 html{scroll-behavior:smooth}
 body{font-family:var(--sans);background:linear-gradient(180deg,#f7efe6 0%,#f3f0eb 18%,#efe8de 100%);color:var(--text);padding:0 0 92px}
@@ -804,7 +889,7 @@ picture{display:contents}
 .product-info{padding:18px 20px 22px}
 .eyebrow{display:inline-flex;align-items:center;gap:6px;padding:7px 12px;border-radius:999px;background:var(--bg-soft);color:var(--green-dark);font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase}
 .eyebrow::before{content:'';width:7px;height:7px;border-radius:50%;background:var(--orange)}
-.product-title{font-family:var(--serif);font-size:34px;font-weight:400;line-height:1.05;color:var(--text);margin-top:14px;letter-spacing:-.02em}
+.product-title{font-family:var(--serif);font-size:34px;font-weight:800;line-height:1.05;color:var(--text);margin-top:14px;letter-spacing:-.02em}
 .product-subtitle{font-size:14px;line-height:1.65;color:var(--text-light);margin-top:12px;max-width:34ch}
 .hero-highlights{display:flex;flex-wrap:wrap;gap:8px;margin-top:16px}
 .hero-highlights span{padding:8px 11px;border-radius:999px;background:#fff;border:1px solid var(--border);font-size:11px;font-weight:600;color:var(--text-light)}
@@ -850,14 +935,14 @@ picture{display:contents}
 
 .featured-review{margin:0 20px 22px;padding:20px;border-radius:24px;background:linear-gradient(135deg,#fff7ef,#f6ede4);border:1px solid #eed9c0}
 .featured-review .section-kicker,.inside-intro .section-kicker,.related-section .section-kicker,.reviews-section .section-kicker,.faq-section .section-kicker,.upsell-section .section-kicker{font-size:11px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:var(--green-dark)}
-.featured-review blockquote{font-family:var(--serif);font-size:25px;line-height:1.15;color:var(--text);margin-top:10px}
+.featured-review blockquote{font-family:var(--serif);font-size:25px;font-weight:700;line-height:1.15;color:var(--text);margin-top:10px}
 .featured-review p{font-size:14px;line-height:1.65;color:var(--text-light);margin-top:10px}
 .featured-review .review-credit{margin-top:12px;font-size:12px;font-weight:700;color:var(--text)}
 .featured-review .review-credit span{color:var(--text-muted);font-weight:600}
 
 .inside-intro,.related-section,.faq-section,.upsell-section,.reviews-section{padding:24px 16px 0;border-top:4px solid var(--border)}
 .inside-intro{padding:26px 20px 4px}
-.section-title{font-family:var(--serif);font-size:26px;line-height:1.05;margin-top:10px;margin-bottom:10px;color:var(--text)}
+.section-title{font-family:var(--serif);font-size:26px;font-weight:800;line-height:1.05;margin-top:10px;margin-bottom:10px;color:var(--text)}
 .section-copy{font-size:14px;line-height:1.65;color:var(--text-light);max-width:36ch}
 .inside-preview-rail{display:flex;gap:12px;padding:10px 20px 2px;overflow-x:auto}
 .inside-preview-card{flex:0 0 120px;padding:10px;border-radius:18px;border:1px solid var(--border);background:#fff;box-shadow:0 10px 22px rgba(64,46,28,.06)}
@@ -874,16 +959,16 @@ picture{display:contents}
 .value-prop{padding:18px 14px;text-align:left;border:1px solid var(--border);border-radius:18px;background:#fff}
 .value-prop:nth-child(2n){border-right:none}
 .value-prop .vp-icon{font-size:11px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:var(--green-dark);margin-bottom:8px}
-.value-prop .vp-title{font-family:var(--serif);font-size:18px;line-height:1.1;margin-bottom:6px}
+.value-prop .vp-title{font-family:var(--serif);font-size:18px;font-weight:800;line-height:1.1;margin-bottom:6px}
 .value-prop .vp-desc{font-size:12px;color:var(--text-muted);line-height:1.5}
 
 .green-banner{margin:24px 20px 0;padding:28px 20px;border-radius:28px;background:linear-gradient(135deg,var(--green-dark),var(--green));text-align:center;color:#fff;box-shadow:0 18px 36px rgba(62,120,46,.24)}
-.green-banner h3{font-family:var(--serif);font-size:28px;font-weight:400;line-height:1.08}
+.green-banner h3{font-family:var(--serif);font-size:28px;font-weight:800;line-height:1.08}
 .green-banner p{font-size:14px;opacity:.92;margin-top:10px}
 
 .breakdown-section{padding:0}
 .category-header{background:var(--bg-alt);padding:18px 20px;border-top:1px solid var(--border);border-bottom:1px solid var(--border);margin-top:18px}
-.category-header h3{font-family:var(--serif);font-size:18px;color:var(--text)}
+.category-header h3{font-family:var(--serif);font-size:18px;font-weight:800;color:var(--text)}
 .item-card{display:flex;gap:12px;padding:14px 20px;border-bottom:1px solid #f2ece4}
 .item-card img{width:74px;height:74px;object-fit:cover;border-radius:18px;flex-shrink:0}
 .item-card .item-info{flex:1}
@@ -901,6 +986,8 @@ picture{display:contents}
 .gallery-main{width:100%;display:block;touch-action:pan-y;position:relative;overflow:hidden}
 .gallery-swipe-hint{position:absolute;bottom:8px;right:8px;background:rgba(0,0,0,.5);color:#fff;font-size:10px;padding:3px 8px;border-radius:10px;pointer-events:none;opacity:1;transition:opacity .5s}
 .gallery-wrap{position:relative;overflow:hidden;touch-action:pan-y;background:linear-gradient(180deg,var(--bg-soft),#fff);padding:0 14px}
+/* Keep the hero inside the viewport; contain letterboxes rather than crops. */
+.gallery-wrap .gallery-main{max-height:62vh;max-height:62svh;object-fit:contain}
 
 .upsell-section{background:var(--bg-alt);padding-bottom:24px}
 .upsell-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
@@ -930,7 +1017,7 @@ picture{display:contents}
 .review-reply strong{color:var(--green);font-size:11px}
 
 .footer{background:#222;padding:24px 20px;color:#aaa}
-.footer-brand{font-family:var(--serif);font-size:18px;color:#fff;margin-bottom:8px}
+.footer-brand{font-family:var(--serif);font-size:18px;font-weight:800;color:#fff;margin-bottom:8px}
 .footer-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:14px}
 .footer-col h4{font-size:12px;font-weight:700;color:#fff;text-transform:uppercase;letter-spacing:.08em;margin-bottom:8px}
 .footer-col a{display:block;font-size:12px;color:#888;text-decoration:none;margin-bottom:4px}
@@ -979,7 +1066,7 @@ ${announcementHtml}  <div class="topbar">
 
   <!-- PRODUCT GALLERY (swipeable) -->
   <div class="gallery-wrap" id="galleryWrap">
-    ${picture(heroUrl, { id: 'mainImg', cls: 'gallery-main', alt: product.title, priority: true, lazy: false, avifId: 'mainSrcAvif', webpId: 'mainSrcWebp' })}
+    ${picture(heroUrl, { id: 'mainImg', cls: 'gallery-main', alt: product.title, priority: true, lazy: false, avifId: 'mainSrcAvif', webpId: 'mainSrcWebp', hq: true })}
     <span class="gallery-swipe-hint" id="swipeHint">← swipe →</span>
   </div>
   <div class="gallery-thumbs" id="galleryThumbs">
@@ -1235,7 +1322,9 @@ ${r.reply ? `      <div class="review-reply"><strong>Rock The Treatment</strong>
   var currentIdx = 0;
   var startX = 0, diffX = 0, swiping = false;
 
-  function showImg(idx) {
+  // Paint a slide without dismissing the swipe hint, so the after-load quality
+  // upgrade can re-apply the current image without looking like an interaction.
+  function applyImg(idx) {
     if (idx < 0) idx = GALLERY.length - 1;
     if (idx >= GALLERY.length) idx = 0;
     currentIdx = idx;
@@ -1245,8 +1334,51 @@ ${r.reply ? `      <div class="review-reply"><strong>Rock The Treatment</strong>
     if (mainWebp) mainWebp.srcset = g.w || '';
     mainImg.src = g.f || mainImg.src;
     thumbs.forEach(function(t,i){ t.classList.toggle('active', i === idx); });
+  }
+  function showImg(idx) {
+    applyImg(idx);
     if (hint) { hint.style.opacity = '0'; setTimeout(function(){ if(hint.parentNode) hint.parentNode.removeChild(hint); }, 500); }
   }
+
+  // Progressive image quality. The markup ships the light AVIF/WebP tier so the
+  // hero paints fast — it is what the LCP preload points at — and at 1200px /
+  // AVIF q50 that tier is visibly soft once a 3x phone stretches it across the
+  // full viewport. After load, swap everything carrying an HQ variant up to it.
+  // Assigning srcset/src leaves the decoded frame on screen until its
+  // replacement is ready, so the upgrade is invisible apart from the detail.
+  function upgradeImageQuality() {
+    Array.prototype.forEach.call(document.querySelectorAll('picture[data-hq-src]'), function(pic){
+      var image = pic.querySelector('img');
+      // The gallery owns #mainImg — upgrading it from here would snap a buyer
+      // who has already swiped back to the hero shot.
+      if (!image || image.id === 'mainImg') return;
+      var sourceAvif = pic.querySelector('source[type="image/avif"]');
+      var sourceWebp = pic.querySelector('source[type="image/webp"]');
+      var hqAvif = pic.getAttribute('data-hq-avif');
+      var hqWebp = pic.getAttribute('data-hq-webp');
+      if (sourceAvif) sourceAvif.srcset = hqAvif || sourceAvif.srcset;
+      if (sourceWebp) sourceWebp.srcset = hqWebp || sourceWebp.srcset;
+      image.src = pic.getAttribute('data-hq-src');
+      pic.removeAttribute('data-hq-src');
+    });
+    // Fold the HQ tier into the gallery data so the slide on screen and every
+    // later swipe or thumb tap both serve it.
+    var upgraded = false;
+    GALLERY.forEach(function(entry){
+      if (!entry.hf) return;
+      entry.a = entry.ha; entry.w = entry.hw; entry.f = entry.hf;
+      upgraded = true;
+    });
+    if (upgraded) applyImg(currentIdx);
+  }
+  function queueImageUpgrade() {
+    // Idle time after load, so the heavier tier never competes with anything
+    // the buyer is actually waiting on. The timeout keeps it honest.
+    if (window.requestIdleCallback) window.requestIdleCallback(upgradeImageQuality, {timeout:3000});
+    else window.setTimeout(upgradeImageQuality, 400);
+  }
+  if (document.readyState === 'complete') queueImageUpgrade();
+  else window.addEventListener('load', queueImageUpgrade);
 
   // Thumb clicks
   thumbs.forEach(function(t, i){
@@ -1357,9 +1489,9 @@ function generateIndex() {
 <link rel="canonical" href="${wwwBase}/shop/">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Catamaran:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
-:root{--green:#5ba346;--orange:#ff6319;--text:#1a1a1a;--border:#eee;--serif:'DM Serif Display',Georgia,serif;--sans:'Inter',system-ui,sans-serif}
+:root{--green:#5ba346;--orange:#ff6319;--text:#1a1a1a;--border:#eee;--serif:'Catamaran',sans-serif;--sans:'Catamaran',sans-serif}
 *{margin:0;padding:0;box-sizing:border-box}
 body{font-family:var(--sans);background:#f4f4f4;color:var(--text)}
 a{text-decoration:none;color:inherit}
@@ -1368,7 +1500,7 @@ picture{display:contents}
 .header{text-align:center;padding:16px;border-bottom:1px solid var(--border)}
 .header img{height:38px}
 .intro{padding:20px 16px 8px;text-align:center}
-.intro h1{font-family:var(--serif);font-size:24px;font-weight:400}
+.intro h1{font-family:var(--serif);font-size:24px;font-weight:800}
 .intro p{font-size:13px;color:#666;margin-top:6px}
 .grid{padding:12px 16px 28px;display:grid;grid-template-columns:1fr 1fr;gap:12px}
 .card{border:1px solid var(--border);border-radius:10px;overflow:hidden}

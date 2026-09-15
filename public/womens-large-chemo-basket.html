@@ -38,8 +38,12 @@ img{max-width:100%}
 .rating-stars{color:var(--star);letter-spacing:.08em}
 .hero{display:grid}
 .gallery{background:linear-gradient(180deg,#f1f1f1,#fff);min-width:0}
-.gallery-stage{position:relative;overflow:hidden;touch-action:pan-y}
-.gallery-main{display:block;width:100%;aspect-ratio:1/1;object-fit:cover}
+/* The stage is square so it reserves its space before the image decodes, but
+   capped so the hero plus the buy box still fit a phone screen. contain, not
+   cover: the gallery mixes square packshots with portrait product shots (down
+   to 0.67), and cover sliced the caps and bases off those. */
+.gallery-stage{position:relative;overflow:hidden;touch-action:pan-y;aspect-ratio:1/1;background:#fff;max-height:62vh;max-height:62svh}
+.gallery-main{display:block;width:100%;height:100%;object-fit:contain}
 .swipe-hint{position:absolute;right:14px;bottom:12px;background:rgba(32,28,25,.76);color:#fff;padding:6px 10px;border-radius:999px;font-size:11px;pointer-events:none}
 .gallery-rating{display:flex;align-items:center;justify-content:center;padding:12px 16px 2px}
 .gallery-thumbs{display:flex;gap:9px;padding:11px 16px 17px;overflow:auto}
@@ -152,6 +156,9 @@ h1{font-family:var(--display);font-size:clamp(34px,7vw,48px);line-height:1.02;fo
 .sticky .btn-primary{min-height:50px;flex:0 0 58%;font-size:14px}
 @media(min-width:680px){
   .hero{grid-template-columns:minmax(0,1.03fr) minmax(0,.97fr);align-items:start}
+  /* Side by side the gallery is only half the window, so the viewport cap that
+     keeps the phone hero above the fold would just letterbox it here. */
+  .gallery-stage{max-height:none}
   .hero-copy{padding:48px 42px}
   .benefit-bar{grid-template-columns:repeat(4,1fr)}
   .benefit{border-bottom:0}
@@ -192,7 +199,7 @@ h1{font-family:var(--display);font-size:clamp(34px,7vw,48px);line-height:1.02;fo
     <section class="hero" aria-labelledby="product-title">
       <div class="gallery" aria-label="Product gallery">
         <div class="gallery-stage" id="galleryStage" tabindex="0" aria-label="Use left and right arrow keys to browse product images">
-          <picture><source id="mainSrcAvif" type="image/avif" srcset="/assets/uploads/2018/04/Women-Large-Chemo-Basket-Main.avif"><source id="mainSrcWebp" type="image/webp" srcset="/assets/uploads/2018/04/Women-Large-Chemo-Basket-Main.webp"><img id="mainImg" class="gallery-main" src="/assets/uploads/2018/04/Women-Large-Chemo-Basket-Main.jpg" alt="Large Women's Chemo Care Package" fetchpriority="high" decoding="async"></picture>
+          <picture data-hq-src="/assets/uploads/2018/04/Women-Large-Chemo-Basket-Main.jpg" data-hq-avif="/assets/uploads/2018/04/Women-Large-Chemo-Basket-Main-hq.avif" data-hq-webp="/assets/uploads/2018/04/Women-Large-Chemo-Basket-Main-hq.webp"><source id="mainSrcAvif" type="image/avif" srcset="/assets/uploads/2018/04/Women-Large-Chemo-Basket-Main.avif"><source id="mainSrcWebp" type="image/webp" srcset="/assets/uploads/2018/04/Women-Large-Chemo-Basket-Main.webp"><img id="mainImg" class="gallery-main" src="/assets/uploads/2018/04/Women-Large-Chemo-Basket-Main.jpg" alt="Large Women's Chemo Care Package" fetchpriority="high" decoding="async"></picture>
           <span class="swipe-hint" id="swipeHint" aria-hidden="true">Swipe to explore</span>
         </div>
         <div class="gallery-rating"><a class="rating-link" href="https://www.rockthetreatment.com/womens-large-chemo-basket/#reviews" data-track="rating_click"><span class="rating-stars" aria-hidden="true">★★★★★</span><span>5.0 · 259 verified reviews</span></a></div>
@@ -548,7 +555,7 @@ h1{font-family:var(--display);font-size:clamp(34px,7vw,48px);line-height:1.02;fo
 
 <script>
 (function(){
-  var gallery = [{"a":"/assets/uploads/2018/04/Women-Large-Chemo-Basket-Main.avif","w":"/assets/uploads/2018/04/Women-Large-Chemo-Basket-Main.webp","f":"/assets/uploads/2018/04/Women-Large-Chemo-Basket-Main.jpg"},{"a":"/assets/uploads/2019/05/lindi-face-serum.avif","w":"/assets/uploads/2019/05/lindi-face-serum.webp","f":"/assets/uploads/2019/05/lindi-face-serum.jpg"},{"a":"/assets/uploads/2018/04/fuzzy-socks.avif","w":"/assets/uploads/2018/04/fuzzy-socks.webp","f":"/assets/uploads/2018/04/fuzzy-socks.jpg"},{"a":"/assets/uploads/2019/07/knit-cap.avif","w":"/assets/uploads/2019/07/knit-cap.webp","f":"/assets/uploads/2019/07/knit-cap.jpg"},{"a":"/assets/uploads/2019/07/eye-pillow.avif","w":"/assets/uploads/2019/07/eye-pillow.webp","f":"/assets/uploads/2019/07/eye-pillow.jpg"},{"a":"/assets/uploads/2019/05/queasy-pops.avif","w":"/assets/uploads/2019/05/queasy-pops.webp","f":"/assets/uploads/2019/05/queasy-pops.jpg"},{"a":"/assets/uploads/2018/04/coloring-books-sharpener.avif","w":"/assets/uploads/2018/04/coloring-books-sharpener.webp","f":"/assets/uploads/2018/04/coloring-books-sharpener.jpg"},{"a":"/assets/uploads/2019/07/note-cards.avif","w":"/assets/uploads/2019/07/note-cards.webp","f":"/assets/uploads/2019/07/note-cards.jpg"},{"a":"/assets/uploads/2019/05/jelly-belly-cocktail-crop.avif","w":"/assets/uploads/2019/05/jelly-belly-cocktail-crop.webp","f":"/assets/uploads/2019/05/jelly-belly-cocktail-crop.jpg"}];
+  var gallery = [{"a":"/assets/uploads/2018/04/Women-Large-Chemo-Basket-Main.avif","w":"/assets/uploads/2018/04/Women-Large-Chemo-Basket-Main.webp","f":"/assets/uploads/2018/04/Women-Large-Chemo-Basket-Main.jpg","ha":"/assets/uploads/2018/04/Women-Large-Chemo-Basket-Main-hq.avif","hw":"/assets/uploads/2018/04/Women-Large-Chemo-Basket-Main-hq.webp","hf":"/assets/uploads/2018/04/Women-Large-Chemo-Basket-Main.jpg"},{"a":"/assets/uploads/2019/05/lindi-face-serum.avif","w":"/assets/uploads/2019/05/lindi-face-serum.webp","f":"/assets/uploads/2019/05/lindi-face-serum.jpg","ha":"/assets/uploads/2019/05/lindi-face-serum-hq.avif","hw":"/assets/uploads/2019/05/lindi-face-serum-hq.webp","hf":"/assets/uploads/2019/05/lindi-face-serum.jpg"},{"a":"/assets/uploads/2018/04/fuzzy-socks.avif","w":"/assets/uploads/2018/04/fuzzy-socks.webp","f":"/assets/uploads/2018/04/fuzzy-socks.jpg","ha":"/assets/uploads/2018/04/fuzzy-socks-hq.avif","hw":"/assets/uploads/2018/04/fuzzy-socks-hq.webp","hf":"/assets/uploads/2018/04/fuzzy-socks.jpg"},{"a":"/assets/uploads/2019/07/knit-cap.avif","w":"/assets/uploads/2019/07/knit-cap.webp","f":"/assets/uploads/2019/07/knit-cap.jpg","ha":"/assets/uploads/2019/07/knit-cap-hq.avif","hw":"/assets/uploads/2019/07/knit-cap-hq.webp","hf":"/assets/uploads/2019/07/knit-cap.jpg"},{"a":"/assets/uploads/2019/07/eye-pillow.avif","w":"/assets/uploads/2019/07/eye-pillow.webp","f":"/assets/uploads/2019/07/eye-pillow.jpg","ha":"/assets/uploads/2019/07/eye-pillow-hq.avif","hw":"/assets/uploads/2019/07/eye-pillow-hq.webp","hf":"/assets/uploads/2019/07/eye-pillow.jpg"},{"a":"/assets/uploads/2019/05/queasy-pops.avif","w":"/assets/uploads/2019/05/queasy-pops.webp","f":"/assets/uploads/2019/05/queasy-pops.jpg","ha":"/assets/uploads/2019/05/queasy-pops-hq.avif","hw":"/assets/uploads/2019/05/queasy-pops-hq.webp","hf":"/assets/uploads/2019/05/queasy-pops.jpg"},{"a":"/assets/uploads/2018/04/coloring-books-sharpener.avif","w":"/assets/uploads/2018/04/coloring-books-sharpener.webp","f":"/assets/uploads/2018/04/coloring-books-sharpener.jpg","ha":"/assets/uploads/2018/04/coloring-books-sharpener-hq.avif","hw":"/assets/uploads/2018/04/coloring-books-sharpener-hq.webp","hf":"/assets/uploads/2018/04/coloring-books-sharpener.jpg"},{"a":"/assets/uploads/2019/07/note-cards.avif","w":"/assets/uploads/2019/07/note-cards.webp","f":"/assets/uploads/2019/07/note-cards.jpg","ha":"/assets/uploads/2019/07/note-cards-hq.avif","hw":"/assets/uploads/2019/07/note-cards-hq.webp","hf":"/assets/uploads/2019/07/note-cards.jpg"},{"a":"/assets/uploads/2019/05/jelly-belly-cocktail-crop.avif","w":"/assets/uploads/2019/05/jelly-belly-cocktail-crop.webp","f":"/assets/uploads/2019/05/jelly-belly-cocktail-crop.jpg","ha":"/assets/uploads/2019/05/jelly-belly-cocktail-crop-hq.avif","hw":"/assets/uploads/2019/05/jelly-belly-cocktail-crop-hq.webp","hf":"/assets/uploads/2019/05/jelly-belly-cocktail-crop.jpg"}];
   var stage = document.getElementById('galleryStage');
   var main = document.getElementById('mainImg');
   var avif = document.getElementById('mainSrcAvif');
@@ -563,17 +570,63 @@ h1{font-family:var(--display);font-size:clamp(34px,7vw,48px);line-height:1.02;fo
     window.dataLayer = window.dataLayer || [];
     window.dataLayer.push(Object.assign({event:eventName, product_id:248, product_name:"Large Women's Chemo Care Package"}, detail || {}));
   }
-  function showImage(index) {
-    if (!gallery.length) return;
+  // Paint an image without the analytics event, so the after-load quality
+  // upgrade can re-apply the current slide without logging a phantom view.
+  function applyImage(index) {
+    if (!gallery.length) return false;
     current = (index + gallery.length) % gallery.length;
     var image = gallery[current];
     if (avif) avif.srcset = image.a || '';
     if (webp) webp.srcset = image.w || '';
     main.src = image.f;
     thumbs.forEach(function(thumb, i){ thumb.setAttribute('aria-current', i === current ? 'true' : 'false'); });
+    return true;
+  }
+  function showImage(index) {
+    if (!applyImage(index)) return;
     if (hint) hint.hidden = true;
     track('product_gallery_view', {image_index:current + 1});
   }
+
+  // Progressive image quality. The markup ships the light AVIF/WebP tier so the
+  // hero paints fast — it is what the LCP preload points at — and at 1200px /
+  // AVIF q50 that tier is visibly soft once a 3x phone stretches it across the
+  // full viewport. After load, swap everything carrying an HQ variant up to it.
+  // Assigning srcset/src leaves the decoded frame on screen until its
+  // replacement is ready, so the upgrade is invisible apart from the detail.
+  function upgradeImageQuality() {
+    Array.prototype.forEach.call(document.querySelectorAll('picture[data-hq-src]'), function(pic){
+      var image = pic.querySelector('img');
+      // The gallery owns #mainImg — upgrading it from here would snap a buyer
+      // who has already swiped back to the hero shot.
+      if (!image || image.id === 'mainImg') return;
+      var sourceAvif = pic.querySelector('source[type="image/avif"]');
+      var sourceWebp = pic.querySelector('source[type="image/webp"]');
+      var hqAvif = pic.getAttribute('data-hq-avif');
+      var hqWebp = pic.getAttribute('data-hq-webp');
+      if (sourceAvif) sourceAvif.srcset = hqAvif || sourceAvif.srcset;
+      if (sourceWebp) sourceWebp.srcset = hqWebp || sourceWebp.srcset;
+      image.src = pic.getAttribute('data-hq-src');
+      pic.removeAttribute('data-hq-src');
+    });
+    // Fold the HQ tier into the gallery data so the slide on screen and every
+    // later swipe or thumb tap both serve it.
+    var upgraded = false;
+    gallery.forEach(function(entry){
+      if (!entry.hf) return;
+      entry.a = entry.ha; entry.w = entry.hw; entry.f = entry.hf;
+      upgraded = true;
+    });
+    if (upgraded) applyImage(current);
+  }
+  function queueImageUpgrade() {
+    // Idle time after load, so the heavier tier never competes with anything
+    // the buyer is actually waiting on. The timeout keeps it honest.
+    if (window.requestIdleCallback) window.requestIdleCallback(upgradeImageQuality, {timeout:3000});
+    else window.setTimeout(upgradeImageQuality, 400);
+  }
+  if (document.readyState === 'complete') queueImageUpgrade();
+  else window.addEventListener('load', queueImageUpgrade);
   thumbs.forEach(function(thumb, i){ thumb.addEventListener('click', function(){ showImage(i); }); });
   stage.addEventListener('keydown', function(event){
     if (event.key === 'ArrowLeft') { event.preventDefault(); showImage(current - 1); }
