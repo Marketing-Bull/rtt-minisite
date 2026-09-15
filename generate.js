@@ -353,6 +353,26 @@ h1{font-family:var(--display);font-size:clamp(34px,7vw,48px);line-height:1.02;fo
 .optional-note{display:flex;gap:13px;align-items:center;margin-top:18px;padding:13px;border:1px solid rgba(223,208,188,.65);background:rgba(255,248,235,.55);border-radius:17px;font-size:12px;line-height:1.5;color:#74695f}
 .optional-note img{width:58px;height:58px;object-fit:contain;border-radius:12px;background:#fff}
 .optional-note a{font-weight:800;text-decoration:underline;text-underline-offset:3px;color:var(--green-dark)}
+/* Celebration Bell dialog. The note's link is a real outbound href that works
+   with no JS; the script upgrades it to open this instead, so the buyer sees
+   what the bell is — and that it ships on its own — before leaving the page. */
+.bell-modal{width:min(420px,calc(100vw - 32px));max-height:calc(100dvh - 40px);padding:0;border:0;border-radius:24px;background:var(--cream);color:var(--ink);box-shadow:var(--shadow);overflow:auto;overscroll-behavior:contain}
+.bell-modal::backdrop{background:rgba(32,28,25,.55)}
+.bell-inner{padding:0 24px 24px;text-align:center}
+.bell-figure{margin:0;padding:30px 24px 0}
+.bell-figure img{width:210px;height:210px;max-width:100%;object-fit:contain;display:block;margin:0 auto}
+.bell-eyebrow{font-size:10.5px;font-weight:800;letter-spacing:.14em;text-transform:uppercase;color:var(--green-dark);margin:6px 0 0}
+.bell-modal h2{font-family:var(--display);font-size:29px;font-weight:800;line-height:1.08;letter-spacing:-.02em;margin:8px 0 0;text-wrap:balance}
+.bell-tag{display:inline-block;margin:11px 0 0;padding:5px 12px;border-radius:999px;border:1px solid var(--line);background:#fff;font-size:11px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;color:var(--subtle)}
+.bell-copy{font-size:14px;line-height:1.6;color:var(--muted);margin:15px auto 0;max-width:34ch}
+.bell-modal .btn-primary{margin-top:19px}
+.bell-dismiss{display:block;width:100%;margin-top:11px;padding:11px;border:0;background:none;font-family:inherit;font-size:13px;font-weight:700;color:var(--subtle);text-decoration:underline;text-underline-offset:3px;cursor:pointer}
+.bell-close{position:absolute;top:12px;right:12px;width:36px;height:36px;border-radius:50%;border:1px solid var(--line);background:#fff;color:var(--muted);font-size:19px;line-height:1;cursor:pointer}
+.bell-close:hover{color:var(--ink)}
+@media(prefers-reduced-motion:no-preference){
+  .bell-modal[open]{animation:bell-in .22s ease-out}
+  @keyframes bell-in{from{opacity:0;transform:translateY(10px) scale(.98)}to{opacity:1;transform:none}}
+}
 .faq-list{margin-top:19px;border-top:1px solid var(--line)}
 .faq-item{border-bottom:1px solid var(--line)}
 .faq-button{width:100%;border:0;background:transparent;padding:17px 2px;display:flex;align-items:center;justify-content:space-between;gap:16px;text-align:left;font-size:14px;font-weight:700;cursor:pointer}
@@ -522,8 +542,20 @@ ${cat.items.map(item => `            <article class="content-item">
       </details>
       <div class="optional-note">
         ${picture(celebrationImage, { alt: '', width: 58, height: 58 })}
-        <div>${escHtml(ui.celebrationLabel)} <a href="${ui.celebrationUrl}" data-track="celebration_bell">Order it separately</a>.</div>
+        <div>${escHtml(ui.celebrationLabel)} <a class="js-bell-open" href="${ui.celebrationUrl}" data-track="celebration_bell">Order it separately</a>.</div>
       </div>
+      <dialog class="bell-modal" id="bellModal" aria-labelledby="bellModalTitle">
+        <button class="bell-close" type="button" id="bellClose" aria-label="Close">&times;</button>
+        <figure class="bell-figure">${picture(bellImg, { alt: 'The Celebration Bell', width: 210, height: 210 })}</figure>
+        <div class="bell-inner">
+          <p class="bell-eyebrow">End-of-treatment gift</p>
+          <h2 id="bellModalTitle">The Celebration Bell</h2>
+          <p class="bell-tag">Ordered separately</p>
+          <p class="bell-copy">Rung on the last day of treatment — a small, loud moment people remember for years. It isn't packed inside this care package: it ships on its own so it arrives for the day it's actually meant for.</p>
+          <a class="btn-primary" href="${ui.celebrationUrl}" data-track="celebration_bell_cta">See the Celebration Bell</a>
+          <button class="bell-dismiss" type="button" id="bellDismiss">Not right now</button>
+        </div>
+      </dialog>
     </section>
 
     <section class="section section-alt" aria-labelledby="faq-title">
@@ -732,6 +764,24 @@ ${relatedAddOns.map(item => `        <a class="shop-card" href="${wwwBase}${item
     window.addEventListener('load', remeasure);
   } else if (stickyBar) {
     stickyBar.classList.remove('is-hidden');
+  }
+
+  // Celebration Bell dialog. Progressive enhancement: without JS (or without
+  // <dialog> support) the note's link just navigates to the bell product page.
+  var bellModal = document.getElementById('bellModal');
+  var bellOpener = document.querySelector('.js-bell-open');
+  if (bellModal && bellOpener && typeof bellModal.showModal === 'function') {
+    var closeBell = function(){ if (bellModal.open) bellModal.close(); };
+    // No track() here: the generic [data-track] handler below already fires
+    // celebration_bell for this click, modal or not.
+    bellOpener.addEventListener('click', function(event){
+      event.preventDefault();
+      bellModal.showModal();
+    });
+    document.getElementById('bellClose').addEventListener('click', closeBell);
+    document.getElementById('bellDismiss').addEventListener('click', closeBell);
+    // Clicking the backdrop falls through to the dialog element itself.
+    bellModal.addEventListener('click', function(event){ if (event.target === bellModal) closeBell(); });
   }
 
   document.querySelectorAll('.faq-button').forEach(function(button){
